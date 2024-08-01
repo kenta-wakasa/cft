@@ -7,7 +7,10 @@
     {
       "name": "cft",
       "request": "launch",
-      "type": "dart"
+      "type": "dart",
+      "args": [
+        "--web-port=5700"
+      ]
     },
     {
       "name": "cft (profile mode)",

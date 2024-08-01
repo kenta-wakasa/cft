@@ -1,3 +1,3 @@
 # cft
 
-A new Flutter project.
+flutter build web && firebase deploy --only hosting

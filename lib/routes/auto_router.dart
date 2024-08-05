@@ -16,6 +16,10 @@ class AppRouter extends $AppRouter {
           initial: true,
           guards: guards,
         ),
+        AutoRoute(
+          page: PersistenceAttentionRoute.page,
+          path: '/persistence_attention',
+        ),
       ];
 
   List<AutoRouteGuard> get guards => [

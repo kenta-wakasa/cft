@@ -32,8 +32,10 @@ class HomePage extends ConsumerWidget {
           children: [
             Text('uid: $uid'),
             ElevatedButton(
-              onPressed: () {},
-              child: const Text('ほげ'),
+              onPressed: () {
+                context.router.replace(const PersistenceAttentionRoute());
+              },
+              child: const Text('持続性注意'),
             ),
             const Text('home'),
           ],

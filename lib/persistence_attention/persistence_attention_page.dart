@@ -4,7 +4,6 @@ import 'package:cft/routes/auto_router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gap/gap.dart';
 
 @RoutePage()
 class PersistenceAttentionPage extends ConsumerWidget {
@@ -18,7 +17,7 @@ class PersistenceAttentionPage extends ConsumerWidget {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            showDialog(
+            showDialog<void>(
               context: context,
               builder: (context) {
                 return AlertDialog(
@@ -44,34 +43,37 @@ class PersistenceAttentionPage extends ConsumerWidget {
           icon: const Icon(Icons.home),
         ),
       ),
-      body: state.isPlaying ? const PlayingWidget() : const _StartWidget(),
-    );
-  }
-}
-
-class _StartWidget extends ConsumerWidget {
-  const _StartWidget();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(persistenceAttentionNotifierProvider);
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: Stack(
         children: [
-          Text(
-            '持続性注意',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const Gap(8),
-          const Text('ランダムな数字の四則演算'),
-          const Gap(24),
-          ElevatedButton(
-            onPressed: () {
-              ref.read(persistenceAttentionNotifierProvider.notifier).start();
-            },
-            child: const Text('スタート'),
-          ),
+          const PlayingWidget(),
+          if (!state.isPlaying && state.countDownTime > 0)
+            Container(
+              color: Colors.white.withOpacity(0.5),
+              child: Center(
+                child: Text(
+                  '${state.countDownTime}',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(fontSize: 80),
+                ),
+              ),
+            ),
+          if (!state.isPlaying && state.countDownTime == 0)
+            Container(
+              color: Colors.black.withOpacity(0.6),
+              alignment: Alignment.bottomCenter,
+              child: Center(
+                child: ElevatedButton(
+                  child: const Text('スタート'),
+                  onPressed: () {
+                    ref
+                        .read(persistenceAttentionNotifierProvider.notifier)
+                        .start();
+                  },
+                ),
+              ),
+            )
         ],
       ),
     );
@@ -87,14 +89,6 @@ class PlayingWidget extends ConsumerStatefulWidget {
 
 class _PlayingWidgetState extends ConsumerState<PlayingWidget> {
   final controller = TextEditingController();
-  final focusNode = FocusNode();
-
-  @override
-  void dispose() {
-    super.dispose();
-    controller.dispose();
-    focusNode.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,108 +96,183 @@ class _PlayingWidgetState extends ConsumerState<PlayingWidget> {
     final notifier = ref.read(persistenceAttentionNotifierProvider.notifier);
     final currentProblem = state.problems.last;
 
-    const numberTextStyle = TextStyle(fontSize: 64);
+    const numberTextStyle = TextStyle(fontSize: 48);
 
     return Center(
-      child: Column(
-        children: [
-          /// 回答の列挙
-          SizedBox(
-            height: 250,
-            width: 250,
-            child: SingleChildScrollView(
-              reverse: true,
-              child: Wrap(
-                children: [
-                  for (final problem in state.problems)
-                    SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          if (problem.userAnswer != null)
-                            Text('${problem.userAnswer}'),
-                          Text(
-                            problem.userAnswer == null
-                                ? '?'
-                                : problem.userAnswer == problem.answer
-                                    ? '○'
-                                    : '×',
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                        ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            /// 回答の列挙
+            SizedBox(
+              height: 75,
+              width: 250,
+              child: SingleChildScrollView(
+                reverse: true,
+                child: Wrap(
+                  children: [
+                    for (final problem in state.problems)
+                      SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            if (problem.userAnswer != null)
+                              Text('${problem.userAnswer}'),
+                            Text(
+                              problem.userAnswer == null
+                                  ? '?'
+                                  : problem.userAnswer == problem.answer
+                                      ? '○'
+                                      : '×',
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 64,
-                child: Center(
-                  child: Text(
-                    '${currentProblem.a}',
-                    style: numberTextStyle,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 48,
+                  child: Center(
+                    child: Text(
+                      !state.isPlaying ? '?' : '${currentProblem.a}',
+                      style: numberTextStyle,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                width: 64,
-                child: Center(
-                  child: Text(
-                    currentProblem.randomOperator.toSymbol,
-                    style: numberTextStyle,
+                SizedBox(
+                  width: 48,
+                  child: Center(
+                    child: Text(
+                      !state.isPlaying
+                          ? '?'
+                          : currentProblem.randomOperator.toSymbol,
+                      style: numberTextStyle,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                width: 64,
-                child: Center(
-                  child: Text(
-                    '${currentProblem.b}',
-                    style: numberTextStyle,
+                SizedBox(
+                  width: 48,
+                  child: Center(
+                    child: Text(
+                      !state.isPlaying ? '?' : '${currentProblem.b}',
+                      style: numberTextStyle,
+                    ),
                   ),
                 ),
-              ),
-              const Text(
-                '=',
-                style: numberTextStyle,
-              ),
-              const SizedBox(width: 8),
-              SizedBox(
-                width: 64,
-                height: 80,
-                child: TextFormField(
-                  autofocus: true,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    counterText: '',
-                    counter: SizedBox.shrink(),
-                    counterStyle: TextStyle(fontSize: 0),
+                const Text(
+                  '=',
+                  style: numberTextStyle,
+                ),
+                const SizedBox(width: 8),
+                SizedBox(
+                  width: 64,
+                  height: 80,
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      counterText: '',
+                      counter: SizedBox.shrink(),
+                      counterStyle: TextStyle(fontSize: 0),
+                    ),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    style: const TextStyle(fontSize: 32),
+                    maxLength: 2,
+                    controller: controller,
+                    readOnly: true,
                   ),
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
+                )
+              ],
+            ),
+            Column(
+              children: [
+                for (final x in [0, 1, 2])
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      for (final y in [1 + (3 * x), 2 + (3 * x), 3 + (3 * x)])
+                        SizedBox(
+                          width: 64,
+                          height: 64,
+                          child: InkWell(
+                            onTap: () {
+                              controller.text = '${controller.text}$y';
+                              setState(() {});
+                            },
+                            child: Center(
+                              child: Text(
+                                '$y',
+                                style: const TextStyle(fontSize: 32),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 64,
+                      height: 64,
+                      child: InkWell(
+                        onTap: () {
+                          controller.text = '${controller.text}0';
+                          setState(() {});
+                        },
+                        child: const Center(
+                          child: Text(
+                            '0',
+                            style: TextStyle(fontSize: 32),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
-                  style: const TextStyle(fontSize: 32),
-                  focusNode: focusNode,
-                  maxLength: 2,
-                  controller: controller,
-                  onFieldSubmitted: (text) {
-                    controller.clear();
-                    notifier.setUserAnswer(int.parse(text));
-                    notifier.nextProblem();
-                    focusNode.requestFocus();
-                  },
                 ),
-              )
-            ],
-          ),
-        ],
+                SizedBox(
+                  width: 64 * 3,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            controller.clear();
+                          },
+                          child: const Text(
+                            '消去',
+                            style: TextStyle(fontSize: 10),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            notifier.setUserAnswer(int.parse(controller.text));
+                            notifier.nextProblem();
+                            controller.clear();
+                          },
+                          child: const Text(
+                            '決定',
+                            style: TextStyle(fontSize: 10),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

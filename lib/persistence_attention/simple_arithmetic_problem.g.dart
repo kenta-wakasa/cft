@@ -12,6 +12,9 @@ _$SimpleArithmeticProblemImpl _$$SimpleArithmeticProblemImplFromJson(
       a: (json['a'] as num).toInt(),
       b: (json['b'] as num).toInt(),
       randomOperator: $enumDecode(_$OperatorEnumMap, json['randomOperator']),
+      answeredAt: json['answeredAt'] == null
+          ? null
+          : DateTime.parse(json['answeredAt'] as String),
       userAnswer: (json['userAnswer'] as num?)?.toInt(),
     );
 
@@ -21,6 +24,7 @@ Map<String, dynamic> _$$SimpleArithmeticProblemImplToJson(
       'a': instance.a,
       'b': instance.b,
       'randomOperator': _$OperatorEnumMap[instance.randomOperator]!,
+      'answeredAt': instance.answeredAt?.toIso8601String(),
       'userAnswer': instance.userAnswer,
     };
 

@@ -3,6 +3,7 @@ import 'package:cft/auth/firebase_auth.dart';
 import 'package:cft/routes/auto_router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gap/gap.dart';
 
 @RoutePage()
 class HomePage extends ConsumerWidget {
@@ -31,13 +32,13 @@ class HomePage extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('uid: $uid'),
+            const Gap(32),
             ElevatedButton(
               onPressed: () {
                 context.router.replace(const PersistenceAttentionRoute());
               },
               child: const Text('持続性注意'),
             ),
-            const Text('home'),
           ],
         ),
       ),

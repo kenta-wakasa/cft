@@ -9,6 +9,8 @@ class PersistenceAttentionState with _$PersistenceAttentionState {
   factory PersistenceAttentionState({
     required bool isPlaying,
     required List<SimpleArithmeticProblem> problems,
+    DateTime? startedAt,
+    required int countDownTime,
   }) = _PersistenceAttentionState;
   const PersistenceAttentionState._();
 

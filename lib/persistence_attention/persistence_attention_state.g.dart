@@ -14,6 +14,10 @@ _$PersistenceAttentionStateImpl _$$PersistenceAttentionStateImplFromJson(
           .map((e) =>
               SimpleArithmeticProblem.fromJson(e as Map<String, dynamic>))
           .toList(),
+      startedAt: json['startedAt'] == null
+          ? null
+          : DateTime.parse(json['startedAt'] as String),
+      countDownTime: (json['countDownTime'] as num).toInt(),
     );
 
 Map<String, dynamic> _$$PersistenceAttentionStateImplToJson(
@@ -21,4 +25,6 @@ Map<String, dynamic> _$$PersistenceAttentionStateImplToJson(
     <String, dynamic>{
       'isPlaying': instance.isPlaying,
       'problems': instance.problems,
+      'startedAt': instance.startedAt?.toIso8601String(),
+      'countDownTime': instance.countDownTime,
     };

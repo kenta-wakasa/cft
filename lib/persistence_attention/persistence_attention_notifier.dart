@@ -10,18 +10,34 @@ part 'persistence_attention_notifier.g.dart';
 class PersistenceAttentionNotifier extends _$PersistenceAttentionNotifier {
   @override
   PersistenceAttentionState build() {
-    state = PersistenceAttentionState(isPlaying: false, problems: []);
+    state = PersistenceAttentionState(
+      isPlaying: false,
+      problems: [],
+      startedAt: null,
+      countDownTime: 0,
+    );
     nextProblem();
     return state;
   }
 
-  void start() {
-    state = state.copyWith(isPlaying: true);
+  Future<void> start() async {
+    state = state.copyWith(countDownTime: 3);
+    while (state.countDownTime != 0) {
+      await Future.delayed(const Duration(seconds: 1));
+      state = state.copyWith(countDownTime: state.countDownTime - 1);
+    }
+    state = state.copyWith(
+      isPlaying: true,
+      startedAt: DateTime.now(),
+    );
   }
 
   void setUserAnswer(int userAnswer) {
     final currentProblem = state.problems.last;
-    final newProblem = currentProblem.copyWith(userAnswer: userAnswer);
+    final newProblem = currentProblem.copyWith(
+      userAnswer: userAnswer,
+      answeredAt: DateTime.now(),
+    );
     state = state.copyWith(problems: [
       for (final problem in state.problems)
         if (problem == currentProblem) newProblem else problem

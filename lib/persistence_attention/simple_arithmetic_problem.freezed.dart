@@ -24,6 +24,7 @@ mixin _$SimpleArithmeticProblem {
   int get a => throw _privateConstructorUsedError;
   int get b => throw _privateConstructorUsedError;
   Operator get randomOperator => throw _privateConstructorUsedError;
+  DateTime? get answeredAt => throw _privateConstructorUsedError;
   int? get userAnswer => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,7 +39,12 @@ abstract class $SimpleArithmeticProblemCopyWith<$Res> {
           $Res Function(SimpleArithmeticProblem) then) =
       _$SimpleArithmeticProblemCopyWithImpl<$Res, SimpleArithmeticProblem>;
   @useResult
-  $Res call({int a, int b, Operator randomOperator, int? userAnswer});
+  $Res call(
+      {int a,
+      int b,
+      Operator randomOperator,
+      DateTime? answeredAt,
+      int? userAnswer});
 }
 
 /// @nodoc
@@ -58,6 +64,7 @@ class _$SimpleArithmeticProblemCopyWithImpl<$Res,
     Object? a = null,
     Object? b = null,
     Object? randomOperator = null,
+    Object? answeredAt = freezed,
     Object? userAnswer = freezed,
   }) {
     return _then(_value.copyWith(
@@ -73,6 +80,10 @@ class _$SimpleArithmeticProblemCopyWithImpl<$Res,
           ? _value.randomOperator
           : randomOperator // ignore: cast_nullable_to_non_nullable
               as Operator,
+      answeredAt: freezed == answeredAt
+          ? _value.answeredAt
+          : answeredAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       userAnswer: freezed == userAnswer
           ? _value.userAnswer
           : userAnswer // ignore: cast_nullable_to_non_nullable
@@ -90,7 +101,12 @@ abstract class _$$SimpleArithmeticProblemImplCopyWith<$Res>
       __$$SimpleArithmeticProblemImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int a, int b, Operator randomOperator, int? userAnswer});
+  $Res call(
+      {int a,
+      int b,
+      Operator randomOperator,
+      DateTime? answeredAt,
+      int? userAnswer});
 }
 
 /// @nodoc
@@ -109,6 +125,7 @@ class __$$SimpleArithmeticProblemImplCopyWithImpl<$Res>
     Object? a = null,
     Object? b = null,
     Object? randomOperator = null,
+    Object? answeredAt = freezed,
     Object? userAnswer = freezed,
   }) {
     return _then(_$SimpleArithmeticProblemImpl(
@@ -124,6 +141,10 @@ class __$$SimpleArithmeticProblemImplCopyWithImpl<$Res>
           ? _value.randomOperator
           : randomOperator // ignore: cast_nullable_to_non_nullable
               as Operator,
+      answeredAt: freezed == answeredAt
+          ? _value.answeredAt
+          : answeredAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       userAnswer: freezed == userAnswer
           ? _value.userAnswer
           : userAnswer // ignore: cast_nullable_to_non_nullable
@@ -139,6 +160,7 @@ class _$SimpleArithmeticProblemImpl extends _SimpleArithmeticProblem {
       {required this.a,
       required this.b,
       required this.randomOperator,
+      this.answeredAt,
       this.userAnswer})
       : super._();
 
@@ -152,11 +174,13 @@ class _$SimpleArithmeticProblemImpl extends _SimpleArithmeticProblem {
   @override
   final Operator randomOperator;
   @override
+  final DateTime? answeredAt;
+  @override
   final int? userAnswer;
 
   @override
   String toString() {
-    return 'SimpleArithmeticProblem(a: $a, b: $b, randomOperator: $randomOperator, userAnswer: $userAnswer)';
+    return 'SimpleArithmeticProblem(a: $a, b: $b, randomOperator: $randomOperator, answeredAt: $answeredAt, userAnswer: $userAnswer)';
   }
 
   @override
@@ -168,6 +192,8 @@ class _$SimpleArithmeticProblemImpl extends _SimpleArithmeticProblem {
             (identical(other.b, b) || other.b == b) &&
             (identical(other.randomOperator, randomOperator) ||
                 other.randomOperator == randomOperator) &&
+            (identical(other.answeredAt, answeredAt) ||
+                other.answeredAt == answeredAt) &&
             (identical(other.userAnswer, userAnswer) ||
                 other.userAnswer == userAnswer));
   }
@@ -175,7 +201,7 @@ class _$SimpleArithmeticProblemImpl extends _SimpleArithmeticProblem {
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, a, b, randomOperator, userAnswer);
+      Object.hash(runtimeType, a, b, randomOperator, answeredAt, userAnswer);
 
   @JsonKey(ignore: true)
   @override
@@ -197,6 +223,7 @@ abstract class _SimpleArithmeticProblem extends SimpleArithmeticProblem {
       {required final int a,
       required final int b,
       required final Operator randomOperator,
+      final DateTime? answeredAt,
       final int? userAnswer}) = _$SimpleArithmeticProblemImpl;
   _SimpleArithmeticProblem._() : super._();
 
@@ -209,6 +236,8 @@ abstract class _SimpleArithmeticProblem extends SimpleArithmeticProblem {
   int get b;
   @override
   Operator get randomOperator;
+  @override
+  DateTime? get answeredAt;
   @override
   int? get userAnswer;
   @override

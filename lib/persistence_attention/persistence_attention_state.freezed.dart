@@ -24,6 +24,8 @@ mixin _$PersistenceAttentionState {
   bool get isPlaying => throw _privateConstructorUsedError;
   List<SimpleArithmeticProblem> get problems =>
       throw _privateConstructorUsedError;
+  DateTime? get startedAt => throw _privateConstructorUsedError;
+  int get countDownTime => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,7 +39,11 @@ abstract class $PersistenceAttentionStateCopyWith<$Res> {
           $Res Function(PersistenceAttentionState) then) =
       _$PersistenceAttentionStateCopyWithImpl<$Res, PersistenceAttentionState>;
   @useResult
-  $Res call({bool isPlaying, List<SimpleArithmeticProblem> problems});
+  $Res call(
+      {bool isPlaying,
+      List<SimpleArithmeticProblem> problems,
+      DateTime? startedAt,
+      int countDownTime});
 }
 
 /// @nodoc
@@ -56,6 +62,8 @@ class _$PersistenceAttentionStateCopyWithImpl<$Res,
   $Res call({
     Object? isPlaying = null,
     Object? problems = null,
+    Object? startedAt = freezed,
+    Object? countDownTime = null,
   }) {
     return _then(_value.copyWith(
       isPlaying: null == isPlaying
@@ -66,6 +74,14 @@ class _$PersistenceAttentionStateCopyWithImpl<$Res,
           ? _value.problems
           : problems // ignore: cast_nullable_to_non_nullable
               as List<SimpleArithmeticProblem>,
+      startedAt: freezed == startedAt
+          ? _value.startedAt
+          : startedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      countDownTime: null == countDownTime
+          ? _value.countDownTime
+          : countDownTime // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -79,7 +95,11 @@ abstract class _$$PersistenceAttentionStateImplCopyWith<$Res>
       __$$PersistenceAttentionStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isPlaying, List<SimpleArithmeticProblem> problems});
+  $Res call(
+      {bool isPlaying,
+      List<SimpleArithmeticProblem> problems,
+      DateTime? startedAt,
+      int countDownTime});
 }
 
 /// @nodoc
@@ -97,6 +117,8 @@ class __$$PersistenceAttentionStateImplCopyWithImpl<$Res>
   $Res call({
     Object? isPlaying = null,
     Object? problems = null,
+    Object? startedAt = freezed,
+    Object? countDownTime = null,
   }) {
     return _then(_$PersistenceAttentionStateImpl(
       isPlaying: null == isPlaying
@@ -107,6 +129,14 @@ class __$$PersistenceAttentionStateImplCopyWithImpl<$Res>
           ? _value._problems
           : problems // ignore: cast_nullable_to_non_nullable
               as List<SimpleArithmeticProblem>,
+      startedAt: freezed == startedAt
+          ? _value.startedAt
+          : startedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      countDownTime: null == countDownTime
+          ? _value.countDownTime
+          : countDownTime // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -116,7 +146,9 @@ class __$$PersistenceAttentionStateImplCopyWithImpl<$Res>
 class _$PersistenceAttentionStateImpl extends _PersistenceAttentionState {
   _$PersistenceAttentionStateImpl(
       {required this.isPlaying,
-      required final List<SimpleArithmeticProblem> problems})
+      required final List<SimpleArithmeticProblem> problems,
+      this.startedAt,
+      required this.countDownTime})
       : _problems = problems,
         super._();
 
@@ -134,8 +166,13 @@ class _$PersistenceAttentionStateImpl extends _PersistenceAttentionState {
   }
 
   @override
+  final DateTime? startedAt;
+  @override
+  final int countDownTime;
+
+  @override
   String toString() {
-    return 'PersistenceAttentionState(isPlaying: $isPlaying, problems: $problems)';
+    return 'PersistenceAttentionState(isPlaying: $isPlaying, problems: $problems, startedAt: $startedAt, countDownTime: $countDownTime)';
   }
 
   @override
@@ -145,13 +182,17 @@ class _$PersistenceAttentionStateImpl extends _PersistenceAttentionState {
             other is _$PersistenceAttentionStateImpl &&
             (identical(other.isPlaying, isPlaying) ||
                 other.isPlaying == isPlaying) &&
-            const DeepCollectionEquality().equals(other._problems, _problems));
+            const DeepCollectionEquality().equals(other._problems, _problems) &&
+            (identical(other.startedAt, startedAt) ||
+                other.startedAt == startedAt) &&
+            (identical(other.countDownTime, countDownTime) ||
+                other.countDownTime == countDownTime));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, isPlaying, const DeepCollectionEquality().hash(_problems));
+  int get hashCode => Object.hash(runtimeType, isPlaying,
+      const DeepCollectionEquality().hash(_problems), startedAt, countDownTime);
 
   @JsonKey(ignore: true)
   @override
@@ -170,9 +211,10 @@ class _$PersistenceAttentionStateImpl extends _PersistenceAttentionState {
 
 abstract class _PersistenceAttentionState extends PersistenceAttentionState {
   factory _PersistenceAttentionState(
-          {required final bool isPlaying,
-          required final List<SimpleArithmeticProblem> problems}) =
-      _$PersistenceAttentionStateImpl;
+      {required final bool isPlaying,
+      required final List<SimpleArithmeticProblem> problems,
+      final DateTime? startedAt,
+      required final int countDownTime}) = _$PersistenceAttentionStateImpl;
   _PersistenceAttentionState._() : super._();
 
   factory _PersistenceAttentionState.fromJson(Map<String, dynamic> json) =
@@ -182,6 +224,10 @@ abstract class _PersistenceAttentionState extends PersistenceAttentionState {
   bool get isPlaying;
   @override
   List<SimpleArithmeticProblem> get problems;
+  @override
+  DateTime? get startedAt;
+  @override
+  int get countDownTime;
   @override
   @JsonKey(ignore: true)
   _$$PersistenceAttentionStateImplCopyWith<_$PersistenceAttentionStateImpl>

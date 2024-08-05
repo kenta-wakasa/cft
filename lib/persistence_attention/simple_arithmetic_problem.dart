@@ -13,6 +13,7 @@ class SimpleArithmeticProblem with _$SimpleArithmeticProblem {
     required int a,
     required int b,
     required Operator randomOperator,
+    DateTime? answeredAt,
     int? userAnswer,
   }) = _SimpleArithmeticProblem;
   const SimpleArithmeticProblem._();

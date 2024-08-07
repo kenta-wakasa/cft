@@ -21,6 +21,7 @@ class PersistenceAttentionNotifier extends _$PersistenceAttentionNotifier {
   }
 
   Future<void> start() async {
+    build();
     state = state.copyWith(countDownTime: 3);
     while (state.countDownTime != 0) {
       await Future.delayed(const Duration(seconds: 1));
@@ -29,7 +30,14 @@ class PersistenceAttentionNotifier extends _$PersistenceAttentionNotifier {
     state = state.copyWith(
       isPlaying: true,
       startedAt: DateTime.now(),
+      problems: [],
+      isTimeUp: false,
     );
+    nextProblem();
+  }
+
+  Future<void> timeUp() async {
+    state = state.copyWith(isTimeUp: true);
   }
 
   void setUserAnswer(int userAnswer) {

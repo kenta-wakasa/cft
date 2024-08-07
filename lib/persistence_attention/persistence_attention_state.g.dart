@@ -9,7 +9,7 @@ part of 'persistence_attention_state.dart';
 _$PersistenceAttentionStateImpl _$$PersistenceAttentionStateImplFromJson(
         Map<String, dynamic> json) =>
     _$PersistenceAttentionStateImpl(
-      isPlaying: json['isPlaying'] as bool,
+      isPlaying: json['isPlaying'] as bool? ?? false,
       problems: (json['problems'] as List<dynamic>)
           .map((e) =>
               SimpleArithmeticProblem.fromJson(e as Map<String, dynamic>))
@@ -18,6 +18,7 @@ _$PersistenceAttentionStateImpl _$$PersistenceAttentionStateImplFromJson(
           ? null
           : DateTime.parse(json['startedAt'] as String),
       countDownTime: (json['countDownTime'] as num).toInt(),
+      isTimeUp: json['isTimeUp'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$PersistenceAttentionStateImplToJson(
@@ -27,4 +28,5 @@ Map<String, dynamic> _$$PersistenceAttentionStateImplToJson(
       'problems': instance.problems,
       'startedAt': instance.startedAt?.toIso8601String(),
       'countDownTime': instance.countDownTime,
+      'isTimeUp': instance.isTimeUp,
     };

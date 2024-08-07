@@ -7,10 +7,11 @@ part 'persistence_attention_state.g.dart';
 @freezed
 class PersistenceAttentionState with _$PersistenceAttentionState {
   factory PersistenceAttentionState({
-    required bool isPlaying,
+    @Default(false) bool isPlaying,
     required List<SimpleArithmeticProblem> problems,
     DateTime? startedAt,
     required int countDownTime,
+    @Default(false) bool isTimeUp,
   }) = _PersistenceAttentionState;
   const PersistenceAttentionState._();
 

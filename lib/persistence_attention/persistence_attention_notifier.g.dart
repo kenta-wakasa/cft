@@ -7,7 +7,7 @@ part of 'persistence_attention_notifier.dart';
 // **************************************************************************
 
 String _$persistenceAttentionNotifierHash() =>
-    r'58b8a0cdcd7c12dc23c8281bbad33156b0d3fef8';
+    r'b96ddbeba88d8e95d0cce4c730c021000769faf7';
 
 /// See also [PersistenceAttentionNotifier].
 @ProviderFor(PersistenceAttentionNotifier)

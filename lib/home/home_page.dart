@@ -39,6 +39,16 @@ class HomePage extends ConsumerWidget {
               },
               child: const Text('持続性注意'),
             ),
+
+            const Gap(16),
+
+            /// 選択制注意
+            ElevatedButton(
+              onPressed: () {
+                context.router.replace(const SelectAttentionRoute());
+              },
+              child: const Text('選択性注意'),
+            ),
           ],
         ),
       ),

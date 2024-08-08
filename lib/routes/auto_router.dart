@@ -19,6 +19,12 @@ class AppRouter extends $AppRouter {
         AutoRoute(
           page: PersistenceAttentionRoute.page,
           path: '/persistence_attention',
+          guards: guards,
+        ),
+        AutoRoute(
+          page: SelectAttentionRoute.page,
+          path: '/select_attention',
+          guards: guards,
         ),
       ];
 

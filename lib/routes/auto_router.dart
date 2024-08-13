@@ -26,6 +26,11 @@ class AppRouter extends $AppRouter {
           path: '/select_attention',
           guards: guards,
         ),
+        AutoRoute(
+          page: ImmediateMemoryRoute.page,
+          path: '/immediate_memory',
+          guards: guards,
+        ),
       ];
 
   List<AutoRouteGuard> get guards => [

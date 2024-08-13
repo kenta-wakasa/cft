@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:cft/common/input_num_widget.dart';
 import 'package:cft/persistence_attention/persistence_attention_notifier.dart';
 import 'package:cft/routes/auto_router.gr.dart';
 import 'package:flutter/material.dart';
@@ -277,6 +278,7 @@ class _PlayingWidgetState extends ConsumerState<PlayingWidget> {
                   width: 64,
                   height: 80,
                   child: TextFormField(
+                    textAlign: TextAlign.right,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       counterText: '',
@@ -294,84 +296,13 @@ class _PlayingWidgetState extends ConsumerState<PlayingWidget> {
                 )
               ],
             ),
-            Column(
-              children: [
-                for (final x in [0, 1, 2])
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      for (final y in [1 + (3 * x), 2 + (3 * x), 3 + (3 * x)])
-                        SizedBox(
-                          width: 64,
-                          height: 64,
-                          child: InkWell(
-                            onTap: () {
-                              controller.text = '${controller.text}$y';
-                              setState(() {});
-                            },
-                            child: Center(
-                              child: Text(
-                                '$y',
-                                style: const TextStyle(fontSize: 32),
-                              ),
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 64,
-                      height: 64,
-                      child: InkWell(
-                        onTap: () {
-                          controller.text = '${controller.text}0';
-                          setState(() {});
-                        },
-                        child: const Center(
-                          child: Text(
-                            '0',
-                            style: TextStyle(fontSize: 32),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  width: 64 * 3,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            controller.clear();
-                          },
-                          child: const Text(
-                            '消去',
-                            style: TextStyle(fontSize: 10),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            notifier.setUserAnswer(int.parse(controller.text));
-                            notifier.nextProblem();
-                            controller.clear();
-                          },
-                          child: const Text(
-                            '決定',
-                            style: TextStyle(fontSize: 10),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
+            InputNumWidget(
+              controller: controller,
+              onSubmitted: () {
+                notifier.setUserAnswer(int.parse(controller.text));
+                notifier.nextProblem();
+                controller.clear();
+              },
             ),
           ],
         ),

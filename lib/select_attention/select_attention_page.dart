@@ -50,124 +50,147 @@ class _SelectAttentionPageState extends ConsumerState<SelectAttentionPage> {
           icon: const Icon(Icons.home),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                '次の文章の中から、次の単語をすべて選んでください。',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  '文章の中から、次の単語をすべて選んでください。',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              const Gap(16),
-              Wrap(
-                spacing: 16,
-                children: ['[', ...selectAttentionProblem.targetWords, ']']
-                    .map(
-                      (text) => Text(
-                        text,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    )
-                    .toList(),
-              ),
-              const Gap(32),
-              Wrap(
-                runSpacing: 16,
-                children: [
-                  for (final (index, text)
-                      in selectAttentionProblem.textData.indexed)
-                    InkWell(
-                      onTap: () {
-                        if (selectAttentionProblem.userAnswerIndexes
-                            .contains(index)) {
-                          selectAttentionProblem =
-                              selectAttentionProblem.copyWith(
-                            userAnswerIndexes: selectAttentionProblem
-                                .userAnswerIndexes
-                                .difference({index}),
-                          );
-                        } else {
-                          selectAttentionProblem =
-                              selectAttentionProblem.copyWith(
-                            userAnswerIndexes: selectAttentionProblem
-                                .userAnswerIndexes
-                                .union({index}),
-                          );
-                        }
+                const Gap(8),
+                Wrap(
+                  spacing: 16,
+                  children: ['[', ...selectAttentionProblem.targetWords, ']']
+                      .map(
+                        (text) => Text(
+                          text,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: SizedBox(
+                        width: 320,
+                        child: Wrap(
+                          runSpacing: 8,
+                          children: [
+                            for (final (index, text)
+                                in selectAttentionProblem.textData.indexed)
+                              InkWell(
+                                onTap: () {
+                                  if (selectAttentionProblem.userAnswerIndexes
+                                      .contains(index)) {
+                                    selectAttentionProblem =
+                                        selectAttentionProblem.copyWith(
+                                      userAnswerIndexes: selectAttentionProblem
+                                          .userAnswerIndexes
+                                          .difference({index}),
+                                    );
+                                  } else {
+                                    selectAttentionProblem =
+                                        selectAttentionProblem.copyWith(
+                                      userAnswerIndexes: selectAttentionProblem
+                                          .userAnswerIndexes
+                                          .union({index}),
+                                    );
+                                  }
 
-                        setState(() {});
-                      },
-                      child: Text(
-                        text,
-                        style: TextStyle(
-                          color: selectAttentionProblem.userAnswerIndexes
-                                  .contains(index)
-                              ? Colors.red
-                              : Colors.black,
-                          fontWeight: selectAttentionProblem.userAnswerIndexes
-                                  .contains(index)
-                              ? FontWeight.bold
-                              : FontWeight.normal,
+                                  setState(() {});
+                                },
+                                child: Text(
+                                  text,
+                                  style: TextStyle(
+                                    color: selectAttentionProblem
+                                            .userAnswerIndexes
+                                            .contains(index)
+                                        ? Colors.red
+                                        : Colors.black,
+                                    fontWeight: selectAttentionProblem
+                                            .userAnswerIndexes
+                                            .contains(index)
+                                        ? FontWeight.bold
+                                        : FontWeight.normal,
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                       ),
                     ),
-                ],
-              ),
-              const Gap(32),
-              Align(
-                alignment: Alignment.centerRight,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    await showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text('結果'),
-                            content: SizedBox(
-                              height: 120,
-                              child: Center(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                        '正解数: ${selectAttentionProblem.correctAnswerCount}個'),
-                                    Text(
-                                        '誤答数: ${selectAttentionProblem.incorrectAnswerCount}個'),
-                                    Text(
-                                        '正解率: ${selectAttentionProblem.correctRate.toPercent()}'),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('閉じる'),
-                              ),
-                            ],
-                          );
-                        });
-                    // TODO(kenta-wakasa): ユーザーの回答を送信する処理を追加
-
-                    selectAttentionProblem = selectAttentionProblem.copyWith(
-                      userAnswerIndexes: {},
-                    );
-                    setState(() {});
-                  },
-                  child: const Text('決定'),
+                    const Gap(32),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Padding(
+              padding: const EdgeInsets.all(32),
+              child: ElevatedButton(
+                onPressed: () async {
+                  await showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text('結果'),
+                          content: SizedBox(
+                            height: 120,
+                            child: Center(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                      '正解数: ${selectAttentionProblem.correctAnswerCount}個'),
+                                  Text(
+                                      '誤答数: ${selectAttentionProblem.incorrectAnswerCount}個'),
+                                  Text(
+                                      '正解率: ${selectAttentionProblem.correctRate.toPercent()}'),
+                                ],
+                              ),
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('閉じる'),
+                            ),
+                          ],
+                        );
+                      });
+                  // TODO(kenta-wakasa): ユーザーの回答を送信する処理を追加
+
+                  selectAttentionProblem = selectAttentionProblem.copyWith(
+                    userAnswerIndexes: {},
+                  );
+                  setState(() {});
+                },
+                child: const Text('決定'),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

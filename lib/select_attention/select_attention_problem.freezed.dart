@@ -21,6 +21,9 @@ SelectAttentionProblem _$SelectAttentionProblemFromJson(
 
 /// @nodoc
 mixin _$SelectAttentionProblem {
+  String get id => throw _privateConstructorUsedError;
+  DateTime? get startedAt => throw _privateConstructorUsedError;
+  DateTime? get endAt => throw _privateConstructorUsedError;
   List<String> get targetWords => throw _privateConstructorUsedError;
   List<String> get textData => throw _privateConstructorUsedError;
   Set<int> get userAnswerIndexes => throw _privateConstructorUsedError;
@@ -38,7 +41,10 @@ abstract class $SelectAttentionProblemCopyWith<$Res> {
       _$SelectAttentionProblemCopyWithImpl<$Res, SelectAttentionProblem>;
   @useResult
   $Res call(
-      {List<String> targetWords,
+      {String id,
+      DateTime? startedAt,
+      DateTime? endAt,
+      List<String> targetWords,
       List<String> textData,
       Set<int> userAnswerIndexes});
 }
@@ -57,11 +63,26 @@ class _$SelectAttentionProblemCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
+    Object? startedAt = freezed,
+    Object? endAt = freezed,
     Object? targetWords = null,
     Object? textData = null,
     Object? userAnswerIndexes = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      startedAt: freezed == startedAt
+          ? _value.startedAt
+          : startedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      endAt: freezed == endAt
+          ? _value.endAt
+          : endAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       targetWords: null == targetWords
           ? _value.targetWords
           : targetWords // ignore: cast_nullable_to_non_nullable
@@ -88,7 +109,10 @@ abstract class _$$SelectAttentionProblemImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<String> targetWords,
+      {String id,
+      DateTime? startedAt,
+      DateTime? endAt,
+      List<String> targetWords,
       List<String> textData,
       Set<int> userAnswerIndexes});
 }
@@ -106,11 +130,26 @@ class __$$SelectAttentionProblemImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
+    Object? startedAt = freezed,
+    Object? endAt = freezed,
     Object? targetWords = null,
     Object? textData = null,
     Object? userAnswerIndexes = null,
   }) {
     return _then(_$SelectAttentionProblemImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      startedAt: freezed == startedAt
+          ? _value.startedAt
+          : startedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      endAt: freezed == endAt
+          ? _value.endAt
+          : endAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       targetWords: null == targetWords
           ? _value._targetWords
           : targetWords // ignore: cast_nullable_to_non_nullable
@@ -131,7 +170,10 @@ class __$$SelectAttentionProblemImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SelectAttentionProblemImpl extends _SelectAttentionProblem {
   _$SelectAttentionProblemImpl(
-      {required final List<String> targetWords,
+      {required this.id,
+      this.startedAt,
+      this.endAt,
+      required final List<String> targetWords,
       required final List<String> textData,
       final Set<int> userAnswerIndexes = const {}})
       : _targetWords = targetWords,
@@ -142,6 +184,12 @@ class _$SelectAttentionProblemImpl extends _SelectAttentionProblem {
   factory _$SelectAttentionProblemImpl.fromJson(Map<String, dynamic> json) =>
       _$$SelectAttentionProblemImplFromJson(json);
 
+  @override
+  final String id;
+  @override
+  final DateTime? startedAt;
+  @override
+  final DateTime? endAt;
   final List<String> _targetWords;
   @override
   List<String> get targetWords {
@@ -170,7 +218,7 @@ class _$SelectAttentionProblemImpl extends _SelectAttentionProblem {
 
   @override
   String toString() {
-    return 'SelectAttentionProblem(targetWords: $targetWords, textData: $textData, userAnswerIndexes: $userAnswerIndexes)';
+    return 'SelectAttentionProblem(id: $id, startedAt: $startedAt, endAt: $endAt, targetWords: $targetWords, textData: $textData, userAnswerIndexes: $userAnswerIndexes)';
   }
 
   @override
@@ -178,6 +226,10 @@ class _$SelectAttentionProblemImpl extends _SelectAttentionProblem {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SelectAttentionProblemImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.startedAt, startedAt) ||
+                other.startedAt == startedAt) &&
+            (identical(other.endAt, endAt) || other.endAt == endAt) &&
             const DeepCollectionEquality()
                 .equals(other._targetWords, _targetWords) &&
             const DeepCollectionEquality().equals(other._textData, _textData) &&
@@ -189,6 +241,9 @@ class _$SelectAttentionProblemImpl extends _SelectAttentionProblem {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      id,
+      startedAt,
+      endAt,
       const DeepCollectionEquality().hash(_targetWords),
       const DeepCollectionEquality().hash(_textData),
       const DeepCollectionEquality().hash(_userAnswerIndexes));
@@ -210,7 +265,10 @@ class _$SelectAttentionProblemImpl extends _SelectAttentionProblem {
 
 abstract class _SelectAttentionProblem extends SelectAttentionProblem {
   factory _SelectAttentionProblem(
-      {required final List<String> targetWords,
+      {required final String id,
+      final DateTime? startedAt,
+      final DateTime? endAt,
+      required final List<String> targetWords,
       required final List<String> textData,
       final Set<int> userAnswerIndexes}) = _$SelectAttentionProblemImpl;
   _SelectAttentionProblem._() : super._();
@@ -218,6 +276,12 @@ abstract class _SelectAttentionProblem extends SelectAttentionProblem {
   factory _SelectAttentionProblem.fromJson(Map<String, dynamic> json) =
       _$SelectAttentionProblemImpl.fromJson;
 
+  @override
+  String get id;
+  @override
+  DateTime? get startedAt;
+  @override
+  DateTime? get endAt;
   @override
   List<String> get targetWords;
   @override

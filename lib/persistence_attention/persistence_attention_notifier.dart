@@ -51,7 +51,7 @@ class PersistenceAttentionNotifier extends _$PersistenceAttentionNotifier {
 
     final log = PersistenceAttentionLog(
       id: uuid.generate(),
-      startedAt: DateTime.now(),
+      startedAt: state.startedAt!,
       userId: uid,
       problems: state.problems,
     );

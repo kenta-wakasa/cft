@@ -6,6 +6,9 @@ part 'select_attention_problem.g.dart';
 @freezed
 class SelectAttentionProblem with _$SelectAttentionProblem {
   factory SelectAttentionProblem({
+    required String id,
+    DateTime? startedAt,
+    DateTime? endAt,
     required List<String> targetWords,
     required List<String> textData,
     @Default({}) Set<int> userAnswerIndexes,

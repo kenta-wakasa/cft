@@ -5,6 +5,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cft/persistence_attention/persistence_attention_log.dart';
 import 'package:cft/persistence_attention/persistence_attention_logs_stream.dart';
 import 'package:cft/routes/auto_router.gr.dart';
+import 'package:cft/select_attention/select_attention_log.dart';
+import 'package:cft/select_attention/select_attention_log_provider.dart';
 import 'package:cft/select_attention/select_attention_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -65,11 +67,39 @@ class _TestLogPageState extends ConsumerState<TestLogPage> {
               child: Column(
                 children: [
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          _selectedType == TestLogType.persistenceAttention
+                              ? Colors.blue
+                              : null,
+                      foregroundColor:
+                          _selectedType == TestLogType.persistenceAttention
+                              ? Colors.white
+                              : null,
+                    ),
                     onPressed: () {
                       _selectedType = TestLogType.persistenceAttention;
                       setState(() {});
                     },
                     child: const Text('持続性注意'),
+                  ),
+                  const Gap(16),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          _selectedType == TestLogType.selectAttention
+                              ? Colors.blue
+                              : null,
+                      foregroundColor:
+                          _selectedType == TestLogType.selectAttention
+                              ? Colors.white
+                              : null,
+                    ),
+                    onPressed: () {
+                      _selectedType = TestLogType.selectAttention;
+                      setState(() {});
+                    },
+                    child: const Text('選択性注意'),
                   ),
                 ],
               ),
@@ -147,7 +177,7 @@ class _PersistenceAttentionLogPageState
                   downloadResult(log);
                 }
               },
-              child: const Text('選択したデータをcsvでダウンロード'),
+              child: const Text('選択データをダウンロード'),
             ),
             const Spacer(),
             ElevatedButton(
@@ -179,7 +209,7 @@ class _PersistenceAttentionLogPageState
                         .format(log.startedAt)),
                     subtitle: Text(
                       /// 正解数 誤答数 正解率 を表示
-                      '${log.correctCount}問正解 ${log.incorrectCount}問誤答 正解率${log.correctRate.toPercent()}',
+                      'userId: ${log.userId}:${log.correctCount}問正解 ${log.incorrectCount}問誤答 正解率${log.correctRate.toPercent()}',
                     ),
                   ),
               ],
@@ -191,12 +221,123 @@ class _PersistenceAttentionLogPageState
   }
 }
 
-class SelectAttentionLogPage extends ConsumerWidget {
+class SelectAttentionLogPage extends ConsumerStatefulWidget {
   const SelectAttentionLogPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Container();
+  ConsumerState<SelectAttentionLogPage> createState() =>
+      _SelectAttentionLogPageState();
+}
+
+class _SelectAttentionLogPageState
+    extends ConsumerState<SelectAttentionLogPage> {
+  var selectedLogs = <SelectAttentionLog>[];
+
+  Future<void> downloadResult(SelectAttentionLog log) async {
+    final bodys = log.selectAttentionProblems.map((problem) {
+      return [
+        log.userId,
+        log.id,
+        log.selectAttentionProblems.first.startedAt!.toIso8601String(),
+        problem.id,
+        problem.startedAt!.toIso8601String(),
+        problem.endAt!.toIso8601String(),
+        problem.correctCount,
+        problem.correctAnswerCount,
+        problem.incorrectAnswerCount,
+        problem.correctRate,
+        problem.textData.join('/'),
+        problem.targetWords.join('/'),
+        problem.correctIndexes.join('/'),
+        problem.userAnswerIndexes.join('/'),
+      ].join(',');
+    });
+
+    final header = [
+      'ユーザーID',
+      'ログID',
+      'ゲーム開始時間',
+      '問題ID',
+      '問題開始時間',
+      '問題終了時間',
+      'ターゲット数',
+      '正解数',
+      '誤答数',
+      '正解率',
+      'テキスト',
+      'ターゲット',
+      '正解インデックス',
+      'ユーザー解答インデックス'
+    ].join(',');
+
+    final csvString = [header, ...bodys].join('\n');
+
+    /// 参考：https://qiita.com/ling350181/items/636e0d8d15559070ec05
+    List<int> excelCsvBytes = [0xEF, 0xBB, 0xBF, ...utf8.encode(csvString)];
+    String base64ExcelCsvBytes = base64Encode(excelCsvBytes);
+    AnchorElement(
+        href: 'data:text/plain;charset=utf-8;base64,$base64ExcelCsvBytes')
+      ..setAttribute(
+        'download',
+        '選択性注意-${log.userId}-${log.selectAttentionProblems.first.startedAt!.toIso8601String()}.csv',
+      )
+      ..click();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final logs = ref.watch(selectAttentionLogsProvider).valueOrNull ?? [];
+    return Column(
+      children: [
+        Row(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                for (final log in selectedLogs) {
+                  downloadResult(log);
+                }
+              },
+              child: const Text('選択データをダウンロード'),
+            ),
+            const Spacer(),
+            ElevatedButton(
+              onPressed: () {
+                selectedLogs = logs;
+                setState(() {});
+              },
+              child: const Text('すべて選択'),
+            ),
+          ],
+        ),
+        const Gap(16),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                for (final log in logs)
+                  CheckboxListTile(
+                    value: selectedLogs.contains(log),
+                    onChanged: (value) {
+                      if (value ?? false) {
+                        selectedLogs.add(log);
+                      } else {
+                        selectedLogs.remove(log);
+                      }
+                      setState(() {});
+                    },
+                    title: Text(DateFormat('yyyy年 MM月 dd日 HH時mm分')
+                        .format(log.selectAttentionProblems.first.startedAt!)),
+                    subtitle: Text(
+                      /// 正解数 誤答数 正解率 を表示
+                      'userId: ${log.userId}',
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 

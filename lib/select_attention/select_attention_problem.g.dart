@@ -9,6 +9,13 @@ part of 'select_attention_problem.dart';
 _$SelectAttentionProblemImpl _$$SelectAttentionProblemImplFromJson(
         Map<String, dynamic> json) =>
     _$SelectAttentionProblemImpl(
+      id: json['id'] as String,
+      startedAt: json['startedAt'] == null
+          ? null
+          : DateTime.parse(json['startedAt'] as String),
+      endAt: json['endAt'] == null
+          ? null
+          : DateTime.parse(json['endAt'] as String),
       targetWords: (json['targetWords'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
@@ -23,6 +30,9 @@ _$SelectAttentionProblemImpl _$$SelectAttentionProblemImplFromJson(
 Map<String, dynamic> _$$SelectAttentionProblemImplToJson(
         _$SelectAttentionProblemImpl instance) =>
     <String, dynamic>{
+      'id': instance.id,
+      'startedAt': instance.startedAt?.toIso8601String(),
+      'endAt': instance.endAt?.toIso8601String(),
       'targetWords': instance.targetWords,
       'textData': instance.textData,
       'userAnswerIndexes': instance.userAnswerIndexes.toList(),

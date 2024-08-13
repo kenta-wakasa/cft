@@ -23,6 +23,8 @@ ImmediateMemoryProblem _$ImmediateMemoryProblemFromJson(
 mixin _$ImmediateMemoryProblem {
   List<String> get randomNumbers => throw _privateConstructorUsedError;
   List<String> get userAnswerNumbers => throw _privateConstructorUsedError;
+  DateTime? get startedAt => throw _privateConstructorUsedError;
+  DateTime? get endAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +38,11 @@ abstract class $ImmediateMemoryProblemCopyWith<$Res> {
           $Res Function(ImmediateMemoryProblem) then) =
       _$ImmediateMemoryProblemCopyWithImpl<$Res, ImmediateMemoryProblem>;
   @useResult
-  $Res call({List<String> randomNumbers, List<String> userAnswerNumbers});
+  $Res call(
+      {List<String> randomNumbers,
+      List<String> userAnswerNumbers,
+      DateTime? startedAt,
+      DateTime? endAt});
 }
 
 /// @nodoc
@@ -55,6 +61,8 @@ class _$ImmediateMemoryProblemCopyWithImpl<$Res,
   $Res call({
     Object? randomNumbers = null,
     Object? userAnswerNumbers = null,
+    Object? startedAt = freezed,
+    Object? endAt = freezed,
   }) {
     return _then(_value.copyWith(
       randomNumbers: null == randomNumbers
@@ -65,6 +73,14 @@ class _$ImmediateMemoryProblemCopyWithImpl<$Res,
           ? _value.userAnswerNumbers
           : userAnswerNumbers // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      startedAt: freezed == startedAt
+          ? _value.startedAt
+          : startedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      endAt: freezed == endAt
+          ? _value.endAt
+          : endAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -78,7 +94,11 @@ abstract class _$$ImmediateMemoryProblemImplCopyWith<$Res>
       __$$ImmediateMemoryProblemImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<String> randomNumbers, List<String> userAnswerNumbers});
+  $Res call(
+      {List<String> randomNumbers,
+      List<String> userAnswerNumbers,
+      DateTime? startedAt,
+      DateTime? endAt});
 }
 
 /// @nodoc
@@ -96,6 +116,8 @@ class __$$ImmediateMemoryProblemImplCopyWithImpl<$Res>
   $Res call({
     Object? randomNumbers = null,
     Object? userAnswerNumbers = null,
+    Object? startedAt = freezed,
+    Object? endAt = freezed,
   }) {
     return _then(_$ImmediateMemoryProblemImpl(
       randomNumbers: null == randomNumbers
@@ -106,6 +128,14 @@ class __$$ImmediateMemoryProblemImplCopyWithImpl<$Res>
           ? _value._userAnswerNumbers
           : userAnswerNumbers // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      startedAt: freezed == startedAt
+          ? _value.startedAt
+          : startedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      endAt: freezed == endAt
+          ? _value.endAt
+          : endAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -115,7 +145,9 @@ class __$$ImmediateMemoryProblemImplCopyWithImpl<$Res>
 class _$ImmediateMemoryProblemImpl extends _ImmediateMemoryProblem {
   _$ImmediateMemoryProblemImpl(
       {required final List<String> randomNumbers,
-      final List<String> userAnswerNumbers = const []})
+      final List<String> userAnswerNumbers = const [],
+      this.startedAt,
+      this.endAt})
       : _randomNumbers = randomNumbers,
         _userAnswerNumbers = userAnswerNumbers,
         super._();
@@ -142,8 +174,13 @@ class _$ImmediateMemoryProblemImpl extends _ImmediateMemoryProblem {
   }
 
   @override
+  final DateTime? startedAt;
+  @override
+  final DateTime? endAt;
+
+  @override
   String toString() {
-    return 'ImmediateMemoryProblem(randomNumbers: $randomNumbers, userAnswerNumbers: $userAnswerNumbers)';
+    return 'ImmediateMemoryProblem(randomNumbers: $randomNumbers, userAnswerNumbers: $userAnswerNumbers, startedAt: $startedAt, endAt: $endAt)';
   }
 
   @override
@@ -154,7 +191,10 @@ class _$ImmediateMemoryProblemImpl extends _ImmediateMemoryProblem {
             const DeepCollectionEquality()
                 .equals(other._randomNumbers, _randomNumbers) &&
             const DeepCollectionEquality()
-                .equals(other._userAnswerNumbers, _userAnswerNumbers));
+                .equals(other._userAnswerNumbers, _userAnswerNumbers) &&
+            (identical(other.startedAt, startedAt) ||
+                other.startedAt == startedAt) &&
+            (identical(other.endAt, endAt) || other.endAt == endAt));
   }
 
   @JsonKey(ignore: true)
@@ -162,7 +202,9 @@ class _$ImmediateMemoryProblemImpl extends _ImmediateMemoryProblem {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_randomNumbers),
-      const DeepCollectionEquality().hash(_userAnswerNumbers));
+      const DeepCollectionEquality().hash(_userAnswerNumbers),
+      startedAt,
+      endAt);
 
   @JsonKey(ignore: true)
   @override
@@ -182,7 +224,9 @@ class _$ImmediateMemoryProblemImpl extends _ImmediateMemoryProblem {
 abstract class _ImmediateMemoryProblem extends ImmediateMemoryProblem {
   factory _ImmediateMemoryProblem(
       {required final List<String> randomNumbers,
-      final List<String> userAnswerNumbers}) = _$ImmediateMemoryProblemImpl;
+      final List<String> userAnswerNumbers,
+      final DateTime? startedAt,
+      final DateTime? endAt}) = _$ImmediateMemoryProblemImpl;
   _ImmediateMemoryProblem._() : super._();
 
   factory _ImmediateMemoryProblem.fromJson(Map<String, dynamic> json) =
@@ -192,6 +236,10 @@ abstract class _ImmediateMemoryProblem extends ImmediateMemoryProblem {
   List<String> get randomNumbers;
   @override
   List<String> get userAnswerNumbers;
+  @override
+  DateTime? get startedAt;
+  @override
+  DateTime? get endAt;
   @override
   @JsonKey(ignore: true)
   _$$ImmediateMemoryProblemImplCopyWith<_$ImmediateMemoryProblemImpl>

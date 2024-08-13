@@ -2,11 +2,15 @@ import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:cft/common/input_num_widget.dart';
+import 'package:cft/immediate_memory/immediate_memory_log.dart';
+import 'package:cft/immediate_memory/immediate_memory_log_provider.dart';
 import 'package:cft/immediate_memory/immediate_memory_problem.dart';
 import 'package:cft/routes/auto_router.gr.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:uuid/v6.dart';
 
 @RoutePage()
 class ImmediateMemoryPage extends ConsumerStatefulWidget {
@@ -20,7 +24,7 @@ class ImmediateMemoryPage extends ConsumerStatefulWidget {
 class _ImmediateMemoryPageState extends ConsumerState<ImmediateMemoryPage> {
   final controller = TextEditingController();
 
-  var immediateMemoryProblem = ImmediateMemoryProblem.generate(3);
+  var immediateMemoryProblem = ImmediateMemoryProblem.generate();
 
   @override
   void dispose() {
@@ -82,6 +86,10 @@ class _ImmediateMemoryPageState extends ConsumerState<ImmediateMemoryPage> {
                       onPressed: () {
                         setState(() {
                           isPlaying = true;
+                          immediateMemoryProblem =
+                              immediateMemoryProblem.copyWith(
+                            startedAt: DateTime.now(),
+                          );
                         });
                       },
                       child: const Text('スタート'),
@@ -151,9 +159,27 @@ class _ImmediateMemoryPageState extends ConsumerState<ImmediateMemoryPage> {
                               ],
                             );
                             controller.clear();
+
+                            /// 全問終了
                             if (immediateMemoryProblem
                                     .userAnswerNumbers.length ==
                                 immediateMemoryProblem.randomNumbers.length) {
+                              immediateMemoryProblem =
+                                  immediateMemoryProblem.copyWith(
+                                endAt: DateTime.now(),
+                              );
+
+                              final uid =
+                                  FirebaseAuth.instance.currentUser!.uid;
+
+                              await ref.read(immediateMemoryLogReference).add(
+                                    ImmediateMemoryLog(
+                                      id: const UuidV6().generate(),
+                                      userId: uid,
+                                      immediateMemoryProblem:
+                                          immediateMemoryProblem,
+                                    ),
+                                  );
                               await showDialog<void>(
                                 context: context,
                                 builder: (context) {
@@ -231,7 +257,7 @@ class _ImmediateMemoryPageState extends ConsumerState<ImmediateMemoryPage> {
                                 },
                               );
                               immediateMemoryProblem =
-                                  ImmediateMemoryProblem.generate(3);
+                                  ImmediateMemoryProblem.generate();
                               isPlaying = false;
                             }
                             isDisplayMode = true;

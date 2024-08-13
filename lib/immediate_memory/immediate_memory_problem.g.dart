@@ -16,6 +16,12 @@ _$ImmediateMemoryProblemImpl _$$ImmediateMemoryProblemImplFromJson(
               ?.map((e) => e as String)
               .toList() ??
           const [],
+      startedAt: json['startedAt'] == null
+          ? null
+          : DateTime.parse(json['startedAt'] as String),
+      endAt: json['endAt'] == null
+          ? null
+          : DateTime.parse(json['endAt'] as String),
     );
 
 Map<String, dynamic> _$$ImmediateMemoryProblemImplToJson(
@@ -23,4 +29,6 @@ Map<String, dynamic> _$$ImmediateMemoryProblemImplToJson(
     <String, dynamic>{
       'randomNumbers': instance.randomNumbers,
       'userAnswerNumbers': instance.userAnswerNumbers,
+      'startedAt': instance.startedAt?.toIso8601String(),
+      'endAt': instance.endAt?.toIso8601String(),
     };

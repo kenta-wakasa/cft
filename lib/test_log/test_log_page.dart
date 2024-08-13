@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:html';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:cft/immediate_memory/immediate_memory_log.dart';
+import 'package:cft/immediate_memory/immediate_memory_log_provider.dart';
 import 'package:cft/persistence_attention/persistence_attention_log.dart';
 import 'package:cft/persistence_attention/persistence_attention_logs_stream.dart';
 import 'package:cft/routes/auto_router.gr.dart';
@@ -100,6 +102,24 @@ class _TestLogPageState extends ConsumerState<TestLogPage> {
                       setState(() {});
                     },
                     child: const Text('選択性注意'),
+                  ),
+                  const Gap(16),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          _selectedType == TestLogType.immediateMemory
+                              ? Colors.blue
+                              : null,
+                      foregroundColor:
+                          _selectedType == TestLogType.immediateMemory
+                              ? Colors.white
+                              : null,
+                    ),
+                    onPressed: () {
+                      _selectedType = TestLogType.immediateMemory;
+                      setState(() {});
+                    },
+                    child: const Text('即時記憶'),
                   ),
                 ],
               ),
@@ -341,12 +361,117 @@ class _SelectAttentionLogPageState
   }
 }
 
-class ImmediateMemoryLogPage extends ConsumerWidget {
+class ImmediateMemoryLogPage extends ConsumerStatefulWidget {
   const ImmediateMemoryLogPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Container();
+  ConsumerState<ImmediateMemoryLogPage> createState() =>
+      _ImmediateMemoryLogPageState();
+}
+
+class _ImmediateMemoryLogPageState
+    extends ConsumerState<ImmediateMemoryLogPage> {
+  var selectedLogs = <ImmediateMemoryLog>[];
+
+  Future<void> downloadResult(ImmediateMemoryLog log) async {
+    final bodys = [
+      for (final (index, number)
+          in log.immediateMemoryProblem.randomNumbers.indexed)
+        [
+          (log.userId),
+          (log.id),
+          (log.immediateMemoryProblem.startedAt!.toIso8601String()),
+          (log.immediateMemoryProblem.correctAnswerCount),
+          (log.immediateMemoryProblem.incorrectAnswerCount),
+          (log.immediateMemoryProblem.correctRate),
+          number == log.immediateMemoryProblem.userAnswerNumbers[index]
+              ? true
+              : false,
+          number,
+          log.immediateMemoryProblem.userAnswerNumbers[index],
+        ].join(',')
+    ];
+
+    final header = [
+      'ユーザーID',
+      'ログID',
+      'ゲーム開始時間',
+      '正解数',
+      '誤答数',
+      '正解率',
+      '正解かどうか',
+      '問題',
+      'ユーザーの回答',
+    ].join(',');
+
+    final csvString = [header, ...bodys].join('\n');
+
+    /// 参考：https://qiita.com/ling350181/items/636e0d8d15559070ec05
+    List<int> excelCsvBytes = [0xEF, 0xBB, 0xBF, ...utf8.encode(csvString)];
+    String base64ExcelCsvBytes = base64Encode(excelCsvBytes);
+    AnchorElement(
+        href: 'data:text/plain;charset=utf-8;base64,$base64ExcelCsvBytes')
+      ..setAttribute(
+        'download',
+        '即時記憶-${log.userId}-${log.immediateMemoryProblem.startedAt!.toIso8601String()}.csv',
+      )
+      ..click();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final logs = ref.watch(immediateMemoryLogsProvider).valueOrNull ?? [];
+    return Column(
+      children: [
+        Row(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                for (final log in selectedLogs) {
+                  downloadResult(log);
+                }
+              },
+              child: const Text('選択データをダウンロード'),
+            ),
+            const Spacer(),
+            ElevatedButton(
+              onPressed: () {
+                selectedLogs = logs;
+                setState(() {});
+              },
+              child: const Text('すべて選択'),
+            ),
+          ],
+        ),
+        const Gap(16),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                for (final log in logs)
+                  CheckboxListTile(
+                    value: selectedLogs.contains(log),
+                    onChanged: (value) {
+                      if (value ?? false) {
+                        selectedLogs.add(log);
+                      } else {
+                        selectedLogs.remove(log);
+                      }
+                      setState(() {});
+                    },
+                    title: Text(DateFormat('yyyy年 MM月 dd日 HH時mm分')
+                        .format(log.immediateMemoryProblem.startedAt!)),
+                    subtitle: Text(
+                      /// 正解数 誤答数 正解率 を表示
+                      'userId: ${log.userId}',
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 

@@ -232,7 +232,7 @@ class _PlayingWidgetState extends ConsumerState<PlayingWidget> {
               const TimerWidget()
             else
               Text(
-                '0:10',
+                '1:00',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
 
@@ -326,7 +326,7 @@ class _TimerWidgetState extends ConsumerState<TimerWidget> {
       final state = ref.read(persistenceAttentionNotifierProvider);
       final now = DateTime.now();
       elapsed = (state.startedAt ?? now)
-          .add(const Duration(seconds: 10))
+          .add(const Duration(seconds: 60))
           .difference(now);
       if (elapsed.isNegative) {
         ref.read(persistenceAttentionNotifierProvider.notifier).timeUp();

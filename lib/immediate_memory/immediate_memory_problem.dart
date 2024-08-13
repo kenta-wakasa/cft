@@ -10,6 +10,8 @@ class ImmediateMemoryProblem with _$ImmediateMemoryProblem {
   factory ImmediateMemoryProblem({
     required List<String> randomNumbers,
     @Default([]) List<String> userAnswerNumbers,
+    DateTime? startedAt,
+    DateTime? endAt,
   }) = _ImmediateMemoryProblem;
   const ImmediateMemoryProblem._();
 
@@ -18,12 +20,18 @@ class ImmediateMemoryProblem with _$ImmediateMemoryProblem {
 
   static final random = Random.secure();
 
-  factory ImmediateMemoryProblem.generate(int length) {
-    final randomNumbers = List.generate(length, (index) {
-      return List.generate(random.nextInt(7) + 1, (index) {
-        return random.nextInt(10).toString();
-      }).join();
-    });
+  factory ImmediateMemoryProblem.generate() {
+    final randomNumbers = <String>[];
+    for (var length = 4; length <= 8; length++) {
+      randomNumbers.addAll([
+        List.generate(length, (index) {
+          return random.nextInt(10).toString();
+        }).join(),
+        List.generate(length, (index) {
+          return random.nextInt(10).toString();
+        }).join(),
+      ]);
+    }
     return ImmediateMemoryProblem(
       randomNumbers: randomNumbers,
     );
@@ -39,4 +47,18 @@ class ImmediateMemoryProblem with _$ImmediateMemoryProblem {
     }
     return result;
   }
+
+  /// 誤答数
+  int get incorrectAnswerCount {
+    var result = 0;
+    for (var i = 0; i < randomNumbers.length; i++) {
+      if (randomNumbers[i] != userAnswerNumbers[i]) {
+        result++;
+      }
+    }
+    return result;
+  }
+
+  /// 正解率
+  double get correctRate => correctAnswerCount / randomNumbers.length;
 }

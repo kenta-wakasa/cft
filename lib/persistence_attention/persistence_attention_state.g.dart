@@ -25,7 +25,7 @@ Map<String, dynamic> _$$PersistenceAttentionStateImplToJson(
         _$PersistenceAttentionStateImpl instance) =>
     <String, dynamic>{
       'isPlaying': instance.isPlaying,
-      'problems': instance.problems,
+      'problems': instance.problems.map((e) => e.toJson()).toList(),
       'startedAt': instance.startedAt?.toIso8601String(),
       'countDownTime': instance.countDownTime,
       'isTimeUp': instance.isTimeUp,

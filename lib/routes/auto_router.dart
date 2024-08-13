@@ -31,6 +31,11 @@ class AppRouter extends $AppRouter {
           path: '/immediate_memory',
           guards: guards,
         ),
+        AutoRoute(
+          page: TestLogRoute.page,
+          path: '/test_log',
+          guards: guards,
+        ),
       ];
 
   List<AutoRouteGuard> get guards => [

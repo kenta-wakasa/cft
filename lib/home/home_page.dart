@@ -12,6 +12,7 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final uid = ref.watch(uidProvider);
+    final isAdmin = ref.watch(isAdminProvider);
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -31,6 +32,21 @@ class HomePage extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            if (isAdmin)
+              Column(
+                children: [
+                  const Text('管理者モード'),
+                  const Gap(16),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.router.replace(const TestLogRoute());
+                    },
+                    child: const Text('テストログ'),
+                  ),
+                  const Gap(32),
+                ],
+              ),
+
             Text('uid: $uid'),
             const Gap(32),
             ElevatedButton(

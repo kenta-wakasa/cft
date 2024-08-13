@@ -1,6 +1,10 @@
+import 'package:cft/persistence_attention/persistence_attention_log.dart';
+import 'package:cft/persistence_attention/persistence_attention_log_provider.dart';
 import 'package:cft/persistence_attention/persistence_attention_state.dart';
 import 'package:cft/persistence_attention/simple_arithmetic_problem.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:uuid/v6.dart';
 
 import 'operator.dart';
 
@@ -36,8 +40,28 @@ class PersistenceAttentionNotifier extends _$PersistenceAttentionNotifier {
     nextProblem();
   }
 
+  static const uuid = UuidV6();
+
+  Future<void> sendPersistenceAttentionLog() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+
+    if (uid == null) {
+      return;
+    }
+
+    final log = PersistenceAttentionLog(
+      id: uuid.generate(),
+      startedAt: DateTime.now(),
+      userId: uid,
+      problems: state.problems,
+    );
+
+    await ref.read(persistenceAttentionLogReferenceProvider).add(log);
+  }
+
   Future<void> timeUp() async {
     state = state.copyWith(isTimeUp: true);
+    await sendPersistenceAttentionLog();
   }
 
   void setUserAnswer(int userAnswer) {

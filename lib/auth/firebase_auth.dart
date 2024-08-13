@@ -16,3 +16,8 @@ final uidProvider = Provider.autoDispose((ref) {
   final user = ref.watch(currentUserProvider);
   return user?.uid;
 });
+
+final isAdminProvider = Provider.autoDispose((ref) {
+  final uid = ref.watch(uidProvider);
+  return uid == 'TJ5Z7N4PZ3faZcuQtVV5tHLc4HM2';
+});

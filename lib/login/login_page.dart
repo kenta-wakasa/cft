@@ -53,42 +53,38 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: AutofillGroup(
-          child: SizedBox(
-            width: 480,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  '認知機能トレーニング',
-                  style: Theme.of(context).textTheme.titleLarge,
+        child: SizedBox(
+          width: 480,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '認知機能トレーニング',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const Gap(48),
+              TextFormField(
+                controller: emailController,
+                decoration: const InputDecoration(
+                  labelText: 'メールアドレス',
+                  border: OutlineInputBorder(),
                 ),
-                const Gap(48),
-                TextFormField(
-                  controller: emailController,
-                  autofillHints: const [AutofillHints.username],
-                  decoration: const InputDecoration(
-                    labelText: 'メールアドレス',
-                    border: OutlineInputBorder(),
-                  ),
+              ),
+              const Gap(16),
+              TextFormField(
+                controller: passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  labelText: 'パスワード',
+                  border: OutlineInputBorder(),
                 ),
-                const Gap(16),
-                TextFormField(
-                  controller: passwordController,
-                  autofillHints: const [AutofillHints.password],
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'パスワード',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const Gap(16),
-                ElevatedButton(
-                  onPressed: login,
-                  child: const Text('ログイン'),
-                ),
-              ],
-            ),
+              ),
+              const Gap(16),
+              ElevatedButton(
+                onPressed: login,
+                child: const Text('ログイン'),
+              ),
+            ],
           ),
         ),
       ),

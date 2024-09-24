@@ -75,6 +75,16 @@ class HomePage extends ConsumerWidget {
               },
               child: const Text('即時記憶'),
             ),
+
+            const Gap(16),
+
+            /// 意味流調性
+            ElevatedButton(
+              onPressed: () {
+                context.router.replace(const SemanticFluencyRoute());
+              },
+              child: const Text('意味流調性'),
+            ),
           ],
         ),
       ),

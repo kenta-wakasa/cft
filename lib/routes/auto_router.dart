@@ -36,6 +36,11 @@ class AppRouter extends $AppRouter {
           path: '/test_log',
           guards: guards,
         ),
+        AutoRoute(
+          page: SemanticFluencyRoute.page,
+          path: '/semantic_fluency',
+          guards: guards,
+        ),
       ];
 
   List<AutoRouteGuard> get guards => [

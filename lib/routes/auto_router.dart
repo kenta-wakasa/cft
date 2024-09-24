@@ -41,6 +41,11 @@ class AppRouter extends $AppRouter {
           path: '/semantic_fluency',
           guards: guards,
         ),
+        AutoRoute(
+          page: PerformanceRoute.page,
+          path: '/performance',
+          guards: guards,
+        ),
       ];
 
   List<AutoRouteGuard> get guards => [

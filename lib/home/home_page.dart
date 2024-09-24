@@ -83,7 +83,7 @@ class HomePage extends ConsumerWidget {
               onPressed: () {
                 context.router.replace(const SemanticFluencyRoute());
               },
-              child: const Text('意味流調性'),
+              child: const Text('意味流暢性'),
             ),
           ],
         ),

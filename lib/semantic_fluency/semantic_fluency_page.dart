@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cft/routes/auto_router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 @RoutePage()
 class SemanticFluencyPage extends ConsumerStatefulWidget {
@@ -13,6 +14,41 @@ class SemanticFluencyPage extends ConsumerStatefulWidget {
 }
 
 class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
+  stt.SpeechToText? speechToText;
+
+  String? recognizedWords;
+
+  Future<void> init() async {
+    speechToText = stt.SpeechToText();
+
+    final available = await speechToText!.initialize(
+      onError: (error) {
+        print(error.errorMsg);
+      },
+      onStatus: (status) {
+        print(status);
+      },
+    );
+    if (!available) {
+      print('error');
+      return;
+    }
+    speechToText?.listen(
+      onResult: (result) {
+        print(result.recognizedWords);
+        recognizedWords = result.recognizedWords;
+        setState(() {});
+      },
+      localeId: 'ja_JP',
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,6 +81,17 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
             );
           },
           icon: const Icon(Icons.home),
+        ),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              recognizedWords ?? '',
+              style: const TextStyle(fontSize: 24),
+            ),
+          ],
         ),
       ),
     );

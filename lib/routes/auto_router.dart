@@ -3,7 +3,9 @@ import 'package:cft/routes/auth_guard.dart';
 import 'package:cft/routes/auto_router.gr.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Page,Route')
-class AppRouter extends $AppRouter {
+class AppRouter extends RootStackRouter {
+  @override
+  RouteType get defaultRouteType => const RouteType.material();
   @override
   List<AutoRoute> get routes => [
         AutoRoute(
@@ -48,6 +50,7 @@ class AppRouter extends $AppRouter {
         ),
       ];
 
+  @override
   List<AutoRouteGuard> get guards => [
         AuthGuard(),
       ];

@@ -11,7 +11,6 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final uid = ref.watch(uidProvider);
     final isAdmin = ref.watch(isAdminProvider);
     return Scaffold(
       appBar: AppBar(

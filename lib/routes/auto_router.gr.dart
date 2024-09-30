@@ -19,62 +19,6 @@ import 'package:cft/select_attention/select_attention_page.dart' as _i6;
 import 'package:cft/semantic_fluency/semantic_fluency_page.dart' as _i7;
 import 'package:cft/test_log/test_log_page.dart' as _i8;
 
-abstract class $AppRouter extends _i9.RootStackRouter {
-  $AppRouter({super.navigatorKey});
-
-  @override
-  final Map<String, _i9.PageFactory> pagesMap = {
-    HomeRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i1.HomePage(),
-      );
-    },
-    ImmediateMemoryRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i2.ImmediateMemoryPage(),
-      );
-    },
-    LoginRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i3.LoginPage(),
-      );
-    },
-    PerformanceRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i4.PerformancePage(),
-      );
-    },
-    PersistenceAttentionRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i5.PersistenceAttentionPage(),
-      );
-    },
-    SelectAttentionRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i6.SelectAttentionPage(),
-      );
-    },
-    SemanticFluencyRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i7.SemanticFluencyPage(),
-      );
-    },
-    TestLogRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i8.TestLogPage(),
-      );
-    },
-  };
-}
-
 /// generated route for
 /// [_i1.HomePage]
 class HomeRoute extends _i9.PageRouteInfo<void> {
@@ -86,7 +30,12 @@ class HomeRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'HomeRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static _i9.PageInfo page = _i9.PageInfo(
+    name,
+    builder: (data) {
+      return const _i1.HomePage();
+    },
+  );
 }
 
 /// generated route for
@@ -100,7 +49,12 @@ class ImmediateMemoryRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'ImmediateMemoryRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static _i9.PageInfo page = _i9.PageInfo(
+    name,
+    builder: (data) {
+      return const _i2.ImmediateMemoryPage();
+    },
+  );
 }
 
 /// generated route for
@@ -114,7 +68,12 @@ class LoginRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'LoginRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static _i9.PageInfo page = _i9.PageInfo(
+    name,
+    builder: (data) {
+      return const _i3.LoginPage();
+    },
+  );
 }
 
 /// generated route for
@@ -128,7 +87,12 @@ class PerformanceRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'PerformanceRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static _i9.PageInfo page = _i9.PageInfo(
+    name,
+    builder: (data) {
+      return const _i4.PerformancePage();
+    },
+  );
 }
 
 /// generated route for
@@ -142,7 +106,12 @@ class PersistenceAttentionRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'PersistenceAttentionRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static _i9.PageInfo page = _i9.PageInfo(
+    name,
+    builder: (data) {
+      return const _i5.PersistenceAttentionPage();
+    },
+  );
 }
 
 /// generated route for
@@ -156,7 +125,12 @@ class SelectAttentionRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'SelectAttentionRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static _i9.PageInfo page = _i9.PageInfo(
+    name,
+    builder: (data) {
+      return const _i6.SelectAttentionPage();
+    },
+  );
 }
 
 /// generated route for
@@ -170,7 +144,12 @@ class SemanticFluencyRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'SemanticFluencyRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static _i9.PageInfo page = _i9.PageInfo(
+    name,
+    builder: (data) {
+      return const _i7.SemanticFluencyPage();
+    },
+  );
 }
 
 /// generated route for
@@ -184,5 +163,10 @@ class TestLogRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'TestLogRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static _i9.PageInfo page = _i9.PageInfo(
+    name,
+    builder: (data) {
+      return const _i8.TestLogPage();
+    },
+  );
 }

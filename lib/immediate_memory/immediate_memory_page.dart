@@ -1,20 +1,20 @@
 import 'dart:math';
 
-import 'package:auto_route/auto_route.dart';
+import 'package:cft/common/common_app_bar.dart';
 import 'package:cft/common/input_num_widget.dart';
 import 'package:cft/immediate_memory/immediate_memory_log.dart';
 import 'package:cft/immediate_memory/immediate_memory_log_provider.dart';
 import 'package:cft/immediate_memory/immediate_memory_problem.dart';
-import 'package:cft/routes/auto_router.gr.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:uuid/v6.dart';
 
-@RoutePage()
 class ImmediateMemoryPage extends ConsumerStatefulWidget {
   const ImmediateMemoryPage({super.key});
+
+  static const path = '/immediate_memory';
 
   @override
   ConsumerState<ImmediateMemoryPage> createState() =>
@@ -39,35 +39,7 @@ class _ImmediateMemoryPageState extends ConsumerState<ImmediateMemoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            showDialog<void>(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  content: const Text('ホームに戻りますか？'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('キャンセル'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        context.router.replace(const HomeRoute());
-                      },
-                      child: const Text('戻る'),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-          icon: const Icon(Icons.home),
-        ),
-      ),
+      appBar: const CommonAppBar(),
       body: Center(
         child: SingleChildScrollView(
           child: !isPlaying

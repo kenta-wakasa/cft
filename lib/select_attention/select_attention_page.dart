@@ -1,5 +1,4 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:cft/routes/auto_router.gr.dart';
+import 'package:cft/common/common_app_bar.dart';
 import 'package:cft/select_attention/select_attention_log.dart';
 import 'package:cft/select_attention/select_attention_log_provider.dart';
 import 'package:cft/select_attention/select_attention_problem.dart';
@@ -9,9 +8,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:uuid/v6.dart';
 
-@RoutePage()
 class SelectAttentionPage extends ConsumerStatefulWidget {
   const SelectAttentionPage({super.key});
+
+  static const path = '/select_attention';
 
   @override
   ConsumerState<SelectAttentionPage> createState() =>
@@ -26,37 +26,7 @@ class _SelectAttentionPageState extends ConsumerState<SelectAttentionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            showDialog<void>(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  content: const Text('ホームに戻りますか？'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('キャンセル'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        context.router.replace(
-                          const HomeRoute(),
-                        );
-                      },
-                      child: const Text('戻る'),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-          icon: const Icon(Icons.home),
-        ),
-      ),
+      appBar: const CommonAppBar(),
       body: isPlaying
           ? Column(
               children: [

@@ -1,13 +1,14 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:cft/routes/auto_router.gr.dart';
+import 'package:cft/home/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
-@RoutePage()
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
+
+  static const path = '/login';
 
   @override
   ConsumerState<LoginPage> createState() => _LoginPageState();
@@ -17,6 +18,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Future<void> login() async {
     final email = emailController.text;
     final password = passwordController.text;
+    final context = this.context;
 
     if (email.isEmpty || password.isEmpty) {
       return;
@@ -35,8 +37,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     if (!context.mounted) {
       return;
     }
-
-    context.router.replace(const HomeRoute());
+    context.go(HomePage.path);
   }
 
   final emailController = TextEditingController();

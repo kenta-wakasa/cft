@@ -1,23 +1,24 @@
 import 'dart:convert';
 import 'dart:html';
 
-import 'package:auto_route/auto_route.dart';
+import 'package:cft/home/home_page.dart';
 import 'package:cft/immediate_memory/immediate_memory_log.dart';
 import 'package:cft/immediate_memory/immediate_memory_log_provider.dart';
 import 'package:cft/persistence_attention/persistence_attention_log.dart';
 import 'package:cft/persistence_attention/persistence_attention_logs_stream.dart';
-import 'package:cft/routes/auto_router.gr.dart';
 import 'package:cft/select_attention/select_attention_log.dart';
 import 'package:cft/select_attention/select_attention_log_provider.dart';
 import 'package:cft/select_attention/select_attention_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-@RoutePage()
 class TestLogPage extends ConsumerStatefulWidget {
   const TestLogPage({super.key});
+
+  static const path = '/test_log';
 
   @override
   ConsumerState<TestLogPage> createState() => _TestLogPageState();
@@ -46,9 +47,7 @@ class _TestLogPageState extends ConsumerState<TestLogPage> {
                     ),
                     TextButton(
                       onPressed: () {
-                        context.router.replace(
-                          const HomeRoute(),
-                        );
+                        context.go(HomePage.path);
                       },
                       child: const Text('戻る'),
                     ),

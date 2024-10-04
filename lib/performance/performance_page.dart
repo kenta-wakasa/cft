@@ -1,18 +1,18 @@
 import 'dart:math';
 
 import 'package:arrow_path/arrow_path.dart';
-import 'package:auto_route/auto_route.dart';
+import 'package:cft/common/common_app_bar.dart';
 import 'package:cft/performance/edge.dart';
 import 'package:cft/performance/graph.dart';
 import 'package:cft/performance/node.dart';
-import 'package:cft/routes/auto_router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 
-@RoutePage()
 class PerformancePage extends ConsumerStatefulWidget {
   const PerformancePage({super.key});
+
+  static const path = '/performance';
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -80,35 +80,7 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            showDialog<void>(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  content: const Text('ホームに戻りますか？'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('キャンセル'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        context.router.replace(const HomeRoute());
-                      },
-                      child: const Text('戻る'),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-          icon: const Icon(Icons.home),
-        ),
-      ),
+      appBar: const CommonAppBar(),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),

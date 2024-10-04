@@ -21,6 +21,15 @@ class PerformancePage extends ConsumerStatefulWidget {
 
 class _PerformancePageState extends ConsumerState<PerformancePage> {
   static const canvasSize = Size(400, 400);
+
+  var currentQuestionIndex = 0;
+
+  //// 最初の出題文
+  final questionTexts = [
+    'それぞれの経路に、かかる時間と料金を表示しています。Sを出発点として、30分以内にGに到着したいとき、もっとも料金が低くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。',
+    '次の問題です。経路はそのままですが、今度は必ずAを通り、Sを出発点として、30分以内にGに到着したいとき、もっとも料金が低くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。'
+  ];
+
   final graph = Graph(
     nodes: [
       Node(
@@ -87,8 +96,9 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                  'それぞれの経路に、かかる時間と料金を表示しています。Sを出発点として、30分以内にGに到着したいとき、もっとも料金が低くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。'),
+              Text(
+                questionTexts[currentQuestionIndex],
+              ),
               const Gap(16),
               Expanded(
                 child: SingleChildScrollView(
@@ -201,6 +211,19 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
                           TextButton(
                             onPressed: () {
                               // TODO(kenta-wakasa): 計画の変更
+                              Navigator.of(context).pop();
+                              setState(() {
+                                selectedNodeIds.clear();
+                                selectedNodeIds.add(graph.nodes.first.id);
+                              });
+                              if (questionTexts.length ==
+                                  currentQuestionIndex + 1) {
+                                // TODO(kenta-wakasa): 次のグラフに進む
+                              } else {
+                                setState(() {
+                                  currentQuestionIndex++;
+                                });
+                              }
                             },
                             child: const Text('決定'),
                           ),

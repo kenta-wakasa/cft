@@ -53,16 +53,29 @@ class _PersistenceAttentionPageState
             ),
           if (!state.isPlaying && state.countDownTime == 0)
             Container(
-              color: Colors.black.withOpacity(0.8),
+              color: Theme.of(context).scaffoldBackgroundColor,
               alignment: Alignment.center,
               child: Center(
-                child: ElevatedButton(
-                  child: const Text('スタート'),
-                  onPressed: () {
-                    ref
-                        .read(persistenceAttentionNotifierProvider.notifier)
-                        .start();
-                  },
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      '単純な計算をやり続けるゲーム',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Gap(16),
+                    ElevatedButton(
+                      child: const Text('スタート'),
+                      onPressed: () {
+                        ref
+                            .read(persistenceAttentionNotifierProvider.notifier)
+                            .start();
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -293,8 +306,11 @@ class TimerWidget extends ConsumerStatefulWidget {
 class _TimerWidgetState extends ConsumerState<TimerWidget> {
   var elapsed = Duration.zero;
   Future<void> timer() async {
-    while (true) {
+    while (true && context.mounted) {
       await Future.delayed(const Duration(milliseconds: 1000 ~/ 60));
+      if (!context.mounted) {
+        return;
+      }
       final state = ref.read(persistenceAttentionNotifierProvider);
       final now = DateTime.now();
       elapsed = (state.startedAt ?? now)

@@ -1,8 +1,13 @@
 import 'package:cft/common/common_app_bar.dart';
+import 'package:cft/semantic_fluency/answer_word_with_timestamp.dart';
+import 'package:cft/semantic_fluency/semantic_fluency_log.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:uuid/v6.dart';
 
 class SemanticFluencyPage extends ConsumerStatefulWidget {
   const SemanticFluencyPage({super.key});
@@ -15,12 +20,14 @@ class SemanticFluencyPage extends ConsumerStatefulWidget {
 }
 
 class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
+  var isReady = false;
+
   stt.SpeechToText? speechToText;
 
   final controller = TextEditingController();
   final scrollController = ScrollController();
 
-  List<String> recognizedWords = [];
+  final answerWordWithTimestampList = <AnswerWordWithTimestamp>[];
 
   var isStandby = false;
 
@@ -60,7 +67,12 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
       return;
     }
     setState(() {
-      recognizedWords.add(controller.text);
+      answerWordWithTimestampList.add(
+        AnswerWordWithTimestamp(
+          word: controller.text,
+          timestamp: DateTime.now(),
+        ),
+      );
     });
 
     await speechToText?.stop();
@@ -82,14 +94,7 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
   Future<void> init() async {
     speechToText = stt.SpeechToText();
 
-    final available = await speechToText!.initialize(
-      onError: (error) {
-        print(error.errorMsg);
-      },
-      onStatus: (status) {
-        print(status);
-      },
-    );
+    final available = await speechToText!.initialize();
     if (!available) {
       return;
     }
@@ -109,14 +114,141 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
     speechToText?.cancel();
   }
 
+  var elapsed = Duration.zero;
+
+  var isTimeUp = false;
+
+  var startedAt = DateTime.now();
+  Future<void> timer() async {
+    startedAt = DateTime.now();
+    while (true && context.mounted) {
+      await Future.delayed(const Duration(milliseconds: 1000 ~/ 60));
+      if (!context.mounted) {
+        return;
+      }
+      elapsed =
+          startedAt.add(const Duration(seconds: 60)).difference(DateTime.now());
+      if (elapsed.isNegative) {
+        timeUp();
+        break;
+      }
+      setState(() {});
+    }
+  }
+
+  Future<void> timeUp() async {
+    await sendLogData();
+    answerWordWithTimestampList.clear();
+    isTimeUp = true;
+    elapsed = Duration.zero;
+    await speechToText?.stop();
+    remainSec = countDown;
+    isStandby = false;
+    setState(() {});
+  }
+
+  Future<void> sendLogData() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) {
+      return;
+    }
+    await FirebaseFirestore.instance.collection('semantic_fluency_log').add(
+          SemanticFluencyLog(
+            id: const UuidV6().generate(),
+            startedAt: startedAt,
+            userId: uid,
+            answerWordWithTimestampList: answerWordWithTimestampList,
+          ).toJson(),
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (!isReady) {
+      return Scaffold(
+        appBar: const CommonAppBar(),
+        body: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'カテゴリーに沿った単語を言い続けるゲーム',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Gap(16),
+                  const Text(
+                      '次のゲームでは、あるカテゴリーの中であなたが思いつく単語を１分間にできるだけたくさん行っておもらいます。スタートボタンを押すとカテゴリーが表示され１分間のタイマーが開始されます。'),
+                  const Gap(32),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        isReady = true;
+                      });
+                      timer();
+                    },
+                    child: const Text('スタート'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    if (isTimeUp) {
+      return Scaffold(
+        appBar: const CommonAppBar(),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                '終了',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const Gap(16),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    isReady = false;
+                    isTimeUp = false;
+                  });
+                },
+                child: const Text('再挑戦'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: const CommonAppBar(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text(
+              '${elapsed.inMinutes}:${(elapsed.inSeconds % 60).toString().padLeft(2, '0')}',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const Text(
+              'テーマ：動物',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -127,7 +259,7 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
                     crossAxisSpacing: 8,
                     mainAxisSpacing: 8,
                   ),
-                  itemCount: recognizedWords.length,
+                  itemCount: answerWordWithTimestampList.length,
                   itemBuilder: (context, index) {
                     return Container(
                       color: Colors.red[200],
@@ -137,7 +269,7 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
                           children: [
                             Expanded(
                               child: Text(
-                                recognizedWords[index],
+                                answerWordWithTimestampList[index].word,
                                 style: const TextStyle(fontSize: 20),
                               ),
                             ),

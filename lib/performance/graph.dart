@@ -4,6 +4,7 @@ import 'edge.dart';
 import 'node.dart';
 
 part 'graph.freezed.dart';
+part 'graph.g.dart';
 
 @freezed
 class Graph with _$Graph {
@@ -23,4 +24,6 @@ class Graph with _$Graph {
   Node getNode(String id) {
     return nodes.firstWhere((n) => n.id == id);
   }
+
+  factory Graph.fromJson(Map<String, dynamic> json) => _$GraphFromJson(json);
 }

@@ -14,11 +14,16 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+Graph _$GraphFromJson(Map<String, dynamic> json) {
+  return _Graph.fromJson(json);
+}
+
 /// @nodoc
 mixin _$Graph {
   List<Node> get nodes => throw _privateConstructorUsedError;
   List<Edge> get edges => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $GraphCopyWith<Graph> get copyWith => throw _privateConstructorUsedError;
 }
@@ -98,13 +103,16 @@ class __$$GraphImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$GraphImpl extends _Graph {
   _$GraphImpl(
       {required final List<Node> nodes, required final List<Edge> edges})
       : _nodes = nodes,
         _edges = edges,
         super._();
+
+  factory _$GraphImpl.fromJson(Map<String, dynamic> json) =>
+      _$$GraphImplFromJson(json);
 
   final List<Node> _nodes;
   @override
@@ -136,6 +144,7 @@ class _$GraphImpl extends _Graph {
             const DeepCollectionEquality().equals(other._edges, _edges));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -147,6 +156,13 @@ class _$GraphImpl extends _Graph {
   @pragma('vm:prefer-inline')
   _$$GraphImplCopyWith<_$GraphImpl> get copyWith =>
       __$$GraphImplCopyWithImpl<_$GraphImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$GraphImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _Graph extends Graph {
@@ -154,6 +170,8 @@ abstract class _Graph extends Graph {
       {required final List<Node> nodes,
       required final List<Edge> edges}) = _$GraphImpl;
   _Graph._() : super._();
+
+  factory _Graph.fromJson(Map<String, dynamic> json) = _$GraphImpl.fromJson;
 
   @override
   List<Node> get nodes;

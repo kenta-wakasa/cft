@@ -5,6 +5,7 @@ import 'package:cft/common/common_app_bar.dart';
 import 'package:cft/performance/edge.dart';
 import 'package:cft/performance/graph.dart';
 import 'package:cft/performance/node.dart';
+import 'package:cft/performance/performance_problem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -24,67 +25,71 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
 
   var currentQuestionIndex = 0;
 
-  //// 最初の出題文
-  final questionTexts = [
-    'それぞれの経路に、かかる時間と料金を表示しています。Sを出発点として、30分以内にGに到着したいとき、もっとも料金が低くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。',
-    '次の問題です。経路はそのままですが、今度は必ずAを通り、Sを出発点として、30分以内にGに到着したいとき、もっとも料金が低くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。'
-  ];
-
-  final graph = Graph(
-    nodes: [
-      Node(
-        id: 'S',
-        offset: const Offset(100, 0),
-      ),
-      Node(
-        id: 'A',
-        offset: const Offset(25, 160),
-      ),
-      Node(
-        id: 'B',
-        offset: const Offset(240, 160),
-      ),
-      Node(
-        id: 'G',
-        offset: const Offset(240, 300),
-      ),
-    ],
-    edges: [
-      Edge(
-        sourceId: 'S',
-        destinationId: 'A',
-        fee: 50,
-        time: 10,
-      ),
-      Edge(
-        sourceId: 'S',
-        destinationId: 'B',
-        fee: 150,
-        time: 20,
-      ),
-      Edge(
-        sourceId: 'A',
-        destinationId: 'B',
-        fee: 10,
-        time: 15,
-      ),
-      Edge(
-        sourceId: 'A',
-        destinationId: 'G',
-        fee: 200,
-        time: 20,
-      ),
-      Edge(
-        sourceId: 'B',
-        destinationId: 'G',
-        fee: 75,
-        time: 10,
-      ),
+  final performanceProblem = PerformanceProblem(
+    graph: Graph(
+      nodes: [
+        Node(
+          id: 'S',
+          dx: 100,
+          dy: 0,
+        ),
+        Node(
+          id: 'A',
+          dx: 25,
+          dy: 160,
+        ),
+        Node(
+          id: 'B',
+          dx: 240,
+          dy: 160,
+        ),
+        Node(
+          id: 'G',
+          dx: 240,
+          dy: 300,
+        ),
+      ],
+      edges: [
+        Edge(
+          sourceId: 'S',
+          destinationId: 'A',
+          fee: 50,
+          time: 10,
+        ),
+        Edge(
+          sourceId: 'S',
+          destinationId: 'B',
+          fee: 150,
+          time: 20,
+        ),
+        Edge(
+          sourceId: 'A',
+          destinationId: 'B',
+          fee: 10,
+          time: 15,
+        ),
+        Edge(
+          sourceId: 'A',
+          destinationId: 'G',
+          fee: 200,
+          time: 20,
+        ),
+        Edge(
+          sourceId: 'B',
+          destinationId: 'G',
+          fee: 75,
+          time: 10,
+        ),
+      ],
+    ),
+    questionTexts: [
+      'それぞれの経路に、かかる時間と料金を表示しています。Sを出発点として、30分以内にGに到着したいとき、もっとも料金が低くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。',
+      '次の問題です。経路はそのままですが、今度は必ずAを通り、Sを出発点として、30分以内にGに到着したいとき、もっとも料金が低くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。'
     ],
   );
 
   late final selectedNodeIds = [
-    graph.nodes.first.id,
+    performanceProblem.graph.nodes.first.id,
   ];
   @override
   Widget build(BuildContext context) {
@@ -97,7 +102,7 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                questionTexts[currentQuestionIndex],
+                performanceProblem.questionTexts[currentQuestionIndex],
               ),
               const Gap(16),
               Expanded(
@@ -112,16 +117,17 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
                         children: [
                           CustomPaint(
                             size: Size(canvasSize.width, canvasSize.height),
-                            painter: EdgeRender(graph, selectedNodeIds),
+                            painter: EdgeRender(
+                                performanceProblem.graph, selectedNodeIds),
                           ),
-                          ...graph.nodes.map((node) {
+                          ...performanceProblem.graph.nodes.map((node) {
                             return Positioned(
-                              left: node.offset.dx,
-                              top: node.offset.dy,
+                              left: node.dx,
+                              top: node.dy,
                               child: GestureDetector(
                                 onTap: () {
                                   /// 選択したNodeの最後が入ってくるものであれば追加する
-                                  if (graph
+                                  if (performanceProblem.graph
                                       .inNodes(node)
                                       .map((e) => e.id)
                                       .contains(selectedNodeIds.last)) {
@@ -214,9 +220,10 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
                               Navigator.of(context).pop();
                               setState(() {
                                 selectedNodeIds.clear();
-                                selectedNodeIds.add(graph.nodes.first.id);
+                                selectedNodeIds.add(
+                                    performanceProblem.graph.nodes.first.id);
                               });
-                              if (questionTexts.length ==
+                              if (performanceProblem.questionTexts.length ==
                                   currentQuestionIndex + 1) {
                                 // TODO(kenta-wakasa): 次のグラフに進む
                               } else {
@@ -258,7 +265,8 @@ class EdgeRender extends CustomPainter {
       final source = graph.getNode(edge.sourceId);
       final destination = graph.getNode(edge.destinationId);
 
-      final direction = _getDirection(destination.offset - source.offset);
+      final direction = _getDirection(Offset(destination.dx, destination.dy) -
+          Offset(source.dx, source.dy));
 
       final paint = Paint()
         ..color = Colors.black
@@ -277,40 +285,45 @@ class EdgeRender extends CustomPainter {
         case Direction.right:
           _drawLine(
             canvas,
-            _getRightPoint(source.offset, const Size(40, 40)),
-            _getLeftPoint(destination.offset, const Size(40, 40)),
+            _getRightPoint(Offset(source.dx, source.dy), const Size(40, 40)),
+            _getLeftPoint(
+                Offset(destination.dx, destination.dy), const Size(40, 40)),
             paint,
           );
           break;
         case Direction.down:
           _drawLine(
             canvas,
-            _getDownPoint(source.offset, const Size(40, 40)),
-            _getUpPoint(destination.offset, const Size(40, 40)),
+            _getDownPoint(Offset(source.dx, source.dy), const Size(40, 40)),
+            _getUpPoint(
+                Offset(destination.dx, destination.dy), const Size(40, 40)),
             paint,
           );
           break;
         case Direction.left:
           _drawLine(
             canvas,
-            _getLeftPoint(source.offset, const Size(40, 40)),
-            _getRightPoint(destination.offset, const Size(40, 40)),
+            _getLeftPoint(Offset(source.dx, source.dy), const Size(40, 40)),
+            _getRightPoint(
+                Offset(destination.dx, destination.dy), const Size(40, 40)),
             paint,
           );
           break;
         case Direction.up:
           _drawLine(
             canvas,
-            _getUpPoint(source.offset, const Size(40, 40)),
-            _getDownPoint(destination.offset, const Size(40, 40)),
+            _getUpPoint(Offset(source.dx, source.dy), const Size(40, 40)),
+            _getDownPoint(
+                Offset(destination.dx, destination.dy), const Size(40, 40)),
             paint,
           );
           break;
       }
       _drawEdgeLabel(
         canvas,
-        _getRightPoint(source.offset, const Size(40, 40)),
-        _getLeftPoint(destination.offset, const Size(40, 40)),
+        _getRightPoint(Offset(source.dx, source.dy), const Size(40, 40)),
+        _getLeftPoint(
+            Offset(destination.dx, destination.dy), const Size(40, 40)),
         '${edge.time}分 ${edge.fee}円',
         isPassed(edge) ? Colors.red : Colors.grey,
       );

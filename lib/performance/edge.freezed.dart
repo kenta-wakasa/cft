@@ -14,6 +14,10 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+Edge _$EdgeFromJson(Map<String, dynamic> json) {
+  return _Edge.fromJson(json);
+}
+
 /// @nodoc
 mixin _$Edge {
   String get sourceId => throw _privateConstructorUsedError;
@@ -21,6 +25,7 @@ mixin _$Edge {
   int get fee => throw _privateConstructorUsedError;
   int get time => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $EdgeCopyWith<Edge> get copyWith => throw _privateConstructorUsedError;
 }
@@ -119,7 +124,7 @@ class __$$EdgeImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$EdgeImpl extends _Edge {
   _$EdgeImpl(
       {required this.sourceId,
@@ -127,6 +132,9 @@ class _$EdgeImpl extends _Edge {
       required this.fee,
       required this.time})
       : super._();
+
+  factory _$EdgeImpl.fromJson(Map<String, dynamic> json) =>
+      _$$EdgeImplFromJson(json);
 
   @override
   final String sourceId;
@@ -155,6 +163,7 @@ class _$EdgeImpl extends _Edge {
             (identical(other.time, time) || other.time == time));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, sourceId, destinationId, fee, time);
@@ -164,6 +173,13 @@ class _$EdgeImpl extends _Edge {
   @pragma('vm:prefer-inline')
   _$$EdgeImplCopyWith<_$EdgeImpl> get copyWith =>
       __$$EdgeImplCopyWithImpl<_$EdgeImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$EdgeImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _Edge extends Edge {
@@ -173,6 +189,8 @@ abstract class _Edge extends Edge {
       required final int fee,
       required final int time}) = _$EdgeImpl;
   _Edge._() : super._();
+
+  factory _Edge.fromJson(Map<String, dynamic> json) = _$EdgeImpl.fromJson;
 
   @override
   String get sourceId;

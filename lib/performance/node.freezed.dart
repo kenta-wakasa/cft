@@ -14,11 +14,17 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+Node _$NodeFromJson(Map<String, dynamic> json) {
+  return _Node.fromJson(json);
+}
+
 /// @nodoc
 mixin _$Node {
   String get id => throw _privateConstructorUsedError;
-  Offset get offset => throw _privateConstructorUsedError;
+  double get dx => throw _privateConstructorUsedError;
+  double get dy => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $NodeCopyWith<Node> get copyWith => throw _privateConstructorUsedError;
 }
@@ -28,7 +34,7 @@ abstract class $NodeCopyWith<$Res> {
   factory $NodeCopyWith(Node value, $Res Function(Node) then) =
       _$NodeCopyWithImpl<$Res, Node>;
   @useResult
-  $Res call({String id, Offset offset});
+  $Res call({String id, double dx, double dy});
 }
 
 /// @nodoc
@@ -45,17 +51,22 @@ class _$NodeCopyWithImpl<$Res, $Val extends Node>
   @override
   $Res call({
     Object? id = null,
-    Object? offset = null,
+    Object? dx = null,
+    Object? dy = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      offset: null == offset
-          ? _value.offset
-          : offset // ignore: cast_nullable_to_non_nullable
-              as Offset,
+      dx: null == dx
+          ? _value.dx
+          : dx // ignore: cast_nullable_to_non_nullable
+              as double,
+      dy: null == dy
+          ? _value.dy
+          : dy // ignore: cast_nullable_to_non_nullable
+              as double,
     ) as $Val);
   }
 }
@@ -67,7 +78,7 @@ abstract class _$$NodeImplCopyWith<$Res> implements $NodeCopyWith<$Res> {
       __$$NodeImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, Offset offset});
+  $Res call({String id, double dx, double dy});
 }
 
 /// @nodoc
@@ -81,34 +92,45 @@ class __$$NodeImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? offset = null,
+    Object? dx = null,
+    Object? dy = null,
   }) {
     return _then(_$NodeImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      offset: null == offset
-          ? _value.offset
-          : offset // ignore: cast_nullable_to_non_nullable
-              as Offset,
+      dx: null == dx
+          ? _value.dx
+          : dx // ignore: cast_nullable_to_non_nullable
+              as double,
+      dy: null == dy
+          ? _value.dy
+          : dy // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$NodeImpl extends _Node {
-  _$NodeImpl({required this.id, required this.offset}) : super._();
+  _$NodeImpl({required this.id, required this.dx, required this.dy})
+      : super._();
+
+  factory _$NodeImpl.fromJson(Map<String, dynamic> json) =>
+      _$$NodeImplFromJson(json);
 
   @override
   final String id;
   @override
-  final Offset offset;
+  final double dx;
+  @override
+  final double dy;
 
   @override
   String toString() {
-    return 'Node(id: $id, offset: $offset)';
+    return 'Node(id: $id, dx: $dx, dy: $dy)';
   }
 
   @override
@@ -117,28 +139,43 @@ class _$NodeImpl extends _Node {
         (other.runtimeType == runtimeType &&
             other is _$NodeImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.offset, offset) || other.offset == offset));
+            (identical(other.dx, dx) || other.dx == dx) &&
+            (identical(other.dy, dy) || other.dy == dy));
   }
 
+  @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, offset);
+  int get hashCode => Object.hash(runtimeType, id, dx, dy);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$NodeImplCopyWith<_$NodeImpl> get copyWith =>
       __$$NodeImplCopyWithImpl<_$NodeImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$NodeImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _Node extends Node {
-  factory _Node({required final String id, required final Offset offset}) =
-      _$NodeImpl;
+  factory _Node(
+      {required final String id,
+      required final double dx,
+      required final double dy}) = _$NodeImpl;
   _Node._() : super._();
+
+  factory _Node.fromJson(Map<String, dynamic> json) = _$NodeImpl.fromJson;
 
   @override
   String get id;
   @override
-  Offset get offset;
+  double get dx;
+  @override
+  double get dy;
   @override
   @JsonKey(ignore: true)
   _$$NodeImplCopyWith<_$NodeImpl> get copyWith =>

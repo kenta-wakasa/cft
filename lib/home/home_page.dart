@@ -5,6 +5,7 @@ import 'package:cft/performance/performance_page.dart';
 import 'package:cft/persistence_attention/persistence_attention_page.dart';
 import 'package:cft/select_attention/select_attention_page.dart';
 import 'package:cft/semantic_fluency/semantic_fluency_page.dart';
+import 'package:cft/semantic_understanding.dart/semantic_understanding_page.dart';
 import 'package:cft/test_log/test_log_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -93,6 +94,19 @@ class HomePage extends ConsumerWidget {
                       context.go(ImmediateMemoryPage.path);
                     },
                     child: const Text('即時記憶'),
+                  ),
+                ),
+
+                const Gap(16),
+
+                /// 意味理解
+                SizedBox(
+                  width: 160,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      context.go(SemanticUnderstandingPage.path);
+                    },
+                    child: const Text('意味理解'),
                   ),
                 ),
 

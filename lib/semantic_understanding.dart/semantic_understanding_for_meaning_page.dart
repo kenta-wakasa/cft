@@ -29,11 +29,11 @@ class _SemanticUnderstandingPageState
 
   void start() {
     problems = [
-      for (var index = 0; index < meaningProblems.length; index++)
+      for (var index = 0; index < problems.length; index++)
         if (index == 0)
-          meaningProblems[index].copyWith(startedAt: DateTime.now())
+          problems[index].copyWith(startedAt: DateTime.now())
         else
-          meaningProblems[index]
+          problems[index]
     ];
     setState(() {
       isReady = true;

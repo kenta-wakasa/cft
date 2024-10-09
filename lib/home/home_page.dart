@@ -5,6 +5,7 @@ import 'package:cft/performance/performance_page.dart';
 import 'package:cft/persistence_attention/persistence_attention_page.dart';
 import 'package:cft/select_attention/select_attention_page.dart';
 import 'package:cft/semantic_fluency/semantic_fluency_page.dart';
+import 'package:cft/semantic_understanding.dart/semantic_understanding_for_calculation_page.dart';
 import 'package:cft/semantic_understanding.dart/semantic_understanding_for_meaning_page.dart';
 import 'package:cft/test_log/test_log_page.dart';
 import 'package:flutter/material.dart';
@@ -106,7 +107,20 @@ class HomePage extends ConsumerWidget {
                     onPressed: () {
                       context.go(SemanticUnderstandingForMeaningPage.path);
                     },
-                    child: const Text('意味理解'),
+                    child: const Text('意味理解・意味'),
+                  ),
+                ),
+
+                const Gap(16),
+
+                /// 意味理解
+                SizedBox(
+                  width: 160,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      context.go(SemanticUnderstandingForCalculationPage.path);
+                    },
+                    child: const Text('意味理解・計算'),
                   ),
                 ),
 

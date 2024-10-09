@@ -27,6 +27,9 @@ mixin _$MeaningProblem {
   DateTime? get startedAt => throw _privateConstructorUsedError;
   DateTime? get answeredAt => throw _privateConstructorUsedError;
 
+  /// 得点 (0-2) 人が後で採点する
+  int? get score => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $MeaningProblemCopyWith<MeaningProblem> get copyWith =>
@@ -45,7 +48,8 @@ abstract class $MeaningProblemCopyWith<$Res> {
       Difficulty difficulty,
       String userAns,
       DateTime? startedAt,
-      DateTime? answeredAt});
+      DateTime? answeredAt,
+      int? score});
 }
 
 /// @nodoc
@@ -67,6 +71,7 @@ class _$MeaningProblemCopyWithImpl<$Res, $Val extends MeaningProblem>
     Object? userAns = null,
     Object? startedAt = freezed,
     Object? answeredAt = freezed,
+    Object? score = freezed,
   }) {
     return _then(_value.copyWith(
       question: null == question
@@ -93,6 +98,10 @@ class _$MeaningProblemCopyWithImpl<$Res, $Val extends MeaningProblem>
           ? _value.answeredAt
           : answeredAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      score: freezed == score
+          ? _value.score
+          : score // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -111,7 +120,8 @@ abstract class _$$MeaningProblemImplCopyWith<$Res>
       Difficulty difficulty,
       String userAns,
       DateTime? startedAt,
-      DateTime? answeredAt});
+      DateTime? answeredAt,
+      int? score});
 }
 
 /// @nodoc
@@ -131,6 +141,7 @@ class __$$MeaningProblemImplCopyWithImpl<$Res>
     Object? userAns = null,
     Object? startedAt = freezed,
     Object? answeredAt = freezed,
+    Object? score = freezed,
   }) {
     return _then(_$MeaningProblemImpl(
       question: null == question
@@ -157,6 +168,10 @@ class __$$MeaningProblemImplCopyWithImpl<$Res>
           ? _value.answeredAt
           : answeredAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      score: freezed == score
+          ? _value.score
+          : score // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -170,7 +185,8 @@ class _$MeaningProblemImpl extends _MeaningProblem {
       required this.difficulty,
       this.userAns = '',
       this.startedAt,
-      this.answeredAt})
+      this.answeredAt,
+      this.score})
       : _commonReasons = commonReasons,
         super._();
 
@@ -197,9 +213,13 @@ class _$MeaningProblemImpl extends _MeaningProblem {
   @override
   final DateTime? answeredAt;
 
+  /// 得点 (0-2) 人が後で採点する
+  @override
+  final int? score;
+
   @override
   String toString() {
-    return 'MeaningProblem(question: $question, commonReasons: $commonReasons, difficulty: $difficulty, userAns: $userAns, startedAt: $startedAt, answeredAt: $answeredAt)';
+    return 'MeaningProblem(question: $question, commonReasons: $commonReasons, difficulty: $difficulty, userAns: $userAns, startedAt: $startedAt, answeredAt: $answeredAt, score: $score)';
   }
 
   @override
@@ -217,7 +237,8 @@ class _$MeaningProblemImpl extends _MeaningProblem {
             (identical(other.startedAt, startedAt) ||
                 other.startedAt == startedAt) &&
             (identical(other.answeredAt, answeredAt) ||
-                other.answeredAt == answeredAt));
+                other.answeredAt == answeredAt) &&
+            (identical(other.score, score) || other.score == score));
   }
 
   @JsonKey(ignore: true)
@@ -229,7 +250,8 @@ class _$MeaningProblemImpl extends _MeaningProblem {
       difficulty,
       userAns,
       startedAt,
-      answeredAt);
+      answeredAt,
+      score);
 
   @JsonKey(ignore: true)
   @override
@@ -253,7 +275,8 @@ abstract class _MeaningProblem extends MeaningProblem {
       required final Difficulty difficulty,
       final String userAns,
       final DateTime? startedAt,
-      final DateTime? answeredAt}) = _$MeaningProblemImpl;
+      final DateTime? answeredAt,
+      final int? score}) = _$MeaningProblemImpl;
   _MeaningProblem._() : super._();
 
   factory _MeaningProblem.fromJson(Map<String, dynamic> json) =
@@ -271,6 +294,10 @@ abstract class _MeaningProblem extends MeaningProblem {
   DateTime? get startedAt;
   @override
   DateTime? get answeredAt;
+  @override
+
+  /// 得点 (0-2) 人が後で採点する
+  int? get score;
   @override
   @JsonKey(ignore: true)
   _$$MeaningProblemImplCopyWith<_$MeaningProblemImpl> get copyWith =>

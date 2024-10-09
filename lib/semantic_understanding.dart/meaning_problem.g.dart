@@ -20,6 +20,7 @@ _$MeaningProblemImpl _$$MeaningProblemImplFromJson(Map<String, dynamic> json) =>
       answeredAt: json['answeredAt'] == null
           ? null
           : DateTime.parse(json['answeredAt'] as String),
+      score: (json['score'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$MeaningProblemImplToJson(
@@ -31,6 +32,7 @@ Map<String, dynamic> _$$MeaningProblemImplToJson(
       'userAns': instance.userAns,
       'startedAt': instance.startedAt?.toIso8601String(),
       'answeredAt': instance.answeredAt?.toIso8601String(),
+      'score': instance.score,
     };
 
 const _$DifficultyEnumMap = {

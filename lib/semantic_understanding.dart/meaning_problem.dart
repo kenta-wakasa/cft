@@ -12,6 +12,9 @@ class MeaningProblem with _$MeaningProblem {
     @Default('') String userAns,
     DateTime? startedAt,
     DateTime? answeredAt,
+
+    /// 得点 (0-2) 人が後で採点する
+    int? score,
   }) = _MeaningProblem;
   const MeaningProblem._();
 

@@ -23,6 +23,12 @@ mixin _$PerformanceProblem {
   Graph get graph => throw _privateConstructorUsedError;
   List<String> get questionTexts => throw _privateConstructorUsedError;
 
+  /// S→A→G みたいな感じ
+  List<String> get answerTexts => throw _privateConstructorUsedError;
+  List<String> get userAnswers => throw _privateConstructorUsedError;
+  DateTime? get startedAt => throw _privateConstructorUsedError;
+  List<DateTime> get answeredAtList => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $PerformanceProblemCopyWith<PerformanceProblem> get copyWith =>
@@ -35,7 +41,13 @@ abstract class $PerformanceProblemCopyWith<$Res> {
           PerformanceProblem value, $Res Function(PerformanceProblem) then) =
       _$PerformanceProblemCopyWithImpl<$Res, PerformanceProblem>;
   @useResult
-  $Res call({Graph graph, List<String> questionTexts});
+  $Res call(
+      {Graph graph,
+      List<String> questionTexts,
+      List<String> answerTexts,
+      List<String> userAnswers,
+      DateTime? startedAt,
+      List<DateTime> answeredAtList});
 
   $GraphCopyWith<$Res> get graph;
 }
@@ -55,6 +67,10 @@ class _$PerformanceProblemCopyWithImpl<$Res, $Val extends PerformanceProblem>
   $Res call({
     Object? graph = null,
     Object? questionTexts = null,
+    Object? answerTexts = null,
+    Object? userAnswers = null,
+    Object? startedAt = freezed,
+    Object? answeredAtList = null,
   }) {
     return _then(_value.copyWith(
       graph: null == graph
@@ -65,6 +81,22 @@ class _$PerformanceProblemCopyWithImpl<$Res, $Val extends PerformanceProblem>
           ? _value.questionTexts
           : questionTexts // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      answerTexts: null == answerTexts
+          ? _value.answerTexts
+          : answerTexts // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      userAnswers: null == userAnswers
+          ? _value.userAnswers
+          : userAnswers // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      startedAt: freezed == startedAt
+          ? _value.startedAt
+          : startedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      answeredAtList: null == answeredAtList
+          ? _value.answeredAtList
+          : answeredAtList // ignore: cast_nullable_to_non_nullable
+              as List<DateTime>,
     ) as $Val);
   }
 
@@ -85,7 +117,13 @@ abstract class _$$PerformanceProblemImplCopyWith<$Res>
       __$$PerformanceProblemImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Graph graph, List<String> questionTexts});
+  $Res call(
+      {Graph graph,
+      List<String> questionTexts,
+      List<String> answerTexts,
+      List<String> userAnswers,
+      DateTime? startedAt,
+      List<DateTime> answeredAtList});
 
   @override
   $GraphCopyWith<$Res> get graph;
@@ -104,6 +142,10 @@ class __$$PerformanceProblemImplCopyWithImpl<$Res>
   $Res call({
     Object? graph = null,
     Object? questionTexts = null,
+    Object? answerTexts = null,
+    Object? userAnswers = null,
+    Object? startedAt = freezed,
+    Object? answeredAtList = null,
   }) {
     return _then(_$PerformanceProblemImpl(
       graph: null == graph
@@ -114,6 +156,22 @@ class __$$PerformanceProblemImplCopyWithImpl<$Res>
           ? _value._questionTexts
           : questionTexts // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      answerTexts: null == answerTexts
+          ? _value._answerTexts
+          : answerTexts // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      userAnswers: null == userAnswers
+          ? _value._userAnswers
+          : userAnswers // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      startedAt: freezed == startedAt
+          ? _value.startedAt
+          : startedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      answeredAtList: null == answeredAtList
+          ? _value._answeredAtList
+          : answeredAtList // ignore: cast_nullable_to_non_nullable
+              as List<DateTime>,
     ));
   }
 }
@@ -122,8 +180,16 @@ class __$$PerformanceProblemImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$PerformanceProblemImpl extends _PerformanceProblem {
   _$PerformanceProblemImpl(
-      {required this.graph, required final List<String> questionTexts})
+      {required this.graph,
+      required final List<String> questionTexts,
+      required final List<String> answerTexts,
+      final List<String> userAnswers = const [],
+      this.startedAt,
+      final List<DateTime> answeredAtList = const []})
       : _questionTexts = questionTexts,
+        _answerTexts = answerTexts,
+        _userAnswers = userAnswers,
+        _answeredAtList = answeredAtList,
         super._();
 
   factory _$PerformanceProblemImpl.fromJson(Map<String, dynamic> json) =>
@@ -139,9 +205,40 @@ class _$PerformanceProblemImpl extends _PerformanceProblem {
     return EqualUnmodifiableListView(_questionTexts);
   }
 
+  /// S→A→G みたいな感じ
+  final List<String> _answerTexts;
+
+  /// S→A→G みたいな感じ
+  @override
+  List<String> get answerTexts {
+    if (_answerTexts is EqualUnmodifiableListView) return _answerTexts;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_answerTexts);
+  }
+
+  final List<String> _userAnswers;
+  @override
+  @JsonKey()
+  List<String> get userAnswers {
+    if (_userAnswers is EqualUnmodifiableListView) return _userAnswers;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_userAnswers);
+  }
+
+  @override
+  final DateTime? startedAt;
+  final List<DateTime> _answeredAtList;
+  @override
+  @JsonKey()
+  List<DateTime> get answeredAtList {
+    if (_answeredAtList is EqualUnmodifiableListView) return _answeredAtList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_answeredAtList);
+  }
+
   @override
   String toString() {
-    return 'PerformanceProblem(graph: $graph, questionTexts: $questionTexts)';
+    return 'PerformanceProblem(graph: $graph, questionTexts: $questionTexts, answerTexts: $answerTexts, userAnswers: $userAnswers, startedAt: $startedAt, answeredAtList: $answeredAtList)';
   }
 
   @override
@@ -151,13 +248,27 @@ class _$PerformanceProblemImpl extends _PerformanceProblem {
             other is _$PerformanceProblemImpl &&
             (identical(other.graph, graph) || other.graph == graph) &&
             const DeepCollectionEquality()
-                .equals(other._questionTexts, _questionTexts));
+                .equals(other._questionTexts, _questionTexts) &&
+            const DeepCollectionEquality()
+                .equals(other._answerTexts, _answerTexts) &&
+            const DeepCollectionEquality()
+                .equals(other._userAnswers, _userAnswers) &&
+            (identical(other.startedAt, startedAt) ||
+                other.startedAt == startedAt) &&
+            const DeepCollectionEquality()
+                .equals(other._answeredAtList, _answeredAtList));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, graph, const DeepCollectionEquality().hash(_questionTexts));
+      runtimeType,
+      graph,
+      const DeepCollectionEquality().hash(_questionTexts),
+      const DeepCollectionEquality().hash(_answerTexts),
+      const DeepCollectionEquality().hash(_userAnswers),
+      startedAt,
+      const DeepCollectionEquality().hash(_answeredAtList));
 
   @JsonKey(ignore: true)
   @override
@@ -177,7 +288,11 @@ class _$PerformanceProblemImpl extends _PerformanceProblem {
 abstract class _PerformanceProblem extends PerformanceProblem {
   factory _PerformanceProblem(
       {required final Graph graph,
-      required final List<String> questionTexts}) = _$PerformanceProblemImpl;
+      required final List<String> questionTexts,
+      required final List<String> answerTexts,
+      final List<String> userAnswers,
+      final DateTime? startedAt,
+      final List<DateTime> answeredAtList}) = _$PerformanceProblemImpl;
   _PerformanceProblem._() : super._();
 
   factory _PerformanceProblem.fromJson(Map<String, dynamic> json) =
@@ -187,6 +302,16 @@ abstract class _PerformanceProblem extends PerformanceProblem {
   Graph get graph;
   @override
   List<String> get questionTexts;
+  @override
+
+  /// S→A→G みたいな感じ
+  List<String> get answerTexts;
+  @override
+  List<String> get userAnswers;
+  @override
+  DateTime? get startedAt;
+  @override
+  List<DateTime> get answeredAtList;
   @override
   @JsonKey(ignore: true)
   _$$PerformanceProblemImplCopyWith<_$PerformanceProblemImpl> get copyWith =>

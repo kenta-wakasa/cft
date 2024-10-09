@@ -1,14 +1,18 @@
 import 'dart:math';
 
 import 'package:arrow_path/arrow_path.dart';
+import 'package:cft/auth/firebase_auth.dart';
 import 'package:cft/common/common_app_bar.dart';
 import 'package:cft/performance/edge.dart';
 import 'package:cft/performance/graph.dart';
 import 'package:cft/performance/node.dart';
 import 'package:cft/performance/performance_problem.dart';
+import 'package:cft/performance/performance_problem_log.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class PerformancePage extends ConsumerStatefulWidget {
   const PerformancePage({super.key});
@@ -24,74 +28,97 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
   static const canvasSize = Size(400, 400);
 
   var currentQuestionIndex = 0;
+  var currentGraphIndex = 0;
 
   /// 問題はここに追加していく
-  final performanceProblem = PerformanceProblem(
-    graph: Graph(
-      nodes: [
-        Node(
-          id: 'S',
-          dx: 100,
-          dy: 0,
-        ),
-        Node(
-          id: 'A',
-          dx: 25,
-          dy: 160,
-        ),
-        Node(
-          id: 'B',
-          dx: 240,
-          dy: 160,
-        ),
-        Node(
-          id: 'G',
-          dx: 240,
-          dy: 300,
-        ),
+  var performanceProblems = [
+    PerformanceProblem(
+      graph: Graph(
+        nodes: [
+          Node(
+            id: 'S',
+            dx: 100,
+            dy: 0,
+          ),
+          Node(
+            id: 'A',
+            dx: 25,
+            dy: 160,
+          ),
+          Node(
+            id: 'B',
+            dx: 240,
+            dy: 160,
+          ),
+          Node(
+            id: 'G',
+            dx: 240,
+            dy: 300,
+          ),
+        ],
+        edges: [
+          Edge(
+            sourceId: 'S',
+            destinationId: 'A',
+            fee: 50,
+            time: 10,
+          ),
+          Edge(
+            sourceId: 'S',
+            destinationId: 'B',
+            fee: 150,
+            time: 20,
+          ),
+          Edge(
+            sourceId: 'A',
+            destinationId: 'B',
+            fee: 10,
+            time: 15,
+          ),
+          Edge(
+            sourceId: 'A',
+            destinationId: 'G',
+            fee: 200,
+            time: 20,
+          ),
+          Edge(
+            sourceId: 'B',
+            destinationId: 'G',
+            fee: 75,
+            time: 10,
+          ),
+        ],
+      ),
+      questionTexts: [
+        'それぞれの経路に、かかる時間と料金を表示しています。Sを出発点として、30分以内にGに到着したいとき、もっとも料金が低くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。',
+        '次の問題です。経路はそのままですが、今度は必ずAを通り、Sを出発点として、30分以内にGに到着したいとき、もっとも料金が低くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。'
       ],
-      edges: [
-        Edge(
-          sourceId: 'S',
-          destinationId: 'A',
-          fee: 50,
-          time: 10,
-        ),
-        Edge(
-          sourceId: 'S',
-          destinationId: 'B',
-          fee: 150,
-          time: 20,
-        ),
-        Edge(
-          sourceId: 'A',
-          destinationId: 'B',
-          fee: 10,
-          time: 15,
-        ),
-        Edge(
-          sourceId: 'A',
-          destinationId: 'G',
-          fee: 200,
-          time: 20,
-        ),
-        Edge(
-          sourceId: 'B',
-          destinationId: 'G',
-          fee: 75,
-          time: 10,
-        ),
+      answerTexts: [
+        'S→B→G',
+        'S→A→G',
       ],
     ),
-    questionTexts: [
-      'それぞれの経路に、かかる時間と料金を表示しています。Sを出発点として、30分以内にGに到着したいとき、もっとも料金が低くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。',
-      '次の問題です。経路はそのままですが、今度は必ずAを通り、Sを出発点として、30分以内にGに到着したいとき、もっとも料金が低くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。'
-    ],
-  );
+  ];
 
   late final selectedNodeIds = [
-    performanceProblem.graph.nodes.first.id,
+    performanceProblems.first.graph.nodes.first.id,
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    performanceProblems = [
+      for (final problem in performanceProblems)
+        if (problem == performanceProblems.first)
+          problem.copyWith(
+            startedAt: DateTime.now(),
+          )
+        else
+          problem
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,7 +130,8 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                performanceProblem.questionTexts[currentQuestionIndex],
+                performanceProblems[currentGraphIndex]
+                    .questionTexts[currentQuestionIndex],
               ),
               const Gap(16),
               Expanded(
@@ -119,16 +147,21 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
                           CustomPaint(
                             size: Size(canvasSize.width, canvasSize.height),
                             painter: EdgeRender(
-                                performanceProblem.graph, selectedNodeIds),
+                                performanceProblems[currentGraphIndex].graph,
+                                selectedNodeIds),
                           ),
-                          ...performanceProblem.graph.nodes.map((node) {
+                          ...performanceProblems[currentGraphIndex]
+                              .graph
+                              .nodes
+                              .map((node) {
                             return Positioned(
                               left: node.dx,
                               top: node.dy,
                               child: GestureDetector(
                                 onTap: () {
                                   /// 選択したNodeの最後が入ってくるものであれば追加する
-                                  if (performanceProblem.graph
+                                  if (performanceProblems[currentGraphIndex]
+                                      .graph
                                       .inNodes(node)
                                       .map((e) => e.id)
                                       .contains(selectedNodeIds.last)) {
@@ -216,22 +249,110 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
                             child: const Text('キャンセル'),
                           ),
                           TextButton(
-                            onPressed: () {
-                              // TODO(kenta-wakasa): 計画の変更
-                              Navigator.of(context).pop();
+                            onPressed: () async {
+                              /// 回答の記録
+                              performanceProblems = [
+                                for (final problem in performanceProblems)
+                                  if (problem ==
+                                      performanceProblems[currentGraphIndex])
+                                    problem.copyWith(
+                                      userAnswers: [
+                                        ...problem.userAnswers,
+                                        selectedNodeIds.join('→'),
+                                      ],
+                                      answeredAtList: [
+                                        ...problem.answeredAtList,
+                                        DateTime.now(),
+                                      ],
+                                    )
+                                  else
+                                    problem
+                              ];
+
                               setState(() {
                                 selectedNodeIds.clear();
                                 selectedNodeIds.add(
-                                    performanceProblem.graph.nodes.first.id);
+                                  performanceProblems[currentGraphIndex]
+                                      .graph
+                                      .nodes
+                                      .first
+                                      .id,
+                                );
                               });
-                              if (performanceProblem.questionTexts.length ==
+
+                              /// これが最終問題文の場合、終了するか、次の問題に進む
+                              if (performanceProblems[currentGraphIndex]
+                                      .questionTexts
+                                      .length ==
                                   currentQuestionIndex + 1) {
-                                // TODO(kenta-wakasa): 次のグラフに進む
-                              } else {
+                                /// 最終問題だった場合
+                                if (performanceProblems.length ==
+                                    currentGraphIndex + 1) {
+                                  /// ログの送信
+                                  final uid = ref
+                                      .read(firebaseAuthProvider)
+                                      .currentUser!
+                                      .uid;
+                                  await FirebaseFirestore.instance
+                                      .collection('performance_problem_log')
+                                      .add(
+                                        PerformanceProblemLog(
+                                                uid: uid,
+                                                performanceProblems:
+                                                    performanceProblems)
+                                            .toJson(),
+                                      );
+
+                                  await showDialog<void>(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        content: const Text('お疲れ様でした！'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('ホームに戻る'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                  context.go('/home');
+                                } else {
+                                  await showDialog<void>(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        content: const Text('次の問題では経路図が変わります。'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('次に進む'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+
+                                  /// 次のグラフへ
+                                  setState(() {
+                                    currentGraphIndex++;
+                                  });
+                                }
+                              }
+
+                              /// 次の問題に進む
+                              else {
                                 setState(() {
                                   currentQuestionIndex++;
                                 });
                               }
+                              // TODO(kenta-wakasa): 計画の変更
+                              Navigator.of(context).pop();
                             },
                             child: const Text('決定'),
                           ),

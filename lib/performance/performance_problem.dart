@@ -9,6 +9,12 @@ class PerformanceProblem with _$PerformanceProblem {
   factory PerformanceProblem({
     required Graph graph,
     required List<String> questionTexts,
+
+    /// S→A→G みたいな感じ
+    required List<String> answerTexts,
+    @Default([]) List<String> userAnswers,
+    DateTime? startedAt,
+    @Default([]) List<DateTime> answeredAtList,
   }) = _PerformanceProblem;
   const PerformanceProblem._();
 

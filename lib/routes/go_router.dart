@@ -5,7 +5,7 @@ import 'package:cft/performance/performance_page.dart';
 import 'package:cft/persistence_attention/persistence_attention_page.dart';
 import 'package:cft/select_attention/select_attention_page.dart';
 import 'package:cft/semantic_fluency/semantic_fluency_page.dart';
-import 'package:cft/semantic_understanding.dart/semantic_understanding_page.dart';
+import 'package:cft/semantic_understanding.dart/semantic_understanding_for_meaning_page.dart';
 import 'package:cft/test_log/test_log_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -80,9 +80,9 @@ final goRouteProvider = Provider((ref) {
       ),
 
       GoRoute(
-        path: SemanticUnderstandingPage.path,
-        pageBuilder: (context, state) =>
-            const NoTransitionPage(child: SemanticUnderstandingPage()),
+        path: SemanticUnderstandingForMeaningPage.path,
+        pageBuilder: (context, state) => const NoTransitionPage(
+            child: SemanticUnderstandingForMeaningPage()),
       ),
     ],
   );

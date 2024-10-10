@@ -160,67 +160,7 @@ class _ImmediateMemoryPageState extends ConsumerState<ImmediateMemoryPage> {
                                 context: context,
                                 builder: (context) {
                                   return AlertDialog(
-                                    title: const Text('結果'),
-                                    content: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        for (var index = 0;
-                                            index <
-                                                immediateMemoryProblem
-                                                    .randomNumbers.length;
-                                            index++)
-                                          Row(
-                                            children: [
-                                              Text('問題${index + 1}：'),
-                                              SizedBox(
-                                                width: 64,
-                                                child: Text(
-                                                    immediateMemoryProblem
-                                                        .randomNumbers[index]),
-                                              ),
-                                              const Gap(8),
-                                              const Text('回答：'),
-                                              SizedBox(
-                                                width: 64,
-                                                child: Text(
-                                                    immediateMemoryProblem
-                                                            .userAnswerNumbers[
-                                                        index]),
-                                              ),
-                                              const Gap(8),
-                                              Text(
-                                                immediateMemoryProblem
-                                                                .randomNumbers[
-                                                            index] ==
-                                                        immediateMemoryProblem
-                                                                .userAnswerNumbers[
-                                                            index]
-                                                    ? '正解'
-                                                    : '不正解',
-                                              ),
-                                            ],
-                                          ),
-
-                                        /// 正解数
-
-                                        Text(
-                                          '正解数：${immediateMemoryProblem.correctAnswerCount}',
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                          ),
-                                        ),
-
-                                        /// 正解率
-                                        Text(
-                                          '正解率：${(immediateMemoryProblem.correctAnswerCount / immediateMemoryProblem.randomNumbers.length * 100).toStringAsFixed(1)}%',
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                    content: const Text('お疲れ様でした!'),
                                     actions: [
                                       TextButton(
                                         onPressed: () {

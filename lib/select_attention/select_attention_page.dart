@@ -163,27 +163,7 @@ class _SelectAttentionPageState extends ConsumerState<SelectAttentionPage> {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              title: const Text('結果'),
-                              content: SizedBox(
-                                height: 120,
-                                child: Center(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        '正解数: ${selectAttentionProblem.correctAnswerCount}個',
-                                      ),
-                                      Text(
-                                        '誤答数: ${selectAttentionProblem.incorrectAnswerCount}個',
-                                      ),
-                                      Text(
-                                        '正解率: ${selectAttentionProblem.correctRate.toPercent()}',
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              content: const Text('お疲れ様でした!'),
                               actions: [
                                 TextButton(
                                   onPressed: () {

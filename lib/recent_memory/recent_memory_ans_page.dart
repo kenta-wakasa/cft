@@ -27,7 +27,6 @@ class _RecentMemoryPageState extends ConsumerState<RecentMemoryAnsPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     for (final controller in controllers) {
       controller.addListener(() {
@@ -70,23 +69,27 @@ class _RecentMemoryPageState extends ConsumerState<RecentMemoryAnsPage> {
                   onPressed: controllers
                           .any((controller) => controller.text.isEmpty)
                       ? null
-                      : () {
-                          ref.read(recentMemoryProvider.notifier).state =
-                              ref.read(recentMemoryProvider)?.copyWith(
-                                    finishedAt: DateTime.now(),
-                                    answerList: controllers
-                                        .map((controller) => controller.text)
-                                        .toList(),
-                                  );
+                      : () async {
+                          try {
+                            ref.read(recentMemoryProvider.notifier).state =
+                                ref.read(recentMemoryProvider)?.copyWith(
+                                      finishedAt: DateTime.now(),
+                                      answerList: controllers
+                                          .map((controller) => controller.text)
+                                          .toList(),
+                                    );
 
-                          final recentMemoryLog =
-                              ref.read(recentMemoryProvider);
+                            final recentMemoryLog =
+                                ref.read(recentMemoryProvider);
 
-                          FirebaseFirestore.instance
-                              .collection('recent_memory_log')
-                              .add(recentMemoryLog!.toJson());
-
-                          context.go(HomePage.path);
+                            await FirebaseFirestore.instance
+                                .collection('recent_memory_log')
+                                .add(recentMemoryLog!.toJson());
+                          } finally {
+                            if (context.mounted) {
+                              context.go(HomePage.path);
+                            }
+                          }
                         },
                   child: const Text('決定'),
                 ),

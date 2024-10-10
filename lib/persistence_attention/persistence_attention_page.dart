@@ -99,46 +99,46 @@ class _PersistenceAttentionPageState
                     children: [
                       /// Tableで不正解、正回数、正答率を表示
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '不正解:',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                          Text(
-                            '${state.problems.where((e) => e.userAnswer != null).where((e) => !e.isCorrect).length}',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '正解: ',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                          Text(
-                            '${state.problems.where((e) => e.userAnswer != null).where((e) => e.isCorrect).length}',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '正答率:',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                          Text(
-                            '${(state.problems.where((e) => e.userAnswer != null).where((e) => e.isCorrect).length / state.problems.where((e) => e.userAnswer != null).length * 1000).round() * 0.1}%',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ],
-                      ),
-                      const Gap(32),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     Text(
+                      //       '不正解:',
+                      //       style: Theme.of(context).textTheme.bodyLarge,
+                      //     ),
+                      //     Text(
+                      //       '${state.problems.where((e) => e.userAnswer != null).where((e) => !e.isCorrect).length}',
+                      //       style: Theme.of(context).textTheme.bodyLarge,
+                      //     ),
+                      //   ],
+                      // ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     Text(
+                      //       '正解: ',
+                      //       style: Theme.of(context).textTheme.bodyLarge,
+                      //     ),
+                      //     Text(
+                      //       '${state.problems.where((e) => e.userAnswer != null).where((e) => e.isCorrect).length}',
+                      //       style: Theme.of(context).textTheme.bodyLarge,
+                      //     ),
+                      //   ],
+                      // ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     Text(
+                      //       '正答率:',
+                      //       style: Theme.of(context).textTheme.bodyLarge,
+                      //     ),
+                      //     Text(
+                      //       '${(state.problems.where((e) => e.userAnswer != null).where((e) => e.isCorrect).length / state.problems.where((e) => e.userAnswer != null).length * 1000).round() * 0.1}%',
+                      //       style: Theme.of(context).textTheme.bodyLarge,
+                      //     ),
+                      //   ],
+                      // ),
+                      // const Gap(32),
 
                       if (widget.nextPath == null)
                         Center(
@@ -198,37 +198,37 @@ class _PlayingWidgetState extends ConsumerState<PlayingWidget> {
         child: Column(
           children: [
             /// 回答の列挙
-            SizedBox(
-              height: 75,
-              width: 250,
-              child: SingleChildScrollView(
-                reverse: true,
-                child: Wrap(
-                  children: [
-                    for (final problem in state.problems)
-                      SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            if (problem.userAnswer != null)
-                              Text('${problem.userAnswer}'),
-                            Text(
-                              problem.userAnswer == null
-                                  ? '?'
-                                  : problem.userAnswer == problem.answer
-                                      ? '○'
-                                      : '×',
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
-                          ],
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-            ),
+            // SizedBox(
+            //   height: 75,
+            //   width: 250,
+            //   child: SingleChildScrollView(
+            //     reverse: true,
+            //     child: Wrap(
+            //       children: [
+            //         for (final problem in state.problems)
+            //           SizedBox(
+            //             width: 50,
+            //             height: 50,
+            //             child: Stack(
+            //               alignment: Alignment.center,
+            //               children: [
+            //                 if (problem.userAnswer != null)
+            //                   Text('${problem.userAnswer}'),
+            //                 Text(
+            //                   problem.userAnswer == null
+            //                       ? '?'
+            //                       : problem.userAnswer == problem.answer
+            //                           ? '○'
+            //                           : '×',
+            //                   style: Theme.of(context).textTheme.titleLarge,
+            //                 ),
+            //               ],
+            //             ),
+            //           ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
 
             /// タイマー
             if (state.isPlaying)
@@ -332,7 +332,7 @@ class _TimerWidgetState extends ConsumerState<TimerWidget> {
       final state = ref.read(persistenceAttentionNotifierProvider);
       final now = DateTime.now();
       elapsed = (state.startedAt ?? now)
-          .add(const Duration(seconds: 3))
+          .add(const Duration(seconds: 60))
           .difference(now);
       if (elapsed.isNegative) {
         ref.read(persistenceAttentionNotifierProvider.notifier).timeUp();

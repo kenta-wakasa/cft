@@ -2,7 +2,6 @@ import 'package:cft/common/common_app_bar.dart';
 import 'package:cft/home/home_page.dart';
 import 'package:cft/immediate_memory/immediate_memory_page.dart';
 import 'package:cft/recent_memory/recent_memory_log.dart';
-import 'package:cft/select_attention/select_attention_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -91,7 +90,8 @@ class _RecentMemoryPageState extends ConsumerState<RecentMemoryPage> {
                                 context.go(HomePage.path);
                               } else {
                                 context.go(
-                                    '${widget.nextPath!}?nextPath=${ImmediateMemoryPage.path}');
+                                  '${widget.nextPath!}?nextPath=${ImmediateMemoryPage.path}',
+                                );
                               }
                             },
                   child: const Text('決定'),

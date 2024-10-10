@@ -1,4 +1,5 @@
 import 'package:cft/common/common_app_bar.dart';
+import 'package:cft/recent_memory/recent_memory_ans_page.dart';
 import 'package:cft/semantic_fluency/answer_word_with_timestamp.dart';
 import 'package:cft/semantic_fluency/semantic_fluency_log.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,11 +7,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:uuid/v6.dart';
 
 class SemanticFluencyPage extends ConsumerStatefulWidget {
-  const SemanticFluencyPage({super.key});
+  const SemanticFluencyPage({super.key, required this.nextPath});
+
+  final String? nextPath;
 
   static const path = '/semantic_fluency';
 
@@ -166,7 +170,7 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
   Widget build(BuildContext context) {
     if (!isReady) {
       return Scaffold(
-        appBar: const CommonAppBar(),
+        appBar: widget.nextPath == null ? const CommonAppBar() : null,
         body: Center(
           child: SingleChildScrollView(
             child: Padding(
@@ -204,7 +208,7 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
 
     if (isTimeUp) {
       return Scaffold(
-        appBar: const CommonAppBar(),
+        appBar: widget.nextPath == null ? const CommonAppBar() : null,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -217,15 +221,25 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
                 ),
               ),
               const Gap(16),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    isReady = false;
-                    isTimeUp = false;
-                  });
-                },
-                child: const Text('再挑戦'),
-              ),
+              if (widget.nextPath != null)
+                ElevatedButton(
+                  onPressed: () {
+                    context.go(
+                      '${widget.nextPath!}?nextPath=${RecentMemoryAnsPage.path}',
+                    );
+                  },
+                  child: const Text('次のゲーム'),
+                )
+              else
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      isReady = false;
+                      isTimeUp = false;
+                    });
+                  },
+                  child: const Text('再挑戦'),
+                ),
             ],
           ),
         ),
@@ -233,7 +247,7 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
     }
 
     return Scaffold(
-      appBar: const CommonAppBar(),
+      appBar: widget.nextPath == null ? const CommonAppBar() : null,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

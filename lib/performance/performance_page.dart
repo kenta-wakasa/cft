@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:arrow_path/arrow_path.dart';
 import 'package:cft/auth/firebase_auth.dart';
 import 'package:cft/common/common_app_bar.dart';
+import 'package:cft/home/home_page.dart';
 import 'package:cft/performance/edge.dart';
 import 'package:cft/performance/graph.dart';
 import 'package:cft/performance/node.dart';
@@ -15,7 +16,9 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class PerformancePage extends ConsumerStatefulWidget {
-  const PerformancePage({super.key});
+  const PerformancePage({super.key, required this.nextPath});
+
+  final String? nextPath;
 
   static const path = '/performance';
 
@@ -122,7 +125,7 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CommonAppBar(),
+      appBar: widget.nextPath == null ? const CommonAppBar() : null,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -313,13 +316,22 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
                                             onPressed: () {
                                               Navigator.of(context).pop();
                                             },
-                                            child: const Text('ホームに戻る'),
+                                            child: widget.nextPath == null
+                                                ? const Text('ホームに戻る')
+                                                : const Text('次のゲーム'),
                                           ),
                                         ],
                                       );
                                     },
                                   );
-                                  context.go('/home');
+                                  if (!context.mounted) {
+                                    return;
+                                  }
+                                  if (widget.nextPath != null) {
+                                    context.go(widget.nextPath!);
+                                  } else {
+                                    context.go(HomePage.path);
+                                  }
                                 } else {
                                   await showDialog<void>(
                                     context: context,

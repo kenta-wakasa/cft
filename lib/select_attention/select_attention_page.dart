@@ -2,14 +2,18 @@ import 'package:cft/common/common_app_bar.dart';
 import 'package:cft/select_attention/select_attention_log.dart';
 import 'package:cft/select_attention/select_attention_log_provider.dart';
 import 'package:cft/select_attention/select_attention_problem.dart';
+import 'package:cft/semantic_understanding.dart/semantic_understanding_for_calculation_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uuid/v6.dart';
 
 class SelectAttentionPage extends ConsumerStatefulWidget {
-  const SelectAttentionPage({super.key});
+  const SelectAttentionPage({super.key, required this.nextPath});
+
+  final String? nextPath;
 
   static const path = '/select_attention';
 
@@ -26,7 +30,7 @@ class _SelectAttentionPageState extends ConsumerState<SelectAttentionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CommonAppBar(),
+      appBar: widget.nextPath == null ? const CommonAppBar() : null,
       body: isPlaying
           ? Column(
               children: [
@@ -184,16 +188,23 @@ class _SelectAttentionPageState extends ConsumerState<SelectAttentionPage> {
                                 TextButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
-                                    setState(() {
-                                      isPlaying = false;
-                                    });
                                   },
-                                  child: const Text('再挑戦'),
+                                  child: widget.nextPath == null
+                                      ? const Text('再挑戦')
+                                      : const Text('次のゲーム'),
                                 ),
                               ],
                             );
                           },
                         );
+                        if (!context.mounted) {
+                          return;
+                        }
+                        if (widget.nextPath != null) {
+                          context.go(
+                              '${widget.nextPath!}?nextPath=${SemanticUnderstandingForCalculationPage.path}');
+                          return;
+                        }
 
                         selectAttentionProblem =
                             selectAttentionProblem.copyWith(

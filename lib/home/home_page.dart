@@ -3,6 +3,7 @@ import 'package:cft/immediate_memory/immediate_memory_page.dart';
 import 'package:cft/login/login_page.dart';
 import 'package:cft/performance/performance_page.dart';
 import 'package:cft/persistence_attention/persistence_attention_page.dart';
+import 'package:cft/recent_memory/recent_memory_page.dart';
 import 'package:cft/select_attention/select_attention_page.dart';
 import 'package:cft/semantic_fluency/semantic_fluency_page.dart';
 import 'package:cft/semantic_understanding.dart/semantic_understanding_for_calculation_page.dart';
@@ -66,22 +67,22 @@ class HomePage extends ConsumerWidget {
                   width: 160,
                   child: ElevatedButton(
                     onPressed: () {
-                      context.go(PersistenceAttentionPage.path);
+                      context.go(
+                          '${RecentMemoryPage.path}?nextPath=${PersistenceAttentionPage.path}');
                     },
-                    child: const Text('持続性注意'),
+                    child: const Text('通し実験'),
                   ),
                 ),
 
                 const Gap(16),
 
-                /// 選択制注意
                 SizedBox(
                   width: 160,
                   child: ElevatedButton(
                     onPressed: () {
-                      context.go(SelectAttentionPage.path);
+                      context.go(PersistenceAttentionPage.path);
                     },
-                    child: const Text('選択性注意'),
+                    child: const Text('持続性注意'),
                   ),
                 ),
 
@@ -95,6 +96,19 @@ class HomePage extends ConsumerWidget {
                       context.go(ImmediateMemoryPage.path);
                     },
                     child: const Text('即時記憶'),
+                  ),
+                ),
+
+                const Gap(16),
+
+                /// 選択制注意
+                SizedBox(
+                  width: 160,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      context.go(SelectAttentionPage.path);
+                    },
+                    child: const Text('選択性注意'),
                   ),
                 ),
 

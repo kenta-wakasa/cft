@@ -3,6 +3,8 @@ import 'package:cft/immediate_memory/immediate_memory_page.dart';
 import 'package:cft/login/login_page.dart';
 import 'package:cft/performance/performance_page.dart';
 import 'package:cft/persistence_attention/persistence_attention_page.dart';
+import 'package:cft/recent_memory/recent_memory_ans_page.dart';
+import 'package:cft/recent_memory/recent_memory_page.dart';
 import 'package:cft/select_attention/select_attention_page.dart';
 import 'package:cft/semantic_fluency/semantic_fluency_page.dart';
 import 'package:cft/semantic_understanding.dart/semantic_understanding_for_calculation_page.dart';
@@ -46,51 +48,110 @@ final goRouteProvider = Provider((ref) {
 
       GoRoute(
         path: SelectAttentionPage.path,
-        pageBuilder: (context, state) =>
-            const NoTransitionPage(child: SelectAttentionPage()),
+        pageBuilder: (context, state) {
+          final nextPath = state.uri.queryParameters['nextPath'];
+          return NoTransitionPage(
+            child: SelectAttentionPage(
+              nextPath: nextPath,
+            ),
+          );
+        },
       ),
 
       GoRoute(
         path: SemanticFluencyPage.path,
-        pageBuilder: (context, state) =>
-            const NoTransitionPage(child: SemanticFluencyPage()),
+        pageBuilder: (context, state) {
+          final nextPath = state.uri.queryParameters['nextPath'];
+          return NoTransitionPage(
+              child: SemanticFluencyPage(
+            nextPath: nextPath,
+          ));
+        },
       ),
 
       GoRoute(
         path: PersistenceAttentionPage.path,
-        pageBuilder: (context, state) =>
-            const NoTransitionPage(child: PersistenceAttentionPage()),
+        pageBuilder: (context, state) {
+          final nextPath = state.uri.queryParameters['nextPath'];
+          return NoTransitionPage(
+            child: PersistenceAttentionPage(
+              nextPath: nextPath,
+            ),
+          );
+        },
       ),
 
       GoRoute(
         path: SelectAttentionPage.path,
-        pageBuilder: (context, state) =>
-            const NoTransitionPage(child: SelectAttentionPage()),
+        pageBuilder: (context, state) {
+          final nextPath = state.uri.queryParameters['nextPath'];
+          return NoTransitionPage(
+              child: SelectAttentionPage(
+            nextPath: nextPath,
+          ));
+        },
       ),
 
       GoRoute(
         path: ImmediateMemoryPage.path,
-        pageBuilder: (context, state) =>
-            const NoTransitionPage(child: ImmediateMemoryPage()),
+        pageBuilder: (context, state) {
+          final nextPath = state.uri.queryParameters['nextPath'];
+          return NoTransitionPage(
+              child: ImmediateMemoryPage(
+            nextPath: nextPath,
+          ));
+        },
       ),
 
       GoRoute(
         path: PerformancePage.path,
-        pageBuilder: (context, state) =>
-            const NoTransitionPage(child: PerformancePage()),
+        pageBuilder: (context, state) {
+          final nextPath = state.uri.queryParameters['nextPath'];
+          return NoTransitionPage(
+              child: PerformancePage(
+            nextPath: nextPath,
+          ));
+        },
       ),
 
       GoRoute(
         path: SemanticUnderstandingForMeaningPage.path,
-        pageBuilder: (context, state) => const NoTransitionPage(
-            child: SemanticUnderstandingForMeaningPage()),
+        pageBuilder: (context, state) {
+          final nextPath = state.uri.queryParameters['nextPath'];
+          return NoTransitionPage(
+              child: SemanticUnderstandingForMeaningPage(
+            nextPath: nextPath,
+          ));
+        },
       ),
 
       GoRoute(
         path: SemanticUnderstandingForCalculationPage.path,
-        pageBuilder: (context, state) => const NoTransitionPage(
-          child: SemanticUnderstandingForCalculationPage(),
-        ),
+        pageBuilder: (context, state) {
+          final nextPath = state.uri.queryParameters['nextPath'];
+          return NoTransitionPage(
+            child: SemanticUnderstandingForCalculationPage(nextPath: nextPath),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: RecentMemoryPage.path,
+        pageBuilder: (context, state) {
+          final nextPath = state.uri.queryParameters['nextPath'];
+          return NoTransitionPage(
+            child: RecentMemoryPage(nextPath: nextPath),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: RecentMemoryAnsPage.path,
+        pageBuilder: (context, state) {
+          return const NoTransitionPage(
+            child: RecentMemoryAnsPage(),
+          );
+        },
       ),
     ],
   );

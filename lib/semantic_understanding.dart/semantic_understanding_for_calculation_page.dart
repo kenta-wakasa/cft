@@ -1,6 +1,7 @@
 import 'package:cft/common/common_app_bar.dart';
 import 'package:cft/common/input_num_widget.dart';
 import 'package:cft/home/home_page.dart';
+import 'package:cft/performance/performance_page.dart';
 import 'package:cft/semantic_understanding.dart/calculation_problem.dart';
 import 'package:cft/semantic_understanding.dart/calculation_problem_log.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +12,10 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class SemanticUnderstandingForCalculationPage extends ConsumerStatefulWidget {
-  const SemanticUnderstandingForCalculationPage({super.key});
+  const SemanticUnderstandingForCalculationPage(
+      {super.key, required this.nextPath});
+
+  final String? nextPath;
 
   static const path = '/semantic_understanding_for_calculation';
 
@@ -55,19 +59,28 @@ class _SemanticUnderstandingPageState
   Widget build(BuildContext context) {
     if (isFinished) {
       return Scaffold(
-        appBar: const CommonAppBar(),
+        appBar: widget.nextPath == null ? const CommonAppBar() : null,
         body: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               const Text('お疲れ様でした！'),
               const Gap(16),
-              ElevatedButton(
-                onPressed: () {
-                  context.go(HomePage.path);
-                },
-                child: const Text('ホームに戻る'),
-              ),
+              if (widget.nextPath != null)
+                ElevatedButton(
+                  onPressed: () {
+                    context.go(
+                        '${widget.nextPath!}?nextPath=${PerformancePage.path}');
+                  },
+                  child: const Text('次のゲーム'),
+                )
+              else
+                ElevatedButton(
+                  onPressed: () {
+                    context.go(HomePage.path);
+                  },
+                  child: const Text('ホームに戻る'),
+                ),
             ],
           ),
         ),
@@ -108,7 +121,7 @@ class _SemanticUnderstandingPageState
     }
 
     return Scaffold(
-      appBar: const CommonAppBar(),
+      appBar: widget.nextPath == null ? const CommonAppBar() : null,
       body: Center(
         child: SingleChildScrollView(
           child: Padding(

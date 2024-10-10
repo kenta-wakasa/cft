@@ -5,14 +5,18 @@ import 'package:cft/common/input_num_widget.dart';
 import 'package:cft/immediate_memory/immediate_memory_log.dart';
 import 'package:cft/immediate_memory/immediate_memory_log_provider.dart';
 import 'package:cft/immediate_memory/immediate_memory_problem.dart';
+import 'package:cft/semantic_understanding.dart/semantic_understanding_for_meaning_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uuid/v6.dart';
 
 class ImmediateMemoryPage extends ConsumerStatefulWidget {
-  const ImmediateMemoryPage({super.key});
+  const ImmediateMemoryPage({super.key, required this.nextPath});
+
+  final String? nextPath;
 
   static const path = '/immediate_memory';
 
@@ -39,7 +43,7 @@ class _ImmediateMemoryPageState extends ConsumerState<ImmediateMemoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CommonAppBar(),
+      appBar: widget.nextPath == null ? const CommonAppBar() : null,
       body: Center(
         child: SingleChildScrollView(
           child: !isPlaying
@@ -222,12 +226,24 @@ class _ImmediateMemoryPageState extends ConsumerState<ImmediateMemoryPage> {
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
-                                        child: const Text('再挑戦'),
+                                        child: widget.nextPath == null
+                                            ? const Text('再挑戦')
+                                            : const Text('次のゲーム'),
                                       ),
                                     ],
                                   );
                                 },
                               );
+
+                              if (widget.nextPath != null) {
+                                if (!context.mounted) {
+                                  return;
+                                }
+                                context.go(
+                                    '${widget.nextPath!}?nextPath=${SemanticUnderstandingForMeaningPage.path}');
+                                return;
+                              }
+
                               immediateMemoryProblem =
                                   ImmediateMemoryProblem.generate();
                               isPlaying = false;

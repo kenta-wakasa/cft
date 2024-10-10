@@ -3,13 +3,20 @@ import 'dart:async';
 import 'package:cft/common/common_app_bar.dart';
 import 'package:cft/common/input_num_widget.dart';
 import 'package:cft/persistence_attention/persistence_attention_notifier.dart';
+import 'package:cft/select_attention/select_attention_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class PersistenceAttentionPage extends ConsumerStatefulWidget {
-  const PersistenceAttentionPage({super.key});
+  const PersistenceAttentionPage({
+    super.key,
+    required this.nextPath,
+  });
+
+  final String? nextPath;
 
   static const path = '/persistence_attention';
 
@@ -32,7 +39,7 @@ class _PersistenceAttentionPageState
     final state = ref.watch(persistenceAttentionNotifierProvider);
 
     return Scaffold(
-      appBar: const CommonAppBar(),
+      appBar: widget.nextPath == null ? const CommonAppBar() : null,
       body: Stack(
         children: [
           PlayingWidget(
@@ -133,18 +140,29 @@ class _PersistenceAttentionPageState
                       ),
                       const Gap(32),
 
-                      Center(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            ref
-                                .read(persistenceAttentionNotifierProvider
-                                    .notifier)
-                                .start();
-                            controller.clear();
-                          },
-                          child: const Text('再挑戦'),
-                        ),
-                      ),
+                      if (widget.nextPath == null)
+                        Center(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              ref
+                                  .read(persistenceAttentionNotifierProvider
+                                      .notifier)
+                                  .start();
+                              controller.clear();
+                            },
+                            child: const Text('再挑戦'),
+                          ),
+                        )
+                      else
+                        Center(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              context.go(
+                                  '${widget.nextPath!}?nextPath=${SelectAttentionPage.path}');
+                            },
+                            child: const Text('次のゲーム'),
+                          ),
+                        )
                     ],
                   ),
                 ),
@@ -314,7 +332,7 @@ class _TimerWidgetState extends ConsumerState<TimerWidget> {
       final state = ref.read(persistenceAttentionNotifierProvider);
       final now = DateTime.now();
       elapsed = (state.startedAt ?? now)
-          .add(const Duration(seconds: 60))
+          .add(const Duration(seconds: 3))
           .difference(now);
       if (elapsed.isNegative) {
         ref.read(persistenceAttentionNotifierProvider.notifier).timeUp();

@@ -59,7 +59,8 @@ class _RecentMemoryPageState extends ConsumerState<RecentMemoryPage> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                const Text('今買いたいと思っているものを3つ入力してください。'),
+                const Text(
+                    '今買いたいと思っているものを3つ入力してください。実験の最後にもう一度聞きますので、入力した内容を覚えてください。'),
                 const Gap(16),
                 for (var i = 0; i < 3; i++)
                   Padding(

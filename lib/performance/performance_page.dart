@@ -128,10 +128,11 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
       appBar: widget.nextPath == null ? const CommonAppBar() : null,
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              const Gap(16),
               Text(
                 performanceProblems[currentGraphIndex]
                     .questionTexts[currentQuestionIndex],

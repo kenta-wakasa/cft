@@ -23,15 +23,123 @@ class SelectAttentionPage extends ConsumerStatefulWidget {
 }
 
 class _SelectAttentionPageState extends ConsumerState<SelectAttentionPage> {
-  var selectAttentionProblem = selectAttentionProblems.first;
+  var selectAttentionProblems = [
+    SelectAttentionProblem(
+      id: '1',
+      targetWords: sampleTextTargetData,
+      textData: sampleTextData['data'] as List<String>,
+    ),
+  ];
+  var currentIndex = 0;
+
+  final duration = const Duration(seconds: 60);
+
   var isPlaying = false;
-  var startedAt = DateTime.now();
+  var isReady = false;
+
+  SelectAttentionProblem get selectAttentionProblem =>
+      selectAttentionProblems[currentIndex];
+
+  Future<void> startTimer() async {
+    isReady = true;
+    isPlaying = true;
+    selectAttentionProblems = [
+      for (var index = 0; index < selectAttentionProblems.length; index++)
+        if (index == currentIndex)
+          selectAttentionProblems[index].copyWith(
+            startedAt: DateTime.now(),
+          )
+        else
+          selectAttentionProblems[index],
+    ];
+    setState(() {});
+
+    while (isPlaying) {
+      await Future.delayed(const Duration(microseconds: 10000 ~/ 60));
+      if (!context.mounted) {
+        return;
+      }
+      setState(() {});
+      if (selectAttentionProblem.startedAt!
+          .add(duration)
+          .isBefore(DateTime.now())) {
+        finishGame();
+      }
+    }
+  }
+
+  Future<void> finishGame() async {
+    isPlaying = false;
+    selectAttentionProblems = [
+      for (var index = 0; index < selectAttentionProblems.length; index++)
+        if (index == currentIndex)
+          selectAttentionProblems[index].copyWith(
+            endAt: DateTime.now(),
+          )
+        else
+          selectAttentionProblems[index],
+    ];
+
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) {
+      return;
+    }
+
+    ref.read(selectAttentionLogReferenceProvider).add(
+          SelectAttentionLog(
+            id: const UuidV6().generate(),
+            userId: uid,
+            selectAttentionProblems: [selectAttentionProblem],
+          ),
+        );
+
+    /// 結果を送信
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: const Text('お疲れ様でした!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: widget.nextPath == null
+                  ? const Text('再挑戦')
+                  : const Text('次のゲーム'),
+            ),
+          ],
+        );
+      },
+    );
+    if (!context.mounted) {
+      return;
+    }
+    if (widget.nextPath != null) {
+      context.go(
+          '${widget.nextPath!}?nextPath=${SemanticUnderstandingForCalculationPage.path}');
+      return;
+    }
+
+    /// 再挑戦の場合
+    selectAttentionProblems = [
+      SelectAttentionProblem(
+        id: '1',
+        targetWords: sampleTextTargetData,
+        textData: sampleTextData['data'] as List<String>,
+      ),
+    ];
+
+    startTimer();
+
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: widget.nextPath == null ? const CommonAppBar() : null,
-      body: isPlaying
+      body: isReady
           ? Column(
               children: [
                 Padding(
@@ -66,6 +174,21 @@ class _SelectAttentionPageState extends ConsumerState<SelectAttentionPage> {
                     ],
                   ),
                 ),
+
+                /// 制限時間
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: SizedBox(
+                    width: 320,
+                    child: LinearProgressIndicator(
+                      value: 1 -
+                          (DateTime.now()
+                                  .difference(selectAttentionProblem.startedAt!)
+                                  .inMilliseconds /
+                              duration.inMilliseconds),
+                    ),
+                  ),
+                ),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Padding(
@@ -87,21 +210,41 @@ class _SelectAttentionPageState extends ConsumerState<SelectAttentionPage> {
                                         if (selectAttentionProblem
                                             .userAnswerIndexes
                                             .contains(index)) {
-                                          selectAttentionProblem =
-                                              selectAttentionProblem.copyWith(
-                                            userAnswerIndexes:
-                                                selectAttentionProblem
-                                                    .userAnswerIndexes
-                                                    .difference({index}),
-                                          );
+                                          selectAttentionProblems = [
+                                            for (var index = 0;
+                                                index <
+                                                    selectAttentionProblems
+                                                        .length;
+                                                index++)
+                                              if (index == currentIndex)
+                                                selectAttentionProblems[index]
+                                                    .copyWith(
+                                                  userAnswerIndexes:
+                                                      selectAttentionProblem
+                                                          .userAnswerIndexes
+                                                          .difference({index}),
+                                                )
+                                              else
+                                                selectAttentionProblems[index],
+                                          ];
                                         } else {
-                                          selectAttentionProblem =
-                                              selectAttentionProblem.copyWith(
-                                            userAnswerIndexes:
-                                                selectAttentionProblem
-                                                    .userAnswerIndexes
-                                                    .union({index}),
-                                          );
+                                          selectAttentionProblems = [
+                                            for (var index = 0;
+                                                index <
+                                                    selectAttentionProblems
+                                                        .length;
+                                                index++)
+                                              if (index == currentIndex)
+                                                selectAttentionProblems[index]
+                                                    .copyWith(
+                                                  userAnswerIndexes:
+                                                      selectAttentionProblem
+                                                          .userAnswerIndexes
+                                                          .union({index}),
+                                                )
+                                              else
+                                                selectAttentionProblems[index],
+                                          ];
                                         }
 
                                         setState(() {});
@@ -137,65 +280,7 @@ class _SelectAttentionPageState extends ConsumerState<SelectAttentionPage> {
                   child: Padding(
                     padding: const EdgeInsets.all(32),
                     child: ElevatedButton(
-                      onPressed: () async {
-                        selectAttentionProblem =
-                            selectAttentionProblem.copyWith(
-                          endAt: DateTime.now(),
-                        );
-
-                        final uid = FirebaseAuth.instance.currentUser?.uid;
-                        if (uid == null) {
-                          return;
-                        }
-
-                        ref.read(selectAttentionLogReferenceProvider).add(
-                              SelectAttentionLog(
-                                id: const UuidV6().generate(),
-                                userId: uid,
-                                selectAttentionProblems: [
-                                  selectAttentionProblem
-                                ],
-                              ),
-                            );
-
-                        /// 結果を送信
-                        await showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              content: const Text('お疲れ様でした!'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: widget.nextPath == null
-                                      ? const Text('再挑戦')
-                                      : const Text('次のゲーム'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                        if (!context.mounted) {
-                          return;
-                        }
-                        if (widget.nextPath != null) {
-                          context.go(
-                              '${widget.nextPath!}?nextPath=${SemanticUnderstandingForCalculationPage.path}');
-                          return;
-                        }
-
-                        selectAttentionProblem =
-                            selectAttentionProblem.copyWith(
-                          userAnswerIndexes: {},
-                          startedAt: null,
-                          endAt: null,
-                        );
-                        isPlaying = false;
-
-                        setState(() {});
-                      },
+                      onPressed: finishGame,
                       child: const Text('決定'),
                     ),
                   ),
@@ -203,29 +288,34 @@ class _SelectAttentionPageState extends ConsumerState<SelectAttentionPage> {
               ],
             )
           : Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    '文章の中から単語を抜き出すゲーム',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      '文章の中から単語を抜き出すゲーム',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  const Gap(16),
-                  ElevatedButton(
-                    onPressed: () {
-                      isPlaying = true;
-                      startedAt = DateTime.now();
-                      selectAttentionProblem = selectAttentionProblem.copyWith(
-                        startedAt: startedAt,
-                      );
-                      setState(() {});
-                    },
-                    child: const Text('スタート'),
-                  ),
-                ],
+                    const Gap(16),
+                    const Text(
+                      '次の画面に表示される文章の中から、指定された単語を抜き出してください。文章中の単語をタップすることで選択できます。※制限時間：60秒',
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                    const Gap(32),
+                    ElevatedButton(
+                      onPressed: () {
+                        startTimer();
+                      },
+                      child: const Text('スタート'),
+                    ),
+                  ],
+                ),
               ),
             ),
     );
@@ -238,14 +328,6 @@ extension DoubleToPercent on double {
     return '${(this * 100).toStringAsFixed(1)}%';
   }
 }
-
-final selectAttentionProblems = [
-  SelectAttentionProblem(
-    id: '1',
-    targetWords: sampleTextTargetData,
-    textData: sampleTextData['data'] as List<String>,
-  ),
-];
 
 const sampleTextTargetData = [
   '猫',

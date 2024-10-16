@@ -326,6 +326,7 @@ class _TimerWidgetState extends ConsumerState<TimerWidget> {
   Future<void> timer() async {
     while (true && context.mounted) {
       await Future.delayed(const Duration(milliseconds: 1000 ~/ 60));
+
       if (!context.mounted) {
         return;
       }

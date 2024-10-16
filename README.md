@@ -1,3 +1,3 @@
 # cft
 
-flutter build web --web-renderer=canvaskit&& firebase deploy --only hosting
+flutter build web --web-renderer=html && firebase deploy --only hosting

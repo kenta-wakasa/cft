@@ -31,6 +31,8 @@ class _SemanticUnderstandingPageState
 
   var problems = [...meaningProblems];
 
+  static const duration = Duration(seconds: 60);
+
   void start() {
     problems = [
       for (var index = 0; index < problems.length; index++)
@@ -47,6 +49,61 @@ class _SemanticUnderstandingPageState
   final controller = TextEditingController();
 
   var isFinished = false;
+
+  Future<void> timer() async {
+    while (mounted) {
+      await Future.delayed(const Duration(microseconds: 10000 ~/ 60));
+      setState(() {});
+      if (problems[currentIndex].startedAt != null &&
+          problems[currentIndex]
+              .startedAt!
+              .add(duration)
+              .isBefore(DateTime.now())) {
+        await enterAnswer();
+      }
+    }
+  }
+
+  Future<void> enterAnswer() async {
+    currentIndex++;
+    problems = [
+      for (var index = 0; index < problems.length; index++)
+        if (index == currentIndex)
+          problems[index].copyWith(startedAt: DateTime.now())
+        else if (index == currentIndex - 1)
+          problems[index].copyWith(
+            answeredAt: DateTime.now(),
+            userAns: controller.text,
+          )
+        else
+          problems[index]
+    ];
+    controller.clear();
+
+    if (currentIndex == problems.length) {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+
+      await FirebaseFirestore.instance.collection('meaning_problem_log').add(
+            MeaningProblemLog(
+              uid: uid!,
+              meaningProblems: problems,
+            ).toJson(),
+          );
+      setState(() {
+        isFinished = true;
+      });
+
+      return;
+    } else {
+      setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    timer();
+  }
 
   @override
   void dispose() {
@@ -96,14 +153,15 @@ class _SemanticUnderstandingPageState
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Text(
-                    '意味理解',
+                    '意味理解・意味',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const Gap(16),
-                  const Text('これから日常の生活や社会的なルールについての質問をしますので、それに答えてください。'),
+                  const Text(
+                      'これから日常の生活や社会的なルールについての質問をしますので、それに答えてください。※各問制限時間60秒'),
                   const Gap(32),
                   ElevatedButton(
                     onPressed: () {
@@ -121,72 +179,46 @@ class _SemanticUnderstandingPageState
 
     return Scaffold(
       appBar: widget.nextPath == null ? const CommonAppBar() : null,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Text(
-                  problems[currentIndex].question,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                problems[currentIndex].question,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
                 ),
-                const Gap(16),
-                TextFormField(
-                  controller: controller,
-                  minLines: 7,
-                  maxLines: null,
-                  decoration: const InputDecoration(
-                    hintText: '回答を入力してください',
-                    border: OutlineInputBorder(),
-                  ),
+              ),
+              const Gap(16),
+
+              /// 制限時間
+              LinearProgressIndicator(
+                value: 1 -
+                    (DateTime.now()
+                            .difference(problems[currentIndex].startedAt!)
+                            .inMilliseconds /
+                        duration.inMilliseconds),
+              ),
+              const Gap(16),
+
+              TextFormField(
+                controller: controller,
+                minLines: 5,
+                maxLines: 5,
+                decoration: const InputDecoration(
+                  hintText: '回答を入力してください',
+                  border: OutlineInputBorder(),
                 ),
-                const Gap(16),
-                ElevatedButton(
-                  onPressed: () async {
-                    currentIndex++;
-
-                    problems = [
-                      for (var index = 0; index < problems.length; index++)
-                        if (index == currentIndex)
-                          problems[index].copyWith(startedAt: DateTime.now())
-                        else if (index == currentIndex - 1)
-                          problems[index].copyWith(
-                            answeredAt: DateTime.now(),
-                            userAns: controller.text,
-                          )
-                        else
-                          problems[index]
-                    ];
-                    controller.clear();
-
-                    if (currentIndex == problems.length) {
-                      final uid = FirebaseAuth.instance.currentUser?.uid;
-
-                      await FirebaseFirestore.instance
-                          .collection('meaning_problem_log')
-                          .add(
-                            MeaningProblemLog(
-                              uid: uid!,
-                              meaningProblems: problems,
-                            ).toJson(),
-                          );
-                      setState(() {
-                        isFinished = true;
-                      });
-
-                      return;
-                    } else {
-                      setState(() {});
-                    }
-                  },
-                  child: const Text('確定'),
-                ),
-              ],
-            ),
+              ),
+              const Gap(16),
+              ElevatedButton(
+                onPressed: enterAnswer,
+                child: const Text('確定'),
+              ),
+            ],
           ),
         ),
       ),

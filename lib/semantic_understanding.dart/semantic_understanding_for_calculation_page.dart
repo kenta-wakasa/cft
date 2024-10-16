@@ -32,6 +32,8 @@ class _SemanticUnderstandingPageState
 
   var problems = [...calculationProblems];
 
+  static const duration = Duration(seconds: 30);
+
   void start() {
     problems = [
       for (var index = 0; index < problems.length; index++)
@@ -45,9 +47,67 @@ class _SemanticUnderstandingPageState
     });
   }
 
+  Future<void> timer() async {
+    while (mounted) {
+      await Future.delayed(const Duration(microseconds: 10000 ~/ 60));
+      setState(() {});
+      if (problems[currentIndex].startedAt != null &&
+          problems[currentIndex]
+              .startedAt!
+              .add(duration)
+              .isBefore(DateTime.now())) {
+        await enterAnswer();
+      }
+    }
+  }
+
   final controller = TextEditingController();
 
   var isFinished = false;
+
+  Future<void> enterAnswer() async {
+    currentIndex++;
+
+    problems = [
+      for (var index = 0; index < problems.length; index++)
+        if (index == currentIndex)
+          problems[index].copyWith(startedAt: DateTime.now())
+        else if (index == currentIndex - 1)
+          problems[index].copyWith(
+            answeredAt: DateTime.now(),
+            userAns: int.tryParse(controller.text),
+          )
+        else
+          problems[index]
+    ];
+    controller.clear();
+
+    if (currentIndex == problems.length) {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+
+      await FirebaseFirestore.instance
+          .collection('calculation_problem_log')
+          .add(
+            CalculationProblemLog(
+              uid: uid!,
+              calculationProblems: problems,
+            ).toJson(),
+          );
+      setState(() {
+        isFinished = true;
+      });
+
+      return;
+    } else {
+      setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    timer();
+  }
 
   @override
   void dispose() {
@@ -104,7 +164,7 @@ class _SemanticUnderstandingPageState
                     ),
                   ),
                   const Gap(16),
-                  const Text('次の問題では、算数の問題をあなたに解いてもらいます。'),
+                  const Text('次の問題では、算数の問題をあなたに解いてもらいます。※各問制限時間30秒'),
                   const Gap(32),
                   ElevatedButton(
                     onPressed: () {
@@ -122,86 +182,57 @@ class _SemanticUnderstandingPageState
 
     return Scaffold(
       appBar: widget.nextPath == null ? const CommonAppBar() : null,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Text(
-                  problems[currentIndex].question,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Text(
+                problems[currentIndex].question,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const Gap(16),
+
+              /// 制限時間
+
+              LinearProgressIndicator(
+                value: 1 -
+                    (DateTime.now()
+                            .difference(problems[currentIndex].startedAt!)
+                            .inMilliseconds /
+                        duration.inMilliseconds),
+              ),
+              const Gap(16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 120,
+                    child: TextFormField(
+                      controller: controller,
+                      readOnly: true,
+                      textAlign: TextAlign.right,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
                   ),
-                ),
-                const Gap(16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 120,
-                      child: TextFormField(
-                        controller: controller,
-                        readOnly: true,
-                        textAlign: TextAlign.right,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
+                  const Gap(8),
+                  Text(
+                    problems[currentIndex].unit,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Text(
-                      '${controller.text} ${problems[currentIndex].unit}',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                InputNumWidget(
-                  controller: controller,
-                  onSubmitted: () async {
-                    currentIndex++;
-
-                    problems = [
-                      for (var index = 0; index < problems.length; index++)
-                        if (index == currentIndex)
-                          problems[index].copyWith(startedAt: DateTime.now())
-                        else if (index == currentIndex - 1)
-                          problems[index].copyWith(
-                            answeredAt: DateTime.now(),
-                            userAns: int.tryParse(controller.text) ?? 0,
-                          )
-                        else
-                          problems[index]
-                    ];
-                    controller.clear();
-
-                    if (currentIndex == problems.length) {
-                      final uid = FirebaseAuth.instance.currentUser?.uid;
-
-                      await FirebaseFirestore.instance
-                          .collection('calculation_problem_log')
-                          .add(
-                            CalculationProblemLog(
-                              uid: uid!,
-                              calculationProblems: problems,
-                            ).toJson(),
-                          );
-                      setState(() {
-                        isFinished = true;
-                      });
-
-                      return;
-                    } else {
-                      setState(() {});
-                    }
-                  },
-                ),
-                const Gap(16),
-              ],
-            ),
+                  ),
+                ],
+              ),
+              InputNumWidget(controller: controller, onSubmitted: enterAnswer),
+              const Gap(16),
+            ],
           ),
         ),
       ),

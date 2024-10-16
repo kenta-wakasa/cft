@@ -56,36 +56,43 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       body: Center(
         child: SizedBox(
           width: 480,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                '認知機能トレーニング',
-                style: Theme.of(context).textTheme.titleLarge,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: AutofillGroup(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '認知機能トレーニング',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const Gap(48),
+                  TextFormField(
+                    autofillHints: const [AutofillHints.username],
+                    controller: emailController,
+                    decoration: const InputDecoration(
+                      labelText: 'メールアドレス',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const Gap(16),
+                  TextFormField(
+                    autofillHints: const [AutofillHints.password],
+                    controller: passwordController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: 'パスワード',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const Gap(16),
+                  ElevatedButton(
+                    onPressed: login,
+                    child: const Text('ログイン'),
+                  ),
+                ],
               ),
-              const Gap(48),
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  labelText: 'メールアドレス',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const Gap(16),
-              TextFormField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'パスワード',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const Gap(16),
-              ElevatedButton(
-                onPressed: login,
-                child: const Text('ログイン'),
-              ),
-            ],
+            ),
           ),
         ),
       ),

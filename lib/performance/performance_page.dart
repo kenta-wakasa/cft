@@ -28,13 +28,121 @@ class PerformancePage extends ConsumerStatefulWidget {
 }
 
 class _PerformancePageState extends ConsumerState<PerformancePage> {
-  static const canvasSize = Size(400, 400);
+  static const canvasSize = Size(400, 480);
 
   var currentQuestionIndex = 0;
   var currentGraphIndex = 0;
 
   /// 問題はここに追加していく
   var performanceProblems = [
+    PerformanceProblem(
+      graph: Graph(
+        nodes: [
+          Node(
+            id: 'S',
+            dx: 120,
+            dy: 0,
+          ),
+          Node(
+            id: 'A',
+            dx: 0,
+            dy: 130,
+          ),
+          Node(
+            id: 'B',
+            dx: 240,
+            dy: 130,
+          ),
+          Node(
+            id: 'C',
+            dx: 0,
+            dy: 360,
+          ),
+          Node(
+            id: 'D',
+            dx: 240,
+            dy: 240,
+          ),
+          Node(
+            id: 'G',
+            dx: 240,
+            dy: 360,
+          ),
+        ],
+        edges: [
+          Edge(
+            sourceId: 'S',
+            destinationId: 'A',
+            fee: 50,
+            time: 10,
+          ),
+          Edge(
+            sourceId: 'S',
+            destinationId: 'B',
+            fee: 150,
+            time: 20,
+          ),
+          Edge(
+            sourceId: 'A',
+            destinationId: 'B',
+            fee: 10,
+            time: 15,
+          ),
+          Edge(
+            sourceId: 'A',
+            destinationId: 'C',
+            fee: 200,
+            time: 20,
+          ),
+          Edge(
+            sourceId: 'B',
+            destinationId: 'D',
+            fee: 75,
+            time: 10,
+          ),
+          Edge(
+            sourceId: 'B',
+            destinationId: 'C',
+            fee: 75,
+            time: 10,
+          ),
+          Edge(
+            sourceId: 'A',
+            destinationId: 'D',
+            fee: 75,
+            time: 10,
+          ),
+          Edge(
+            sourceId: 'C',
+            destinationId: 'D',
+            fee: 75,
+            time: 10,
+          ),
+          Edge(
+            sourceId: 'C',
+            destinationId: 'G',
+            fee: 75,
+            time: 10,
+          ),
+          Edge(
+            sourceId: 'D',
+            destinationId: 'G',
+            fee: 75,
+            time: 10,
+          ),
+        ],
+      ),
+      questionTexts: [
+        'それぞれの経路に、かかる時間と料金を表示しています。Sを出発点として、30分以内にGに到着したいとき、もっとも料金が安くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。',
+        '次の問題です。経路はそのままですが、今度は必ずAを通り、Sを出発点として、30分以内にGに到着したいとき、もっとも料金が安くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。',
+        '次の問題です。経路はそのままですが、今度は時間はどれだけかかってもいいので、もっとも料金が安くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。'
+      ],
+      answerTexts: [
+        'S→B→G',
+        'S→A→G',
+        'S→A→B→G',
+      ],
+    ),
     PerformanceProblem(
       graph: Graph(
         nodes: [
@@ -93,12 +201,14 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
         ],
       ),
       questionTexts: [
-        'それぞれの経路に、かかる時間と料金を表示しています。Sを出発点として、30分以内にGに到着したいとき、もっとも料金が低くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。',
-        '次の問題です。経路はそのままですが、今度は必ずAを通り、Sを出発点として、30分以内にGに到着したいとき、もっとも料金が低くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。'
+        'それぞれの経路に、かかる時間と料金を表示しています。Sを出発点として、30分以内にGに到着したいとき、もっとも料金が安くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。',
+        '次の問題です。経路はそのままですが、今度は必ずAを通り、Sを出発点として、30分以内にGに到着したいとき、もっとも料金が安くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。',
+        '次の問題です。経路はそのままですが、今度は時間はどれだけかかってもいいので、もっとも料金が安くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。'
       ],
       answerTexts: [
         'S→B→G',
         'S→A→G',
+        'S→A→B→G',
       ],
     ),
   ];
@@ -109,7 +219,6 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     performanceProblems = [
       for (final problem in performanceProblems)
@@ -408,7 +517,7 @@ class EdgeRender extends CustomPainter {
         ..style = PaintingStyle.stroke
         ..strokeCap = StrokeCap.round
         ..strokeJoin = StrokeJoin.round
-        ..strokeWidth = 2.0
+        ..strokeWidth = 2
         ..color = Colors.grey;
 
       if (isPassed(edge)) {
@@ -479,8 +588,21 @@ class EdgeRender extends CustomPainter {
   ) {
     Path path = Path();
     path.moveTo(start.dx, start.dy);
-    path.relativeLineTo((end - start).dx, (end - start).dy);
-    path = ArrowPath.addTip(path, isAdjusted: true);
+    path.relativeLineTo((end - start).dx * 0.2, (end - start).dy * 0.2);
+    path = ArrowPath.addTip(
+      path,
+      isAdjusted: true,
+      tipAngle: pi * 0.15,
+      tipLength: 10,
+    );
+    path.relativeLineTo((end - start).dx * 0.7, (end - start).dy * 0.7);
+    path = ArrowPath.addTip(
+      path,
+      isAdjusted: true,
+      tipAngle: pi * 0.2,
+      tipLength: 10,
+    );
+    path.relativeLineTo((end - start).dx * 0.1, (end - start).dy * 0.1);
     canvas.drawPath(path, paint);
   }
 

@@ -40,6 +40,20 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
 
   int remainSec = countDown;
 
+  var elapsed = Duration.zero;
+
+  var isTimeUp = false;
+  var isFinished = false;
+
+  var startedAt = DateTime.now();
+
+  var currentIndex = 0;
+
+  final themeList = [
+    '動物',
+    'ポジティブな単語',
+  ];
+
   Future<void> startListening() async {
     setState(() {
       isStandby = true;
@@ -63,7 +77,15 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
     }
   }
 
-  Future<void> stopListening() async {
+  Future<void> stopListening({bool cancel = false}) async {
+    if (cancel) {
+      controller.clear();
+      await speechToText?.stop();
+      remainSec = countDown;
+      isStandby = false;
+      setState(() {});
+      return;
+    }
     if (controller.text.isEmpty) {
       if (speechToText?.isListening == false) {
         startListening();
@@ -118,22 +140,17 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
     speechToText?.cancel();
   }
 
-  var elapsed = Duration.zero;
-
-  var isTimeUp = false;
-
-  var startedAt = DateTime.now();
   Future<void> timer() async {
     startedAt = DateTime.now();
-    while (true && context.mounted) {
-      await Future.delayed(const Duration(milliseconds: 1000 ~/ 60));
+    while (context.mounted) {
+      await Future.delayed(const Duration(microseconds: 10000 ~/ 60));
       if (!context.mounted) {
         return;
       }
       elapsed =
           startedAt.add(const Duration(seconds: 60)).difference(DateTime.now());
       if (elapsed.isNegative) {
-        timeUp();
+        await timeUp();
         break;
       }
       setState(() {});
@@ -148,6 +165,10 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
     await speechToText?.stop();
     remainSec = countDown;
     isStandby = false;
+
+    if (currentIndex + 1 == themeList.length) {
+      isFinished = true;
+    }
     setState(() {});
   }
 
@@ -206,7 +227,7 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
       );
     }
 
-    if (isTimeUp) {
+    if (isFinished) {
       return Scaffold(
         appBar: widget.nextPath == null ? const CommonAppBar() : null,
         body: Center(
@@ -236,10 +257,42 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
                     setState(() {
                       isReady = false;
                       isTimeUp = false;
+                      isFinished = false;
                     });
                   },
                   child: const Text('再挑戦'),
                 ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (isTimeUp) {
+      return Scaffold(
+        appBar: widget.nextPath == null ? const CommonAppBar() : null,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                '終了',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const Gap(16),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    isTimeUp = false;
+                    currentIndex++;
+                  });
+                  timer();
+                },
+                child: const Text('次のカテゴリー'),
+              ),
             ],
           ),
         ),
@@ -256,9 +309,9 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
               '${elapsed.inMinutes}:${(elapsed.inSeconds % 60).toString().padLeft(2, '0')}',
               style: Theme.of(context).textTheme.titleLarge,
             ),
-            const Text(
-              'テーマ：動物',
-              style: TextStyle(
+            Text(
+              'テーマ：${themeList[currentIndex]}',
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
@@ -318,22 +371,45 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
                 height: 64,
               ),
             if (remainSec == 0)
-              GestureDetector(
-                onTap: () {
-                  stopListening();
-                },
-                child: Container(
-                  width: 240,
-                  height: 64,
-                  padding: const EdgeInsets.all(16),
-                  color: Colors.blue,
-                  child: const Center(
-                    child: Text(
-                      '確定',
-                      style: TextStyle(fontSize: 24, color: Colors.white),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      stopListening(cancel: true);
+                    },
+                    child: Container(
+                      width: 156,
+                      height: 64,
+                      padding: const EdgeInsets.all(16),
+                      color: Colors.red,
+                      child: const Center(
+                        child: Text(
+                          'キャンセル',
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  const Gap(8),
+                  GestureDetector(
+                    onTap: () {
+                      stopListening();
+                    },
+                    child: Container(
+                      width: 156,
+                      height: 64,
+                      padding: const EdgeInsets.all(16),
+                      color: Colors.blue,
+                      child: const Center(
+                        child: Text(
+                          '確定',
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             if (remainSec > 0 && isStandby)
               Container(

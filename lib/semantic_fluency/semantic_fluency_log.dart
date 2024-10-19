@@ -11,6 +11,7 @@ class SemanticFluencyLog with _$SemanticFluencyLog {
     required DateTime startedAt,
     required String userId,
     @Default([]) List<AnswerWordWithTimestamp> answerWordWithTimestampList,
+    @Default('') String theme,
   }) = _SemanticFluencyLog;
   const SemanticFluencyLog._();
 

@@ -18,6 +18,7 @@ _$SemanticFluencyLogImpl _$$SemanticFluencyLogImplFromJson(
                   AnswerWordWithTimestamp.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      theme: json['theme'] as String? ?? '',
     );
 
 Map<String, dynamic> _$$SemanticFluencyLogImplToJson(
@@ -28,4 +29,5 @@ Map<String, dynamic> _$$SemanticFluencyLogImplToJson(
       'userId': instance.userId,
       'answerWordWithTimestampList':
           instance.answerWordWithTimestampList.map((e) => e.toJson()).toList(),
+      'theme': instance.theme,
     };

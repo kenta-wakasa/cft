@@ -73,14 +73,14 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
           Edge(
             sourceId: 'S',
             destinationId: 'A',
-            fee: 50,
-            time: 10,
+            fee: 250,
+            time: 5,
           ),
           Edge(
             sourceId: 'S',
             destinationId: 'B',
-            fee: 150,
-            time: 20,
+            fee: 200,
+            time: 10,
           ),
           Edge(
             sourceId: 'A',
@@ -91,26 +91,26 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
           Edge(
             sourceId: 'A',
             destinationId: 'C',
-            fee: 200,
+            fee: 50,
             time: 20,
           ),
           Edge(
             sourceId: 'B',
             destinationId: 'D',
-            fee: 75,
+            fee: 150,
             time: 10,
           ),
           Edge(
             sourceId: 'B',
             destinationId: 'C',
-            fee: 75,
-            time: 10,
+            fee: 5,
+            time: 25,
           ),
           Edge(
             sourceId: 'A',
             destinationId: 'D',
-            fee: 75,
-            time: 10,
+            fee: 50,
+            time: 15,
           ),
           Edge(
             sourceId: 'C',
@@ -121,26 +121,26 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
           Edge(
             sourceId: 'C',
             destinationId: 'G',
-            fee: 75,
-            time: 10,
+            fee: 300,
+            time: 5,
           ),
           Edge(
             sourceId: 'D',
             destinationId: 'G',
-            fee: 75,
+            fee: 200,
             time: 10,
           ),
         ],
       ),
       questionTexts: [
-        'それぞれの経路に、かかる時間と料金を表示しています。Sを出発点として、30分以内にGに到着したいとき、もっとも料金が安くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。',
-        '次の問題です。経路はそのままですが、今度は必ずAを通り、Sを出発点として、30分以内にGに到着したいとき、もっとも料金が安くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。',
+        'それぞれの経路に、かかる時間と料金を表示しています。Sを出発点として、必ずCを通り、30分以内にGに到着したいとき、もっとも料金が安くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。',
+        '次の問題です。経路はそのままですが、Sを出発点として、どの経路を通っても構わないので、30分以内にGに到着したいとき、もっとも料金が安くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。',
         '次の問題です。経路はそのままですが、今度は時間はどれだけかかってもいいので、もっとも料金が安くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。'
       ],
       answerTexts: [
-        'S→B→G',
-        'S→A→G',
-        'S→A→B→G',
+        'S→A→C→G',
+        'S→A→D→G',
+        'S→B→C→D→G',
       ],
     ),
     PerformanceProblem(

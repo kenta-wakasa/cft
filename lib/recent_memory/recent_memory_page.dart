@@ -97,7 +97,7 @@ class _RecentMemoryPageState extends ConsumerState<RecentMemoryPage> {
                                 context.go(HomePage.path);
                               } else {
                                 context.go(
-                                  '${widget.nextPath!}?nextPath=${ImmediateMemoryPage.path}',
+                                  '${widget.nextPath!}?nextPath=${ImmediateMemoryPage.path}&id=${widget.id}',
                                 );
                               }
                             },

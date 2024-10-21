@@ -215,7 +215,7 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
                   ),
                   const Gap(16),
                   const Text(
-                      '次のゲームでは、あるカテゴリーの中であなたが思いつく単語を１分間にできるだけたくさん行っておもらいます。スタートボタンを押すとカテゴリーが表示され１分間のタイマーが開始されます。'),
+                      '次のゲームでは、あるカテゴリーの中であなたが思いつく単語を１分間にできるだけたくさん言ってもらいます。スタートボタンを押すとカテゴリーが表示され１分間のタイマーが開始されます。'),
                   const Gap(32),
                   ElevatedButton(
                     onPressed: () {

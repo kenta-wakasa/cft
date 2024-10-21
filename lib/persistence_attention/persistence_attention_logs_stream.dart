@@ -10,7 +10,7 @@ Stream<List<PersistenceAttentionLog>> streamPersistenceAttentionLogs(
   final persistenceAttentionLogReference =
       ref.read(persistenceAttentionLogReferenceProvider);
   return persistenceAttentionLogReference
-      .orderBy('startedAt')
+      .orderBy('startedAt', descending: true)
       .snapshots()
       .map((snapshot) {
     return snapshot.docs.map((doc) => doc.data()).toList();

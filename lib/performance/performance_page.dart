@@ -207,32 +207,32 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
         nodes: [
           Node(
             id: 'S',
-            dx: 120,
+            dx: 120 + 40,
             dy: 0,
           ),
           Node(
             id: 'A',
-            dx: 0,
+            dx: 0 + 40,
             dy: 130,
           ),
           Node(
             id: 'B',
-            dx: 240,
+            dx: 240 + 40,
             dy: 130,
           ),
           Node(
             id: 'C',
-            dx: 0,
+            dx: 0 + 40,
             dy: 360,
           ),
           Node(
             id: 'D',
-            dx: 240,
+            dx: 240 + 40,
             dy: 240,
           ),
           Node(
             id: 'G',
-            dx: 240,
+            dx: 240 + 40,
             dy: 360,
           ),
         ],
@@ -407,7 +407,7 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
           return;
         }
         if (widget.nextPath != null) {
-          context.go('${widget.nextPath!}&id=${widget.id}');
+          context.go('${widget.nextPath!}?id=${widget.id}');
         } else {
           context.go(HomePage.path);
         }

@@ -361,6 +361,8 @@ class _SelectAttentionLogPageState
   @override
   Widget build(BuildContext context) {
     final logs = ref.watch(selectAttentionLogsProvider).valueOrNull ?? [];
+    logs.sort((a, b) => b.selectAttentionProblems.first.startedAt!
+        .compareTo(a.selectAttentionProblems.first.startedAt!));
     return Column(
       children: [
         Row(

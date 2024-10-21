@@ -208,14 +208,14 @@ class _SelectAttentionPageState extends ConsumerState<SelectAttentionPage> {
                               child: Wrap(
                                 runSpacing: 8,
                                 children: [
-                                  for (final (index, text)
+                                  for (final (indexText, text)
                                       in selectAttentionProblem
                                           .textData.indexed)
                                     InkWell(
                                       onTap: () {
                                         if (selectAttentionProblem
                                             .userAnswerIndexes
-                                            .contains(index)) {
+                                            .contains(indexText)) {
                                           selectAttentionProblems = [
                                             for (var index = 0;
                                                 index <
@@ -228,7 +228,8 @@ class _SelectAttentionPageState extends ConsumerState<SelectAttentionPage> {
                                                   userAnswerIndexes:
                                                       selectAttentionProblem
                                                           .userAnswerIndexes
-                                                          .difference({index}),
+                                                          .difference(
+                                                              {indexText}),
                                                 )
                                               else
                                                 selectAttentionProblems[index],
@@ -246,7 +247,7 @@ class _SelectAttentionPageState extends ConsumerState<SelectAttentionPage> {
                                                   userAnswerIndexes:
                                                       selectAttentionProblem
                                                           .userAnswerIndexes
-                                                          .union({index}),
+                                                          .union({indexText}),
                                                 )
                                               else
                                                 selectAttentionProblems[index],
@@ -260,12 +261,12 @@ class _SelectAttentionPageState extends ConsumerState<SelectAttentionPage> {
                                         style: TextStyle(
                                           color: selectAttentionProblem
                                                   .userAnswerIndexes
-                                                  .contains(index)
+                                                  .contains(indexText)
                                               ? Colors.red
                                               : Colors.black,
                                           fontWeight: selectAttentionProblem
                                                   .userAnswerIndexes
-                                                  .contains(index)
+                                                  .contains(indexText)
                                               ? FontWeight.bold
                                               : FontWeight.normal,
                                         ),

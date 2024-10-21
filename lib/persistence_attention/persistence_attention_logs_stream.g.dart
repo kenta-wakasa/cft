@@ -7,7 +7,7 @@ part of 'persistence_attention_logs_stream.dart';
 // **************************************************************************
 
 String _$streamPersistenceAttentionLogsHash() =>
-    r'd1801f8b8eefc06e020b7e098fd420041b8f659c';
+    r'e7ac55e67402abcf5619de51d798f3d1a6c42238';
 
 /// See also [streamPersistenceAttentionLogs].
 @ProviderFor(streamPersistenceAttentionLogs)

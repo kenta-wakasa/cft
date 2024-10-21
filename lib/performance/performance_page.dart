@@ -16,9 +16,15 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class PerformancePage extends ConsumerStatefulWidget {
-  const PerformancePage({super.key, required this.nextPath});
+  const PerformancePage({
+    super.key,
+    required this.nextPath,
+    required this.id,
+  });
 
   final String? nextPath;
+
+  final String? id;
 
   static const path = '/performance';
 
@@ -401,7 +407,7 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
           return;
         }
         if (widget.nextPath != null) {
-          context.go(widget.nextPath!);
+          context.go('${widget.nextPath!}&id=${widget.id}');
         } else {
           context.go(HomePage.path);
         }

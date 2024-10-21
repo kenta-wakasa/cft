@@ -12,9 +12,15 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:uuid/v6.dart';
 
 class SemanticFluencyPage extends ConsumerStatefulWidget {
-  const SemanticFluencyPage({super.key, required this.nextPath});
+  const SemanticFluencyPage({
+    super.key,
+    required this.nextPath,
+    required this.id,
+  });
 
   final String? nextPath;
+
+  final String? id;
 
   static const path = '/semantic_fluency';
 
@@ -247,7 +253,7 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
                 ElevatedButton(
                   onPressed: () {
                     context.go(
-                      '${widget.nextPath!}?nextPath=${RecentMemoryAnsPage.path}',
+                      '${widget.nextPath!}?nextPath=${RecentMemoryAnsPage.path}&id=${widget.id}',
                     );
                   },
                   child: const Text('次のゲーム'),

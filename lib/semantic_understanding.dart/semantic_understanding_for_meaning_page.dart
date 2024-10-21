@@ -11,10 +11,15 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class SemanticUnderstandingForMeaningPage extends ConsumerStatefulWidget {
-  const SemanticUnderstandingForMeaningPage(
-      {super.key, required this.nextPath});
+  const SemanticUnderstandingForMeaningPage({
+    super.key,
+    required this.nextPath,
+    required this.id,
+  });
 
   final String? nextPath;
+
+  final String? id;
 
   static const path = '/semantic_understanding_for_meaning';
 
@@ -126,7 +131,7 @@ class _SemanticUnderstandingPageState
                 ElevatedButton(
                   onPressed: () {
                     context.go(
-                        '${widget.nextPath!}?nextPath=${SemanticFluencyPage.path}');
+                        '${widget.nextPath!}?nextPath=${SemanticFluencyPage.path}&id=${widget.id}');
                   },
                   child: const Text('次のゲーム'),
                 )

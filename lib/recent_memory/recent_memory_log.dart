@@ -7,6 +7,7 @@ part 'recent_memory_log.g.dart';
 class RecentMemoryLog with _$RecentMemoryLog {
   factory RecentMemoryLog({
     required String uid,
+    @Default('') String id,
     required DateTime createdAt,
     required List<String> memoryList,
     @Default([]) List<String> answerList,

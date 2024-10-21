@@ -11,9 +11,15 @@ import 'package:go_router/go_router.dart';
 import 'package:uuid/v6.dart';
 
 class SelectAttentionPage extends ConsumerStatefulWidget {
-  const SelectAttentionPage({super.key, required this.nextPath});
+  const SelectAttentionPage({
+    super.key,
+    required this.nextPath,
+    required this.id,
+  });
 
   final String? nextPath;
+
+  final String? id;
 
   static const path = '/select_attention';
 
@@ -117,7 +123,7 @@ class _SelectAttentionPageState extends ConsumerState<SelectAttentionPage> {
     }
     if (widget.nextPath != null) {
       context.go(
-          '${widget.nextPath!}?nextPath=${SemanticUnderstandingForCalculationPage.path}');
+          '${widget.nextPath!}?nextPath=${SemanticUnderstandingForCalculationPage.path}&id=${widget.id}');
       return;
     }
 

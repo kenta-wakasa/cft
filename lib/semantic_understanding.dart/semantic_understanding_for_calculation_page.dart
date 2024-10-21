@@ -12,10 +12,15 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class SemanticUnderstandingForCalculationPage extends ConsumerStatefulWidget {
-  const SemanticUnderstandingForCalculationPage(
-      {super.key, required this.nextPath});
+  const SemanticUnderstandingForCalculationPage({
+    super.key,
+    required this.nextPath,
+    required this.id,
+  });
 
   final String? nextPath;
+
+  final String? id;
 
   static const path = '/semantic_understanding_for_calculation';
 
@@ -130,7 +135,7 @@ class _SemanticUnderstandingPageState
                 ElevatedButton(
                   onPressed: () {
                     context.go(
-                        '${widget.nextPath!}?nextPath=${PerformancePage.path}');
+                        '${widget.nextPath!}?nextPath=${PerformancePage.path}&id=${widget.id}');
                   },
                   child: const Text('次のゲーム'),
                 )

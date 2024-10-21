@@ -1,5 +1,4 @@
 import 'package:cft/home/home_page.dart';
-import 'package:cft/recent_memory/recent_memory_log.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,9 +8,12 @@ import 'package:go_router/go_router.dart';
 class RecentMemoryAnsPage extends ConsumerStatefulWidget {
   const RecentMemoryAnsPage({
     super.key,
+    required this.id,
   });
 
   static const path = '/recent_memory_ans';
+
+  final String? id;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -49,7 +51,7 @@ class _RecentMemoryPageState extends ConsumerState<RecentMemoryAnsPage> {
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(16),
             child: Column(
               children: [
                 const Text('一番はじめに入力した今買いたいと思っているものを3つ入力してください。'),
@@ -66,31 +68,24 @@ class _RecentMemoryPageState extends ConsumerState<RecentMemoryAnsPage> {
                   ),
                 const Gap(16),
                 ElevatedButton(
-                  onPressed: controllers
-                          .any((controller) => controller.text.isEmpty)
-                      ? null
-                      : () async {
-                          try {
-                            ref.read(recentMemoryProvider.notifier).state =
-                                ref.read(recentMemoryProvider)?.copyWith(
-                                      finishedAt: DateTime.now(),
-                                      answerList: controllers
-                                          .map((controller) => controller.text)
-                                          .toList(),
-                                    );
-
-                            final recentMemoryLog =
-                                ref.read(recentMemoryProvider);
-
-                            await FirebaseFirestore.instance
-                                .collection('recent_memory_log')
-                                .add(recentMemoryLog!.toJson());
-                          } finally {
-                            if (context.mounted) {
-                              context.go(HomePage.path);
-                            }
-                          }
-                        },
+                  onPressed:
+                      controllers.any((controller) => controller.text.isEmpty)
+                          ? null
+                          : () async {
+                              try {
+                                await FirebaseFirestore.instance
+                                    .collection('recent_memory_log')
+                                    .doc(widget.id)
+                                    .set({
+                                  'answerList':
+                                      controllers.map((e) => e.text).toList(),
+                                }, SetOptions(merge: true));
+                              } finally {
+                                if (context.mounted) {
+                                  context.go(HomePage.path);
+                                }
+                              }
+                            },
                   child: const Text('決定'),
                 ),
               ],
@@ -101,7 +96,3 @@ class _RecentMemoryPageState extends ConsumerState<RecentMemoryAnsPage> {
     );
   }
 }
-
-final recentMemoryProvider = StateProvider<RecentMemoryLog?>((ref) {
-  return null;
-});

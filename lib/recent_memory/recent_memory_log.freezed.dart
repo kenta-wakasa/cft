@@ -21,6 +21,7 @@ RecentMemoryLog _$RecentMemoryLogFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$RecentMemoryLog {
   String get uid => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   List<String> get memoryList => throw _privateConstructorUsedError;
   List<String> get answerList => throw _privateConstructorUsedError;
@@ -40,6 +41,7 @@ abstract class $RecentMemoryLogCopyWith<$Res> {
   @useResult
   $Res call(
       {String uid,
+      String id,
       DateTime createdAt,
       List<String> memoryList,
       List<String> answerList,
@@ -60,6 +62,7 @@ class _$RecentMemoryLogCopyWithImpl<$Res, $Val extends RecentMemoryLog>
   @override
   $Res call({
     Object? uid = null,
+    Object? id = null,
     Object? createdAt = null,
     Object? memoryList = null,
     Object? answerList = null,
@@ -69,6 +72,10 @@ class _$RecentMemoryLogCopyWithImpl<$Res, $Val extends RecentMemoryLog>
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
+              as String,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
       createdAt: null == createdAt
           ? _value.createdAt
@@ -100,6 +107,7 @@ abstract class _$$RecentMemoryLogImplCopyWith<$Res>
   @useResult
   $Res call(
       {String uid,
+      String id,
       DateTime createdAt,
       List<String> memoryList,
       List<String> answerList,
@@ -118,6 +126,7 @@ class __$$RecentMemoryLogImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? uid = null,
+    Object? id = null,
     Object? createdAt = null,
     Object? memoryList = null,
     Object? answerList = null,
@@ -127,6 +136,10 @@ class __$$RecentMemoryLogImplCopyWithImpl<$Res>
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
+              as String,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
       createdAt: null == createdAt
           ? _value.createdAt
@@ -153,6 +166,7 @@ class __$$RecentMemoryLogImplCopyWithImpl<$Res>
 class _$RecentMemoryLogImpl extends _RecentMemoryLog {
   _$RecentMemoryLogImpl(
       {required this.uid,
+      this.id = '',
       required this.createdAt,
       required final List<String> memoryList,
       final List<String> answerList = const [],
@@ -166,6 +180,9 @@ class _$RecentMemoryLogImpl extends _RecentMemoryLog {
 
   @override
   final String uid;
+  @override
+  @JsonKey()
+  final String id;
   @override
   final DateTime createdAt;
   final List<String> _memoryList;
@@ -190,7 +207,7 @@ class _$RecentMemoryLogImpl extends _RecentMemoryLog {
 
   @override
   String toString() {
-    return 'RecentMemoryLog(uid: $uid, createdAt: $createdAt, memoryList: $memoryList, answerList: $answerList, finishedAt: $finishedAt)';
+    return 'RecentMemoryLog(uid: $uid, id: $id, createdAt: $createdAt, memoryList: $memoryList, answerList: $answerList, finishedAt: $finishedAt)';
   }
 
   @override
@@ -199,6 +216,7 @@ class _$RecentMemoryLogImpl extends _RecentMemoryLog {
         (other.runtimeType == runtimeType &&
             other is _$RecentMemoryLogImpl &&
             (identical(other.uid, uid) || other.uid == uid) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             const DeepCollectionEquality()
@@ -214,6 +232,7 @@ class _$RecentMemoryLogImpl extends _RecentMemoryLog {
   int get hashCode => Object.hash(
       runtimeType,
       uid,
+      id,
       createdAt,
       const DeepCollectionEquality().hash(_memoryList),
       const DeepCollectionEquality().hash(_answerList),
@@ -237,6 +256,7 @@ class _$RecentMemoryLogImpl extends _RecentMemoryLog {
 abstract class _RecentMemoryLog extends RecentMemoryLog {
   factory _RecentMemoryLog(
       {required final String uid,
+      final String id,
       required final DateTime createdAt,
       required final List<String> memoryList,
       final List<String> answerList,
@@ -248,6 +268,8 @@ abstract class _RecentMemoryLog extends RecentMemoryLog {
 
   @override
   String get uid;
+  @override
+  String get id;
   @override
   DateTime get createdAt;
   @override

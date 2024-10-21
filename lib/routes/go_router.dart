@@ -50,8 +50,10 @@ final goRouteProvider = Provider((ref) {
         path: SelectAttentionPage.path,
         pageBuilder: (context, state) {
           final nextPath = state.uri.queryParameters['nextPath'];
+          final id = state.uri.queryParameters['id'];
           return NoTransitionPage(
             child: SelectAttentionPage(
+              id: id,
               nextPath: nextPath,
             ),
           );
@@ -62,8 +64,10 @@ final goRouteProvider = Provider((ref) {
         path: SemanticFluencyPage.path,
         pageBuilder: (context, state) {
           final nextPath = state.uri.queryParameters['nextPath'];
+          final id = state.uri.queryParameters['id'];
           return NoTransitionPage(
               child: SemanticFluencyPage(
+            id: id,
             nextPath: nextPath,
           ));
         },
@@ -73,8 +77,10 @@ final goRouteProvider = Provider((ref) {
         path: PersistenceAttentionPage.path,
         pageBuilder: (context, state) {
           final nextPath = state.uri.queryParameters['nextPath'];
+          final id = state.uri.queryParameters['id'];
           return NoTransitionPage(
             child: PersistenceAttentionPage(
+              id: id,
               nextPath: nextPath,
             ),
           );
@@ -85,10 +91,14 @@ final goRouteProvider = Provider((ref) {
         path: SelectAttentionPage.path,
         pageBuilder: (context, state) {
           final nextPath = state.uri.queryParameters['nextPath'];
+          final id = state.uri.queryParameters['id'];
+
           return NoTransitionPage(
-              child: SelectAttentionPage(
-            nextPath: nextPath,
-          ));
+            child: SelectAttentionPage(
+              id: id,
+              nextPath: nextPath,
+            ),
+          );
         },
       ),
 
@@ -96,10 +106,13 @@ final goRouteProvider = Provider((ref) {
         path: ImmediateMemoryPage.path,
         pageBuilder: (context, state) {
           final nextPath = state.uri.queryParameters['nextPath'];
+          final id = state.uri.queryParameters['id'];
           return NoTransitionPage(
-              child: ImmediateMemoryPage(
-            nextPath: nextPath,
-          ));
+            child: ImmediateMemoryPage(
+              id: id,
+              nextPath: nextPath,
+            ),
+          );
         },
       ),
 
@@ -107,10 +120,13 @@ final goRouteProvider = Provider((ref) {
         path: PerformancePage.path,
         pageBuilder: (context, state) {
           final nextPath = state.uri.queryParameters['nextPath'];
+          final id = state.uri.queryParameters['id'];
           return NoTransitionPage(
-              child: PerformancePage(
-            nextPath: nextPath,
-          ));
+            child: PerformancePage(
+              id: id,
+              nextPath: nextPath,
+            ),
+          );
         },
       ),
 
@@ -118,10 +134,13 @@ final goRouteProvider = Provider((ref) {
         path: SemanticUnderstandingForMeaningPage.path,
         pageBuilder: (context, state) {
           final nextPath = state.uri.queryParameters['nextPath'];
+          final id = state.uri.queryParameters['id'];
           return NoTransitionPage(
-              child: SemanticUnderstandingForMeaningPage(
-            nextPath: nextPath,
-          ));
+            child: SemanticUnderstandingForMeaningPage(
+              id: id,
+              nextPath: nextPath,
+            ),
+          );
         },
       ),
 
@@ -129,8 +148,12 @@ final goRouteProvider = Provider((ref) {
         path: SemanticUnderstandingForCalculationPage.path,
         pageBuilder: (context, state) {
           final nextPath = state.uri.queryParameters['nextPath'];
+          final id = state.uri.queryParameters['id'];
           return NoTransitionPage(
-            child: SemanticUnderstandingForCalculationPage(nextPath: nextPath),
+            child: SemanticUnderstandingForCalculationPage(
+              nextPath: nextPath,
+              id: id,
+            ),
           );
         },
       ),
@@ -139,8 +162,12 @@ final goRouteProvider = Provider((ref) {
         path: RecentMemoryPage.path,
         pageBuilder: (context, state) {
           final nextPath = state.uri.queryParameters['nextPath'];
+          final id = state.uri.queryParameters['id'];
           return NoTransitionPage(
-            child: RecentMemoryPage(nextPath: nextPath),
+            child: RecentMemoryPage(
+              nextPath: nextPath,
+              id: id ?? '',
+            ),
           );
         },
       ),
@@ -148,8 +175,11 @@ final goRouteProvider = Provider((ref) {
       GoRoute(
         path: RecentMemoryAnsPage.path,
         pageBuilder: (context, state) {
-          return const NoTransitionPage(
-            child: RecentMemoryAnsPage(),
+          final id = state.uri.queryParameters['id'];
+          return NoTransitionPage(
+            child: RecentMemoryAnsPage(
+              id: id,
+            ),
           );
         },
       ),

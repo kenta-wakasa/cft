@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:uuid/v6.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -68,7 +69,7 @@ class HomePage extends ConsumerWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       context.go(
-                          '${RecentMemoryPage.path}?nextPath=${PersistenceAttentionPage.path}');
+                          '${RecentMemoryPage.path}?nextPath=${PersistenceAttentionPage.path}&id=${const UuidV6().generate()}');
                     },
                     child: const Text('通し実験'),
                   ),

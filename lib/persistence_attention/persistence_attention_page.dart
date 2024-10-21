@@ -14,9 +14,11 @@ class PersistenceAttentionPage extends ConsumerStatefulWidget {
   const PersistenceAttentionPage({
     super.key,
     required this.nextPath,
+    required this.id,
   });
 
   final String? nextPath;
+  final String? id;
 
   static const path = '/persistence_attention';
 
@@ -158,7 +160,7 @@ class _PersistenceAttentionPageState
                           child: ElevatedButton(
                             onPressed: () {
                               context.go(
-                                  '${widget.nextPath!}?nextPath=${SelectAttentionPage.path}');
+                                  '${widget.nextPath!}?nextPath=${SelectAttentionPage.path}&id=${widget.id}');
                             },
                             child: const Text('次のゲーム'),
                           ),

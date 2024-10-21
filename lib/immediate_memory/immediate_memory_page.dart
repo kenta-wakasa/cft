@@ -14,9 +14,15 @@ import 'package:go_router/go_router.dart';
 import 'package:uuid/v6.dart';
 
 class ImmediateMemoryPage extends ConsumerStatefulWidget {
-  const ImmediateMemoryPage({super.key, required this.nextPath});
+  const ImmediateMemoryPage({
+    super.key,
+    required this.nextPath,
+    required this.id,
+  });
 
   final String? nextPath;
+
+  final String? id;
 
   static const path = '/immediate_memory';
 
@@ -180,7 +186,7 @@ class _ImmediateMemoryPageState extends ConsumerState<ImmediateMemoryPage> {
                                   return;
                                 }
                                 context.go(
-                                    '${widget.nextPath!}?nextPath=${SemanticUnderstandingForMeaningPage.path}');
+                                    '${widget.nextPath!}?nextPath=${SemanticUnderstandingForMeaningPage.path}&id=${widget.id}');
                                 return;
                               }
 

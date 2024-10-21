@@ -23,9 +23,9 @@ mixin _$RecentMemoryLog {
   String get uid => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime? get finishedAt => throw _privateConstructorUsedError;
   List<String> get memoryList => throw _privateConstructorUsedError;
   List<String> get answerList => throw _privateConstructorUsedError;
-  DateTime? get finishedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,9 +43,9 @@ abstract class $RecentMemoryLogCopyWith<$Res> {
       {String uid,
       String id,
       DateTime createdAt,
+      DateTime? finishedAt,
       List<String> memoryList,
-      List<String> answerList,
-      DateTime? finishedAt});
+      List<String> answerList});
 }
 
 /// @nodoc
@@ -64,9 +64,9 @@ class _$RecentMemoryLogCopyWithImpl<$Res, $Val extends RecentMemoryLog>
     Object? uid = null,
     Object? id = null,
     Object? createdAt = null,
+    Object? finishedAt = freezed,
     Object? memoryList = null,
     Object? answerList = null,
-    Object? finishedAt = freezed,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -81,6 +81,10 @@ class _$RecentMemoryLogCopyWithImpl<$Res, $Val extends RecentMemoryLog>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      finishedAt: freezed == finishedAt
+          ? _value.finishedAt
+          : finishedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       memoryList: null == memoryList
           ? _value.memoryList
           : memoryList // ignore: cast_nullable_to_non_nullable
@@ -89,10 +93,6 @@ class _$RecentMemoryLogCopyWithImpl<$Res, $Val extends RecentMemoryLog>
           ? _value.answerList
           : answerList // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      finishedAt: freezed == finishedAt
-          ? _value.finishedAt
-          : finishedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
     ) as $Val);
   }
 }
@@ -109,9 +109,9 @@ abstract class _$$RecentMemoryLogImplCopyWith<$Res>
       {String uid,
       String id,
       DateTime createdAt,
+      DateTime? finishedAt,
       List<String> memoryList,
-      List<String> answerList,
-      DateTime? finishedAt});
+      List<String> answerList});
 }
 
 /// @nodoc
@@ -128,9 +128,9 @@ class __$$RecentMemoryLogImplCopyWithImpl<$Res>
     Object? uid = null,
     Object? id = null,
     Object? createdAt = null,
+    Object? finishedAt = freezed,
     Object? memoryList = null,
     Object? answerList = null,
-    Object? finishedAt = freezed,
   }) {
     return _then(_$RecentMemoryLogImpl(
       uid: null == uid
@@ -145,6 +145,10 @@ class __$$RecentMemoryLogImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      finishedAt: freezed == finishedAt
+          ? _value.finishedAt
+          : finishedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       memoryList: null == memoryList
           ? _value._memoryList
           : memoryList // ignore: cast_nullable_to_non_nullable
@@ -153,10 +157,6 @@ class __$$RecentMemoryLogImplCopyWithImpl<$Res>
           ? _value._answerList
           : answerList // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      finishedAt: freezed == finishedAt
-          ? _value.finishedAt
-          : finishedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
     ));
   }
 }
@@ -168,9 +168,9 @@ class _$RecentMemoryLogImpl extends _RecentMemoryLog {
       {required this.uid,
       this.id = '',
       required this.createdAt,
-      required final List<String> memoryList,
-      final List<String> answerList = const [],
-      this.finishedAt})
+      this.finishedAt,
+      final List<String> memoryList = const [],
+      final List<String> answerList = const []})
       : _memoryList = memoryList,
         _answerList = answerList,
         super._();
@@ -185,8 +185,11 @@ class _$RecentMemoryLogImpl extends _RecentMemoryLog {
   final String id;
   @override
   final DateTime createdAt;
+  @override
+  final DateTime? finishedAt;
   final List<String> _memoryList;
   @override
+  @JsonKey()
   List<String> get memoryList {
     if (_memoryList is EqualUnmodifiableListView) return _memoryList;
     // ignore: implicit_dynamic_type
@@ -203,11 +206,8 @@ class _$RecentMemoryLogImpl extends _RecentMemoryLog {
   }
 
   @override
-  final DateTime? finishedAt;
-
-  @override
   String toString() {
-    return 'RecentMemoryLog(uid: $uid, id: $id, createdAt: $createdAt, memoryList: $memoryList, answerList: $answerList, finishedAt: $finishedAt)';
+    return 'RecentMemoryLog(uid: $uid, id: $id, createdAt: $createdAt, finishedAt: $finishedAt, memoryList: $memoryList, answerList: $answerList)';
   }
 
   @override
@@ -219,12 +219,12 @@ class _$RecentMemoryLogImpl extends _RecentMemoryLog {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
+            (identical(other.finishedAt, finishedAt) ||
+                other.finishedAt == finishedAt) &&
             const DeepCollectionEquality()
                 .equals(other._memoryList, _memoryList) &&
             const DeepCollectionEquality()
-                .equals(other._answerList, _answerList) &&
-            (identical(other.finishedAt, finishedAt) ||
-                other.finishedAt == finishedAt));
+                .equals(other._answerList, _answerList));
   }
 
   @JsonKey(ignore: true)
@@ -234,9 +234,9 @@ class _$RecentMemoryLogImpl extends _RecentMemoryLog {
       uid,
       id,
       createdAt,
+      finishedAt,
       const DeepCollectionEquality().hash(_memoryList),
-      const DeepCollectionEquality().hash(_answerList),
-      finishedAt);
+      const DeepCollectionEquality().hash(_answerList));
 
   @JsonKey(ignore: true)
   @override
@@ -258,9 +258,9 @@ abstract class _RecentMemoryLog extends RecentMemoryLog {
       {required final String uid,
       final String id,
       required final DateTime createdAt,
-      required final List<String> memoryList,
-      final List<String> answerList,
-      final DateTime? finishedAt}) = _$RecentMemoryLogImpl;
+      final DateTime? finishedAt,
+      final List<String> memoryList,
+      final List<String> answerList}) = _$RecentMemoryLogImpl;
   _RecentMemoryLog._() : super._();
 
   factory _RecentMemoryLog.fromJson(Map<String, dynamic> json) =
@@ -273,11 +273,11 @@ abstract class _RecentMemoryLog extends RecentMemoryLog {
   @override
   DateTime get createdAt;
   @override
+  DateTime? get finishedAt;
+  @override
   List<String> get memoryList;
   @override
   List<String> get answerList;
-  @override
-  DateTime? get finishedAt;
   @override
   @JsonKey(ignore: true)
   _$$RecentMemoryLogImplCopyWith<_$RecentMemoryLogImpl> get copyWith =>

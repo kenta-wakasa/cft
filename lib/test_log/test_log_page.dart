@@ -7,6 +7,7 @@ import 'package:cft/immediate_memory/immediate_memory_log_provider.dart';
 import 'package:cft/performance/performance_problem_log.dart';
 import 'package:cft/persistence_attention/persistence_attention_log.dart';
 import 'package:cft/persistence_attention/persistence_attention_logs_stream.dart';
+import 'package:cft/recent_memory/recent_memory_log.dart';
 import 'package:cft/select_attention/select_attention_log.dart';
 import 'package:cft/select_attention/select_attention_log_provider.dart';
 import 'package:cft/select_attention/select_attention_page.dart';
@@ -169,6 +170,22 @@ class _TestLogPageState extends ConsumerState<TestLogPage> {
                     },
                     child: const Text('遂行・計画変更'),
                   ),
+                  const Gap(16),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _selectedType == TestLogType.recentMemory
+                          ? Colors.blue
+                          : null,
+                      foregroundColor: _selectedType == TestLogType.recentMemory
+                          ? Colors.white
+                          : null,
+                    ),
+                    onPressed: () {
+                      _selectedType = TestLogType.recentMemory;
+                      setState(() {});
+                    },
+                    child: const Text('近時記憶'),
+                  ),
                 ],
               ),
             ),
@@ -185,6 +202,7 @@ class _TestLogPageState extends ConsumerState<TestLogPage> {
                   const SemanticUnderstandingForCalculationLogPage(),
                 TestLogType.semanticFluency => const SemanticFluencyLogPage(),
                 TestLogType.performance => const PerformanceLogPage(),
+                TestLogType.recentMemory => const RecentMemoryLogPage(),
               },
             ),
           ],
@@ -1013,6 +1031,122 @@ class _PerformanceLogPageState extends ConsumerState<PerformanceLogPage> {
   }
 }
 
+final recentMemoryLogProvider =
+    StreamProvider.autoDispose<List<RecentMemoryLog>>((ref) {
+  return FirebaseFirestore.instance
+      .collection('recent_memory_log')
+      .orderBy('createdAt', descending: true)
+      .snapshots()
+      .map((snapshot) => snapshot.docs.map((doc) {
+            final data = doc.data();
+            return RecentMemoryLog.fromJson(data);
+          }).toList());
+});
+
+class RecentMemoryLogPage extends ConsumerStatefulWidget {
+  const RecentMemoryLogPage({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _RecentMemoryLogPageState();
+}
+
+class _RecentMemoryLogPageState extends ConsumerState<RecentMemoryLogPage> {
+  var selectedLogs = <RecentMemoryLog>[];
+
+  Future<void> downloadResult(RecentMemoryLog log) async {
+    final bodys = [
+      [
+        log.uid,
+        log.id,
+        log.createdAt.toIso8601String(),
+        log.finishedAt?.toIso8601String(),
+        log.memoryList.join('/'),
+        log.answerList.join('/'),
+      ].join(',')
+    ];
+
+    final header = [
+      'ユーザーID',
+      'ログID',
+      '開始時間',
+      '終了時間'
+          'カテゴリー',
+      '最初に入力した3つ',
+      '最後に入力した3つ',
+    ].join(',');
+
+    final csvString = [header, ...bodys].join('\n');
+
+    /// 参考：https://qiita.com/ling350181/items/636e0d8d15559070ec05
+    List<int> excelCsvBytes = [0xEF, 0xBB, 0xBF, ...utf8.encode(csvString)];
+    String base64ExcelCsvBytes = base64Encode(excelCsvBytes);
+    AnchorElement(
+        href: 'data:text/plain;charset=utf-8;base64,$base64ExcelCsvBytes')
+      ..setAttribute(
+        'download',
+        '近時記憶-${log.uid}-${log.createdAt.toIso8601String()}.csv',
+      )
+      ..click();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final logs = ref.watch(recentMemoryLogProvider).valueOrNull ?? [];
+    return Column(
+      children: [
+        Row(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                for (final log in selectedLogs) {
+                  downloadResult(log);
+                }
+              },
+              child: const Text('選択データをダウンロード'),
+            ),
+            const Spacer(),
+            ElevatedButton(
+              onPressed: () {
+                selectedLogs = [...logs];
+                setState(() {});
+              },
+              child: const Text('すべて選択'),
+            ),
+          ],
+        ),
+        const Gap(16),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                for (final log in logs)
+                  CheckboxListTile(
+                    value: selectedLogs.contains(log),
+                    onChanged: (value) {
+                      if (value ?? false) {
+                        selectedLogs.add(log);
+                      } else {
+                        selectedLogs.remove(log);
+                      }
+                      setState(() {});
+                    },
+                    title: Text(DateFormat('yyyy年 MM月 dd日 HH時mm分')
+                        .format(log.createdAt)),
+                    subtitle: Text(
+                      /// 正解数 誤答数 正解率 を表示
+                      'uid: ${log.uid}',
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 enum TestLogType {
   persistenceAttention,
   immediateMemory,
@@ -1021,4 +1155,5 @@ enum TestLogType {
   semanticUnderstandingForCalculation,
   semanticFluency,
   performance,
+  recentMemory,
 }

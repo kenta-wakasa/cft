@@ -68,24 +68,25 @@ class _RecentMemoryPageState extends ConsumerState<RecentMemoryAnsPage> {
                   ),
                 const Gap(16),
                 ElevatedButton(
-                  onPressed:
-                      controllers.any((controller) => controller.text.isEmpty)
-                          ? null
-                          : () async {
-                              try {
-                                await FirebaseFirestore.instance
-                                    .collection('recent_memory_log')
-                                    .doc(widget.id)
-                                    .set({
-                                  'answerList':
-                                      controllers.map((e) => e.text).toList(),
-                                }, SetOptions(merge: true));
-                              } finally {
-                                if (context.mounted) {
-                                  context.go(HomePage.path);
-                                }
-                              }
-                            },
+                  onPressed: controllers
+                          .any((controller) => controller.text.isEmpty)
+                      ? null
+                      : () async {
+                          try {
+                            await FirebaseFirestore.instance
+                                .collection('recent_memory_log')
+                                .doc(widget.id)
+                                .set({
+                              'answerList':
+                                  controllers.map((e) => e.text).toList(),
+                              'finishedAt': DateTime.now().toIso8601String(),
+                            }, SetOptions(merge: true));
+                          } finally {
+                            if (context.mounted) {
+                              context.go(HomePage.path);
+                            }
+                          }
+                        },
                   child: const Text('決定'),
                 ),
               ],

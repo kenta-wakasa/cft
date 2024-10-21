@@ -12,16 +12,17 @@ _$RecentMemoryLogImpl _$$RecentMemoryLogImplFromJson(
       uid: json['uid'] as String,
       id: json['id'] as String? ?? '',
       createdAt: DateTime.parse(json['createdAt'] as String),
-      memoryList: (json['memoryList'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
+      finishedAt: json['finishedAt'] == null
+          ? null
+          : DateTime.parse(json['finishedAt'] as String),
+      memoryList: (json['memoryList'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
       answerList: (json['answerList'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [],
-      finishedAt: json['finishedAt'] == null
-          ? null
-          : DateTime.parse(json['finishedAt'] as String),
     );
 
 Map<String, dynamic> _$$RecentMemoryLogImplToJson(
@@ -30,7 +31,7 @@ Map<String, dynamic> _$$RecentMemoryLogImplToJson(
       'uid': instance.uid,
       'id': instance.id,
       'createdAt': instance.createdAt.toIso8601String(),
+      'finishedAt': instance.finishedAt?.toIso8601String(),
       'memoryList': instance.memoryList,
       'answerList': instance.answerList,
-      'finishedAt': instance.finishedAt?.toIso8601String(),
     };

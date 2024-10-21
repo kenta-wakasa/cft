@@ -21,6 +21,7 @@ MeaningProblemLog _$MeaningProblemLogFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$MeaningProblemLog {
   String get uid => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   List<MeaningProblem> get meaningProblems =>
       throw _privateConstructorUsedError;
 
@@ -36,7 +37,7 @@ abstract class $MeaningProblemLogCopyWith<$Res> {
           MeaningProblemLog value, $Res Function(MeaningProblemLog) then) =
       _$MeaningProblemLogCopyWithImpl<$Res, MeaningProblemLog>;
   @useResult
-  $Res call({String uid, List<MeaningProblem> meaningProblems});
+  $Res call({String uid, String id, List<MeaningProblem> meaningProblems});
 }
 
 /// @nodoc
@@ -53,12 +54,17 @@ class _$MeaningProblemLogCopyWithImpl<$Res, $Val extends MeaningProblemLog>
   @override
   $Res call({
     Object? uid = null,
+    Object? id = null,
     Object? meaningProblems = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
+              as String,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
       meaningProblems: null == meaningProblems
           ? _value.meaningProblems
@@ -76,7 +82,7 @@ abstract class _$$MeaningProblemLogImplCopyWith<$Res>
       __$$MeaningProblemLogImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String uid, List<MeaningProblem> meaningProblems});
+  $Res call({String uid, String id, List<MeaningProblem> meaningProblems});
 }
 
 /// @nodoc
@@ -91,12 +97,17 @@ class __$$MeaningProblemLogImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? uid = null,
+    Object? id = null,
     Object? meaningProblems = null,
   }) {
     return _then(_$MeaningProblemLogImpl(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
+              as String,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
       meaningProblems: null == meaningProblems
           ? _value._meaningProblems
@@ -110,7 +121,9 @@ class __$$MeaningProblemLogImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$MeaningProblemLogImpl extends _MeaningProblemLog {
   _$MeaningProblemLogImpl(
-      {required this.uid, required final List<MeaningProblem> meaningProblems})
+      {required this.uid,
+      this.id = '',
+      required final List<MeaningProblem> meaningProblems})
       : _meaningProblems = meaningProblems,
         super._();
 
@@ -119,6 +132,9 @@ class _$MeaningProblemLogImpl extends _MeaningProblemLog {
 
   @override
   final String uid;
+  @override
+  @JsonKey()
+  final String id;
   final List<MeaningProblem> _meaningProblems;
   @override
   List<MeaningProblem> get meaningProblems {
@@ -129,7 +145,7 @@ class _$MeaningProblemLogImpl extends _MeaningProblemLog {
 
   @override
   String toString() {
-    return 'MeaningProblemLog(uid: $uid, meaningProblems: $meaningProblems)';
+    return 'MeaningProblemLog(uid: $uid, id: $id, meaningProblems: $meaningProblems)';
   }
 
   @override
@@ -138,14 +154,15 @@ class _$MeaningProblemLogImpl extends _MeaningProblemLog {
         (other.runtimeType == runtimeType &&
             other is _$MeaningProblemLogImpl &&
             (identical(other.uid, uid) || other.uid == uid) &&
+            (identical(other.id, id) || other.id == id) &&
             const DeepCollectionEquality()
                 .equals(other._meaningProblems, _meaningProblems));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, uid, const DeepCollectionEquality().hash(_meaningProblems));
+  int get hashCode => Object.hash(runtimeType, uid, id,
+      const DeepCollectionEquality().hash(_meaningProblems));
 
   @JsonKey(ignore: true)
   @override
@@ -165,6 +182,7 @@ class _$MeaningProblemLogImpl extends _MeaningProblemLog {
 abstract class _MeaningProblemLog extends MeaningProblemLog {
   factory _MeaningProblemLog(
           {required final String uid,
+          final String id,
           required final List<MeaningProblem> meaningProblems}) =
       _$MeaningProblemLogImpl;
   _MeaningProblemLog._() : super._();
@@ -174,6 +192,8 @@ abstract class _MeaningProblemLog extends MeaningProblemLog {
 
   @override
   String get uid;
+  @override
+  String get id;
   @override
   List<MeaningProblem> get meaningProblems;
   @override

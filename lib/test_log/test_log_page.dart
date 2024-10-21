@@ -9,6 +9,8 @@ import 'package:cft/persistence_attention/persistence_attention_logs_stream.dart
 import 'package:cft/select_attention/select_attention_log.dart';
 import 'package:cft/select_attention/select_attention_log_provider.dart';
 import 'package:cft/select_attention/select_attention_page.dart';
+import 'package:cft/semantic_understanding.dart/meaning_problem_log.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -524,6 +526,18 @@ class _ImmediateMemoryLogPageState
   }
 }
 
+final meaningProblemLogProvider =
+    StreamProvider.autoDispose<List<MeaningProblemLog>>((ref) {
+  return FirebaseFirestore.instance
+      .collection('meaning_problem_log')
+      .snapshots()
+      .map((snapshot) => snapshot.docs.map((doc) {
+            final data = doc.data();
+            data['id'] = doc.id;
+            return MeaningProblemLog.fromJson(data);
+          }).toList());
+});
+
 class SemanticUnderstandingForMeaningLogPage extends ConsumerStatefulWidget {
   const SemanticUnderstandingForMeaningLogPage({super.key});
 
@@ -534,9 +548,102 @@ class SemanticUnderstandingForMeaningLogPage extends ConsumerStatefulWidget {
 
 class _SemanticUnderstandingForMeaningLogPageState
     extends ConsumerState<SemanticUnderstandingForMeaningLogPage> {
+  var selectedLogs = <MeaningProblemLog>[];
+
+  Future<void> downloadResult(MeaningProblemLog log) async {
+    final bodys = [
+      for (final problem in log.meaningProblems)
+        [
+          log.uid,
+          log.id,
+          problem.question,
+          problem.difficulty.name,
+          problem.startedAt?.toIso8601String(),
+          problem.answeredAt?.toIso8601String(),
+          problem.userAns,
+        ].join(',')
+    ];
+
+    final header = [
+      'ユーザーID',
+      'ログID',
+      '問題文',
+      '難易度',
+      '開始時間',
+      '回答時間',
+      'ユーザーの回答',
+    ].join(',');
+
+    final csvString = [header, ...bodys].join('\n');
+
+    /// 参考：https://qiita.com/ling350181/items/636e0d8d15559070ec05
+    List<int> excelCsvBytes = [0xEF, 0xBB, 0xBF, ...utf8.encode(csvString)];
+    String base64ExcelCsvBytes = base64Encode(excelCsvBytes);
+    AnchorElement(
+        href: 'data:text/plain;charset=utf-8;base64,$base64ExcelCsvBytes')
+      ..setAttribute(
+        'download',
+        '意味理解・意味-${log.uid}-${log.meaningProblems.first.startedAt!.toIso8601String()}.csv',
+      )
+      ..click();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    final logs = ref.watch(meaningProblemLogProvider).valueOrNull ?? [];
+    logs.sort((a, b) => b.meaningProblems.first.startedAt!
+        .compareTo(a.meaningProblems.first.startedAt!));
+    return Column(
+      children: [
+        Row(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                for (final log in selectedLogs) {
+                  downloadResult(log);
+                }
+              },
+              child: const Text('選択データをダウンロード'),
+            ),
+            const Spacer(),
+            ElevatedButton(
+              onPressed: () {
+                selectedLogs = logs;
+                setState(() {});
+              },
+              child: const Text('すべて選択'),
+            ),
+          ],
+        ),
+        const Gap(16),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                for (final log in logs)
+                  CheckboxListTile(
+                    value: selectedLogs.contains(log),
+                    onChanged: (value) {
+                      if (value ?? false) {
+                        selectedLogs.add(log);
+                      } else {
+                        selectedLogs.remove(log);
+                      }
+                      setState(() {});
+                    },
+                    title: Text(DateFormat('yyyy年 MM月 dd日 HH時mm分')
+                        .format(log.meaningProblems.first.startedAt!)),
+                    subtitle: Text(
+                      /// 正解数 誤答数 正解率 を表示
+                      'userId: ${log.uid}',
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 

@@ -9,6 +9,7 @@ import 'package:cft/persistence_attention/persistence_attention_logs_stream.dart
 import 'package:cft/select_attention/select_attention_log.dart';
 import 'package:cft/select_attention/select_attention_log_provider.dart';
 import 'package:cft/select_attention/select_attention_page.dart';
+import 'package:cft/semantic_understanding.dart/calculation_problem_log.dart';
 import 'package:cft/semantic_understanding.dart/meaning_problem_log.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -647,6 +648,19 @@ class _SemanticUnderstandingForMeaningLogPageState
   }
 }
 
+// calculation_problem_log
+final calculationProblemLogProvider =
+    StreamProvider.autoDispose<List<CalculationProblemLog>>((ref) {
+  return FirebaseFirestore.instance
+      .collection('calculation_problem_log')
+      .snapshots()
+      .map((snapshot) => snapshot.docs.map((doc) {
+            final data = doc.data();
+            data['id'] = doc.id;
+            return CalculationProblemLog.fromJson(data);
+          }).toList());
+});
+
 class SemanticUnderstandingForCalculationLogPage
     extends ConsumerStatefulWidget {
   const SemanticUnderstandingForCalculationLogPage({super.key});
@@ -658,9 +672,102 @@ class SemanticUnderstandingForCalculationLogPage
 
 class _SemanticUnderstandingForCalculationLogPageState
     extends ConsumerState<SemanticUnderstandingForCalculationLogPage> {
+  var selectedLogs = <CalculationProblemLog>[];
+
+  Future<void> downloadResult(CalculationProblemLog log) async {
+    final bodys = [
+      for (final problem in log.calculationProblems)
+        [
+          log.uid,
+          log.id,
+          problem.startedAt?.toIso8601String(),
+          problem.answeredAt?.toIso8601String(),
+          problem.question,
+          problem.answer,
+          problem.userAns,
+        ].join(',')
+    ];
+
+    final header = [
+      'ユーザーID',
+      'ログID',
+      '開始時間',
+      '回答時間',
+      '問題文',
+      '正解',
+      'ユーザーの回答',
+    ].join(',');
+
+    final csvString = [header, ...bodys].join('\n');
+
+    /// 参考：https://qiita.com/ling350181/items/636e0d8d15559070ec05
+    List<int> excelCsvBytes = [0xEF, 0xBB, 0xBF, ...utf8.encode(csvString)];
+    String base64ExcelCsvBytes = base64Encode(excelCsvBytes);
+    AnchorElement(
+        href: 'data:text/plain;charset=utf-8;base64,$base64ExcelCsvBytes')
+      ..setAttribute(
+        'download',
+        '意味理解・計算-${log.uid}-${log.calculationProblems.first.startedAt!.toIso8601String()}.csv',
+      )
+      ..click();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    final logs = ref.watch(calculationProblemLogProvider).valueOrNull ?? [];
+    logs.sort((a, b) => b.calculationProblems.first.startedAt!
+        .compareTo(a.calculationProblems.first.startedAt!));
+    return Column(
+      children: [
+        Row(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                for (final log in selectedLogs) {
+                  downloadResult(log);
+                }
+              },
+              child: const Text('選択データをダウンロード'),
+            ),
+            const Spacer(),
+            ElevatedButton(
+              onPressed: () {
+                selectedLogs = logs;
+                setState(() {});
+              },
+              child: const Text('すべて選択'),
+            ),
+          ],
+        ),
+        const Gap(16),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                for (final log in logs)
+                  CheckboxListTile(
+                    value: selectedLogs.contains(log),
+                    onChanged: (value) {
+                      if (value ?? false) {
+                        selectedLogs.add(log);
+                      } else {
+                        selectedLogs.remove(log);
+                      }
+                      setState(() {});
+                    },
+                    title: Text(DateFormat('yyyy年 MM月 dd日 HH時mm分')
+                        .format(log.calculationProblems.first.startedAt!)),
+                    subtitle: Text(
+                      /// 正解数 誤答数 正解率 を表示
+                      'userId: ${log.uid}',
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 

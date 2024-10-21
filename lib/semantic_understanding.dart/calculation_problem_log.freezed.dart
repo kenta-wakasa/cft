@@ -22,6 +22,7 @@ CalculationProblemLog _$CalculationProblemLogFromJson(
 /// @nodoc
 mixin _$CalculationProblemLog {
   String get uid => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   List<CalculationProblem> get calculationProblems =>
       throw _privateConstructorUsedError;
 
@@ -37,7 +38,8 @@ abstract class $CalculationProblemLogCopyWith<$Res> {
           $Res Function(CalculationProblemLog) then) =
       _$CalculationProblemLogCopyWithImpl<$Res, CalculationProblemLog>;
   @useResult
-  $Res call({String uid, List<CalculationProblem> calculationProblems});
+  $Res call(
+      {String uid, String id, List<CalculationProblem> calculationProblems});
 }
 
 /// @nodoc
@@ -55,12 +57,17 @@ class _$CalculationProblemLogCopyWithImpl<$Res,
   @override
   $Res call({
     Object? uid = null,
+    Object? id = null,
     Object? calculationProblems = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
+              as String,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
       calculationProblems: null == calculationProblems
           ? _value.calculationProblems
@@ -79,7 +86,8 @@ abstract class _$$CalculationProblemLogImplCopyWith<$Res>
       __$$CalculationProblemLogImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String uid, List<CalculationProblem> calculationProblems});
+  $Res call(
+      {String uid, String id, List<CalculationProblem> calculationProblems});
 }
 
 /// @nodoc
@@ -95,12 +103,17 @@ class __$$CalculationProblemLogImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? uid = null,
+    Object? id = null,
     Object? calculationProblems = null,
   }) {
     return _then(_$CalculationProblemLogImpl(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
+              as String,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
       calculationProblems: null == calculationProblems
           ? _value._calculationProblems
@@ -115,6 +128,7 @@ class __$$CalculationProblemLogImplCopyWithImpl<$Res>
 class _$CalculationProblemLogImpl extends _CalculationProblemLog {
   _$CalculationProblemLogImpl(
       {required this.uid,
+      this.id = '',
       required final List<CalculationProblem> calculationProblems})
       : _calculationProblems = calculationProblems,
         super._();
@@ -124,6 +138,9 @@ class _$CalculationProblemLogImpl extends _CalculationProblemLog {
 
   @override
   final String uid;
+  @override
+  @JsonKey()
+  final String id;
   final List<CalculationProblem> _calculationProblems;
   @override
   List<CalculationProblem> get calculationProblems {
@@ -135,7 +152,7 @@ class _$CalculationProblemLogImpl extends _CalculationProblemLog {
 
   @override
   String toString() {
-    return 'CalculationProblemLog(uid: $uid, calculationProblems: $calculationProblems)';
+    return 'CalculationProblemLog(uid: $uid, id: $id, calculationProblems: $calculationProblems)';
   }
 
   @override
@@ -144,13 +161,14 @@ class _$CalculationProblemLogImpl extends _CalculationProblemLog {
         (other.runtimeType == runtimeType &&
             other is _$CalculationProblemLogImpl &&
             (identical(other.uid, uid) || other.uid == uid) &&
+            (identical(other.id, id) || other.id == id) &&
             const DeepCollectionEquality()
                 .equals(other._calculationProblems, _calculationProblems));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, uid,
+  int get hashCode => Object.hash(runtimeType, uid, id,
       const DeepCollectionEquality().hash(_calculationProblems));
 
   @JsonKey(ignore: true)
@@ -171,6 +189,7 @@ class _$CalculationProblemLogImpl extends _CalculationProblemLog {
 abstract class _CalculationProblemLog extends CalculationProblemLog {
   factory _CalculationProblemLog(
           {required final String uid,
+          final String id,
           required final List<CalculationProblem> calculationProblems}) =
       _$CalculationProblemLogImpl;
   _CalculationProblemLog._() : super._();
@@ -180,6 +199,8 @@ abstract class _CalculationProblemLog extends CalculationProblemLog {
 
   @override
   String get uid;
+  @override
+  String get id;
   @override
   List<CalculationProblem> get calculationProblems;
   @override

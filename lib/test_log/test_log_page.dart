@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:html';
 
-import 'package:cft/home/home_page.dart';
+import 'package:cft/common/common_app_bar.dart';
 import 'package:cft/immediate_memory/immediate_memory_log.dart';
 import 'package:cft/immediate_memory/immediate_memory_log_provider.dart';
 import 'package:cft/persistence_attention/persistence_attention_log.dart';
@@ -12,7 +12,6 @@ import 'package:cft/select_attention/select_attention_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class TestLogPage extends ConsumerStatefulWidget {
@@ -30,42 +29,15 @@ class _TestLogPageState extends ConsumerState<TestLogPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            showDialog<void>(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  content: const Text('ホームに戻りますか？'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('キャンセル'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        context.go(HomePage.path);
-                      },
-                      child: const Text('戻る'),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-          icon: const Icon(Icons.home),
-        ),
-      ),
+      appBar: const CommonAppBar(),
       body: Center(
         child: Row(
           children: [
             Container(
-              width: 120,
+              width: 160,
               color: Colors.grey[200],
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -88,24 +60,6 @@ class _TestLogPageState extends ConsumerState<TestLogPage> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
-                          _selectedType == TestLogType.selectAttention
-                              ? Colors.blue
-                              : null,
-                      foregroundColor:
-                          _selectedType == TestLogType.selectAttention
-                              ? Colors.white
-                              : null,
-                    ),
-                    onPressed: () {
-                      _selectedType = TestLogType.selectAttention;
-                      setState(() {});
-                    },
-                    child: const Text('選択性注意'),
-                  ),
-                  const Gap(16),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
                           _selectedType == TestLogType.immediateMemory
                               ? Colors.blue
                               : null,
@@ -120,6 +74,96 @@ class _TestLogPageState extends ConsumerState<TestLogPage> {
                     },
                     child: const Text('即時記憶'),
                   ),
+                  const Gap(16),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          _selectedType == TestLogType.selectAttention
+                              ? Colors.blue
+                              : null,
+                      foregroundColor:
+                          _selectedType == TestLogType.selectAttention
+                              ? Colors.white
+                              : null,
+                    ),
+                    onPressed: () {
+                      _selectedType = TestLogType.selectAttention;
+                      setState(() {});
+                    },
+                    child: const Text('選択制注意'),
+                  ),
+                  const Gap(16),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _selectedType ==
+                              TestLogType.semanticUnderstandingForMeaning
+                          ? Colors.blue
+                          : null,
+                      foregroundColor: _selectedType ==
+                              TestLogType.semanticUnderstandingForMeaning
+                          ? Colors.white
+                          : null,
+                    ),
+                    onPressed: () {
+                      _selectedType =
+                          TestLogType.semanticUnderstandingForMeaning;
+                      setState(() {});
+                    },
+                    child: const Text('意味理解・意味'),
+                  ),
+                  const Gap(16),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _selectedType ==
+                              TestLogType.semanticUnderstandingForCalculation
+                          ? Colors.blue
+                          : null,
+                      foregroundColor: _selectedType ==
+                              TestLogType.semanticUnderstandingForCalculation
+                          ? Colors.white
+                          : null,
+                    ),
+                    onPressed: () {
+                      _selectedType =
+                          TestLogType.semanticUnderstandingForCalculation;
+                      setState(() {});
+                    },
+                    child: const Text('意味理解・計算'),
+                  ),
+                  const Gap(16),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          _selectedType == TestLogType.semanticFluency
+                              ? Colors.blue
+                              : null,
+                      foregroundColor:
+                          _selectedType == TestLogType.semanticFluency
+                              ? Colors.white
+                              : null,
+                    ),
+                    onPressed: () {
+                      _selectedType = TestLogType.semanticFluency;
+                      setState(() {});
+                    },
+                    child: const Text('意味流暢性'),
+                  ),
+                  const Gap(16),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _selectedType == TestLogType.performance
+                          ? Colors.blue
+                          : null,
+                      foregroundColor: _selectedType == TestLogType.performance
+                          ? Colors.white
+                          : null,
+                    ),
+                    onPressed: () {
+                      _selectedType = TestLogType.performance;
+                      setState(() {});
+                    },
+                    child: const Text('遂行・計画変更'),
+                  ),
                 ],
               ),
             ),
@@ -130,6 +174,12 @@ class _TestLogPageState extends ConsumerState<TestLogPage> {
                   const PersistenceAttentionLogPage(),
                 TestLogType.selectAttention => const SelectAttentionLogPage(),
                 TestLogType.immediateMemory => const ImmediateMemoryLogPage(),
+                TestLogType.semanticUnderstandingForMeaning =>
+                  const SemanticUnderstandingForMeaningLogPage(),
+                TestLogType.semanticUnderstandingForCalculation =>
+                  const SemanticUnderstandingForCalculationLogPage(),
+                TestLogType.semanticFluency => const SemanticFluencyLogPage(),
+                TestLogType.performance => const PerformanceLogPage(),
               },
             ),
           ],
@@ -474,8 +524,76 @@ class _ImmediateMemoryLogPageState
   }
 }
 
+class SemanticUnderstandingForMeaningLogPage extends ConsumerStatefulWidget {
+  const SemanticUnderstandingForMeaningLogPage({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _SemanticUnderstandingForMeaningLogPageState();
+}
+
+class _SemanticUnderstandingForMeaningLogPageState
+    extends ConsumerState<SemanticUnderstandingForMeaningLogPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
+class SemanticUnderstandingForCalculationLogPage
+    extends ConsumerStatefulWidget {
+  const SemanticUnderstandingForCalculationLogPage({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _SemanticUnderstandingForCalculationLogPageState();
+}
+
+class _SemanticUnderstandingForCalculationLogPageState
+    extends ConsumerState<SemanticUnderstandingForCalculationLogPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
+class SemanticFluencyLogPage extends ConsumerStatefulWidget {
+  const SemanticFluencyLogPage({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _SemanticFluencyLogPageState();
+}
+
+class _SemanticFluencyLogPageState
+    extends ConsumerState<SemanticFluencyLogPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
+class PerformanceLogPage extends ConsumerStatefulWidget {
+  const PerformanceLogPage({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _PerformanceLogPageState();
+}
+
+class _PerformanceLogPageState extends ConsumerState<PerformanceLogPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
 enum TestLogType {
   persistenceAttention,
-  selectAttention,
   immediateMemory,
+  selectAttention,
+  semanticUnderstandingForMeaning,
+  semanticUnderstandingForCalculation,
+  semanticFluency,
+  performance,
 }

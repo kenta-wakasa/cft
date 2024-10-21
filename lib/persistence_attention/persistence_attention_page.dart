@@ -246,14 +246,16 @@ class _PlayingWidgetState extends ConsumerState<PlayingWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: 48,
-                  child: Center(
+                  width: 96,
+                  child: Align(
+                    alignment: Alignment.centerRight,
                     child: Text(
                       !state.isPlaying ? '?' : '${currentProblem.a}',
                       style: numberTextStyle,
                     ),
                   ),
                 ),
+                const Gap(12),
                 SizedBox(
                   width: 48,
                   child: Center(

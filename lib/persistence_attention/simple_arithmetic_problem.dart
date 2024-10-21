@@ -26,6 +26,13 @@ class SimpleArithmeticProblem with _$SimpleArithmeticProblem {
   factory SimpleArithmeticProblem.generate(Operator randomOperator) {
     final a = random.nextInt(9) + 1;
     final b = random.nextInt(9) + 1;
+    if (randomOperator == Operator.division) {
+      return SimpleArithmeticProblem(
+        a: a * b,
+        b: b,
+        randomOperator: randomOperator,
+      );
+    }
 
     return SimpleArithmeticProblem(
       a: a,

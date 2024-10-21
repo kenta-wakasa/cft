@@ -182,6 +182,7 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
             id: const UuidV6().generate(),
             startedAt: startedAt,
             userId: uid,
+            theme: themeList[currentIndex],
             answerWordWithTimestampList: answerWordWithTimestampList,
           ).toJson(),
         );

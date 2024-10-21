@@ -4,11 +4,13 @@ import 'dart:html';
 import 'package:cft/common/common_app_bar.dart';
 import 'package:cft/immediate_memory/immediate_memory_log.dart';
 import 'package:cft/immediate_memory/immediate_memory_log_provider.dart';
+import 'package:cft/performance/performance_problem_log.dart';
 import 'package:cft/persistence_attention/persistence_attention_log.dart';
 import 'package:cft/persistence_attention/persistence_attention_logs_stream.dart';
 import 'package:cft/select_attention/select_attention_log.dart';
 import 'package:cft/select_attention/select_attention_log_provider.dart';
 import 'package:cft/select_attention/select_attention_page.dart';
+import 'package:cft/semantic_fluency/semantic_fluency_log.dart';
 import 'package:cft/semantic_understanding.dart/calculation_problem_log.dart';
 import 'package:cft/semantic_understanding.dart/meaning_problem_log.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -254,7 +256,7 @@ class _PersistenceAttentionLogPageState
             const Spacer(),
             ElevatedButton(
               onPressed: () {
-                selectedLogs = logs;
+                selectedLogs = [...logs];
                 setState(() {});
               },
               child: const Text('すべて選択'),
@@ -281,7 +283,7 @@ class _PersistenceAttentionLogPageState
                         .format(log.startedAt)),
                     subtitle: Text(
                       /// 正解数 誤答数 正解率 を表示
-                      'userId: ${log.userId}:${log.correctCount}問正解 ${log.incorrectCount}問誤答 正解率${log.correctRate.toPercent()}',
+                      'uid: ${log.userId}:${log.correctCount}問正解 ${log.incorrectCount}問誤答 正解率${log.correctRate.toPercent()}',
                     ),
                   ),
               ],
@@ -374,7 +376,7 @@ class _SelectAttentionLogPageState
             const Spacer(),
             ElevatedButton(
               onPressed: () {
-                selectedLogs = logs;
+                selectedLogs = [...logs];
                 setState(() {});
               },
               child: const Text('すべて選択'),
@@ -401,7 +403,7 @@ class _SelectAttentionLogPageState
                         .format(log.selectAttentionProblems.first.startedAt!)),
                     subtitle: Text(
                       /// 正解数 誤答数 正解率 を表示
-                      'userId: ${log.userId}',
+                      'uid: ${log.userId}',
                     ),
                   ),
               ],
@@ -488,7 +490,7 @@ class _ImmediateMemoryLogPageState
             const Spacer(),
             ElevatedButton(
               onPressed: () {
-                selectedLogs = logs;
+                selectedLogs = [...logs];
                 setState(() {});
               },
               child: const Text('すべて選択'),
@@ -515,7 +517,7 @@ class _ImmediateMemoryLogPageState
                         .format(log.immediateMemoryProblem.startedAt!)),
                     subtitle: Text(
                       /// 正解数 誤答数 正解率 を表示
-                      'userId: ${log.userId}',
+                      'uid: ${log.userId}',
                     ),
                   ),
               ],
@@ -609,7 +611,7 @@ class _SemanticUnderstandingForMeaningLogPageState
             const Spacer(),
             ElevatedButton(
               onPressed: () {
-                selectedLogs = logs;
+                selectedLogs = [...logs];
                 setState(() {});
               },
               child: const Text('すべて選択'),
@@ -636,7 +638,7 @@ class _SemanticUnderstandingForMeaningLogPageState
                         .format(log.meaningProblems.first.startedAt!)),
                     subtitle: Text(
                       /// 正解数 誤答数 正解率 を表示
-                      'userId: ${log.uid}',
+                      'uid: ${log.uid}',
                     ),
                   ),
               ],
@@ -732,7 +734,7 @@ class _SemanticUnderstandingForCalculationLogPageState
             const Spacer(),
             ElevatedButton(
               onPressed: () {
-                selectedLogs = logs;
+                selectedLogs = [...logs];
                 setState(() {});
               },
               child: const Text('すべて選択'),
@@ -759,7 +761,7 @@ class _SemanticUnderstandingForCalculationLogPageState
                         .format(log.calculationProblems.first.startedAt!)),
                     subtitle: Text(
                       /// 正解数 誤答数 正解率 を表示
-                      'userId: ${log.uid}',
+                      'uid: ${log.uid}',
                     ),
                   ),
               ],
@@ -771,6 +773,18 @@ class _SemanticUnderstandingForCalculationLogPageState
   }
 }
 
+final sematicFluencyLogProvider =
+    StreamProvider.autoDispose<List<SemanticFluencyLog>>((ref) {
+  return FirebaseFirestore.instance
+      .collection('semantic_fluency_log')
+      .orderBy('startedAt', descending: true)
+      .snapshots()
+      .map((snapshot) => snapshot.docs.map((doc) {
+            final data = doc.data();
+            return SemanticFluencyLog.fromJson(data);
+          }).toList());
+});
+
 class SemanticFluencyLogPage extends ConsumerStatefulWidget {
   const SemanticFluencyLogPage({super.key});
 
@@ -781,11 +795,112 @@ class SemanticFluencyLogPage extends ConsumerStatefulWidget {
 
 class _SemanticFluencyLogPageState
     extends ConsumerState<SemanticFluencyLogPage> {
+  var selectedLogs = <SemanticFluencyLog>[];
+
+  Future<void> downloadResult(SemanticFluencyLog log) async {
+    final bodys = [
+      for (final answer in log.answerWordWithTimestampList)
+        [
+          log.userId,
+          log.id,
+          log.startedAt.toIso8601String(),
+          log.theme,
+          answer.timestamp.toIso8601String(),
+          answer.word,
+        ].join(',')
+    ];
+
+    final header = [
+      'ユーザーID',
+      'ログID',
+      '開始時間',
+      'カテゴリー',
+      '回答時間',
+      '回答した単語',
+    ].join(',');
+
+    final csvString = [header, ...bodys].join('\n');
+
+    /// 参考：https://qiita.com/ling350181/items/636e0d8d15559070ec05
+    List<int> excelCsvBytes = [0xEF, 0xBB, 0xBF, ...utf8.encode(csvString)];
+    String base64ExcelCsvBytes = base64Encode(excelCsvBytes);
+    AnchorElement(
+        href: 'data:text/plain;charset=utf-8;base64,$base64ExcelCsvBytes')
+      ..setAttribute(
+        'download',
+        '意味流暢性-${log.userId}-${log.startedAt.toIso8601String()}.csv',
+      )
+      ..click();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    final logs = ref.watch(sematicFluencyLogProvider).valueOrNull ?? [];
+    return Column(
+      children: [
+        Row(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                for (final log in selectedLogs) {
+                  downloadResult(log);
+                }
+              },
+              child: const Text('選択データをダウンロード'),
+            ),
+            const Spacer(),
+            ElevatedButton(
+              onPressed: () {
+                selectedLogs = [...logs];
+                setState(() {});
+              },
+              child: const Text('すべて選択'),
+            ),
+          ],
+        ),
+        const Gap(16),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                for (final log in logs)
+                  CheckboxListTile(
+                    value: selectedLogs.contains(log),
+                    onChanged: (value) {
+                      if (value ?? false) {
+                        selectedLogs.add(log);
+                      } else {
+                        selectedLogs.remove(log);
+                      }
+                      setState(() {});
+                    },
+                    title: Text(DateFormat('yyyy年 MM月 dd日 HH時mm分')
+                        .format(log.startedAt)),
+                    subtitle: Text(
+                      /// 正解数 誤答数 正解率 を表示
+                      'uid: ${log.userId}',
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
+
+final performanceProblemLogProvider =
+    StreamProvider.autoDispose<List<PerformanceProblemLog>>((ref) {
+  return FirebaseFirestore.instance
+      .collection('performance_problem_log')
+      .snapshots()
+      .map((snapshot) => snapshot.docs.map((doc) {
+            final data = doc.data();
+            data['id'] = doc.id;
+            return PerformanceProblemLog.fromJson(data);
+          }).toList());
+});
 
 class PerformanceLogPage extends ConsumerStatefulWidget {
   const PerformanceLogPage({super.key});
@@ -796,9 +911,103 @@ class PerformanceLogPage extends ConsumerStatefulWidget {
 }
 
 class _PerformanceLogPageState extends ConsumerState<PerformanceLogPage> {
+  var selectedLogs = <PerformanceProblemLog>[];
+
+  Future<void> downloadResult(PerformanceProblemLog log) async {
+    final bodys = [
+      for (final problem in log.performanceProblems)
+        for (final (index, value) in (problem.answeredAtList).indexed)
+          [
+            log.uid,
+            log.id,
+            problem.startedAt?.toIso8601String(),
+            problem.questionTexts[index],
+            value.toIso8601String(),
+            problem.answerTexts[index],
+            problem.userAnswers[index],
+          ].join(',')
+    ];
+
+    final header = [
+      'ユーザーID',
+      'ログID',
+      '開始時間',
+      '問題文',
+      '回答時間',
+      '正解',
+      'ユーザーの回答',
+    ].join(',');
+
+    final csvString = [header, ...bodys].join('\n');
+
+    /// 参考：https://qiita.com/ling350181/items/636e0d8d15559070ec05
+    List<int> excelCsvBytes = [0xEF, 0xBB, 0xBF, ...utf8.encode(csvString)];
+    String base64ExcelCsvBytes = base64Encode(excelCsvBytes);
+    AnchorElement(
+        href: 'data:text/plain;charset=utf-8;base64,$base64ExcelCsvBytes')
+      ..setAttribute(
+        'download',
+        '遂行・計画変更-${log.uid}-${log.performanceProblems.first.startedAt?.toIso8601String()}.csv',
+      )
+      ..click();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    final logs = ref.watch(performanceProblemLogProvider).valueOrNull ?? [];
+    logs.sort((a, b) => b.performanceProblems.first.startedAt!
+        .compareTo(a.performanceProblems.first.startedAt!));
+    return Column(
+      children: [
+        Row(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                for (final log in selectedLogs) {
+                  downloadResult(log);
+                }
+              },
+              child: const Text('選択データをダウンロード'),
+            ),
+            const Spacer(),
+            ElevatedButton(
+              onPressed: () {
+                selectedLogs = [...logs];
+                setState(() {});
+              },
+              child: const Text('すべて選択'),
+            ),
+          ],
+        ),
+        const Gap(16),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                for (final log in logs)
+                  CheckboxListTile(
+                    value: selectedLogs.contains(log),
+                    onChanged: (value) {
+                      if (value ?? false) {
+                        selectedLogs.add(log);
+                      } else {
+                        selectedLogs.remove(log);
+                      }
+                      setState(() {});
+                    },
+                    title: Text(DateFormat('yyyy年 MM月 dd日 HH時mm分')
+                        .format(log.performanceProblems.first.startedAt!)),
+                    subtitle: Text(
+                      /// 正解数 誤答数 正解率 を表示
+                      'uid: ${log.uid}',
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 

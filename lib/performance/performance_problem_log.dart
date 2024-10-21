@@ -8,6 +8,7 @@ part 'performance_problem_log.g.dart';
 class PerformanceProblemLog with _$PerformanceProblemLog {
   factory PerformanceProblemLog({
     required String uid,
+    @Default('') String id,
     required List<PerformanceProblem> performanceProblems,
   }) = _PerformanceProblemLog;
   const PerformanceProblemLog._();

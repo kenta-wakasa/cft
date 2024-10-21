@@ -22,6 +22,7 @@ PerformanceProblemLog _$PerformanceProblemLogFromJson(
 /// @nodoc
 mixin _$PerformanceProblemLog {
   String get uid => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   List<PerformanceProblem> get performanceProblems =>
       throw _privateConstructorUsedError;
 
@@ -37,7 +38,8 @@ abstract class $PerformanceProblemLogCopyWith<$Res> {
           $Res Function(PerformanceProblemLog) then) =
       _$PerformanceProblemLogCopyWithImpl<$Res, PerformanceProblemLog>;
   @useResult
-  $Res call({String uid, List<PerformanceProblem> performanceProblems});
+  $Res call(
+      {String uid, String id, List<PerformanceProblem> performanceProblems});
 }
 
 /// @nodoc
@@ -55,12 +57,17 @@ class _$PerformanceProblemLogCopyWithImpl<$Res,
   @override
   $Res call({
     Object? uid = null,
+    Object? id = null,
     Object? performanceProblems = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
+              as String,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
       performanceProblems: null == performanceProblems
           ? _value.performanceProblems
@@ -79,7 +86,8 @@ abstract class _$$PerformanceProblemLogImplCopyWith<$Res>
       __$$PerformanceProblemLogImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String uid, List<PerformanceProblem> performanceProblems});
+  $Res call(
+      {String uid, String id, List<PerformanceProblem> performanceProblems});
 }
 
 /// @nodoc
@@ -95,12 +103,17 @@ class __$$PerformanceProblemLogImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? uid = null,
+    Object? id = null,
     Object? performanceProblems = null,
   }) {
     return _then(_$PerformanceProblemLogImpl(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
+              as String,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
       performanceProblems: null == performanceProblems
           ? _value._performanceProblems
@@ -115,6 +128,7 @@ class __$$PerformanceProblemLogImplCopyWithImpl<$Res>
 class _$PerformanceProblemLogImpl extends _PerformanceProblemLog {
   _$PerformanceProblemLogImpl(
       {required this.uid,
+      this.id = '',
       required final List<PerformanceProblem> performanceProblems})
       : _performanceProblems = performanceProblems,
         super._();
@@ -124,6 +138,9 @@ class _$PerformanceProblemLogImpl extends _PerformanceProblemLog {
 
   @override
   final String uid;
+  @override
+  @JsonKey()
+  final String id;
   final List<PerformanceProblem> _performanceProblems;
   @override
   List<PerformanceProblem> get performanceProblems {
@@ -135,7 +152,7 @@ class _$PerformanceProblemLogImpl extends _PerformanceProblemLog {
 
   @override
   String toString() {
-    return 'PerformanceProblemLog(uid: $uid, performanceProblems: $performanceProblems)';
+    return 'PerformanceProblemLog(uid: $uid, id: $id, performanceProblems: $performanceProblems)';
   }
 
   @override
@@ -144,13 +161,14 @@ class _$PerformanceProblemLogImpl extends _PerformanceProblemLog {
         (other.runtimeType == runtimeType &&
             other is _$PerformanceProblemLogImpl &&
             (identical(other.uid, uid) || other.uid == uid) &&
+            (identical(other.id, id) || other.id == id) &&
             const DeepCollectionEquality()
                 .equals(other._performanceProblems, _performanceProblems));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, uid,
+  int get hashCode => Object.hash(runtimeType, uid, id,
       const DeepCollectionEquality().hash(_performanceProblems));
 
   @JsonKey(ignore: true)
@@ -171,6 +189,7 @@ class _$PerformanceProblemLogImpl extends _PerformanceProblemLog {
 abstract class _PerformanceProblemLog extends PerformanceProblemLog {
   factory _PerformanceProblemLog(
           {required final String uid,
+          final String id,
           required final List<PerformanceProblem> performanceProblems}) =
       _$PerformanceProblemLogImpl;
   _PerformanceProblemLog._() : super._();
@@ -180,6 +199,8 @@ abstract class _PerformanceProblemLog extends PerformanceProblemLog {
 
   @override
   String get uid;
+  @override
+  String get id;
   @override
   List<PerformanceProblem> get performanceProblems;
   @override

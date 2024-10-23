@@ -32,4 +32,21 @@ class PersistenceAttentionLog with _$PersistenceAttentionLog {
   /// 正解率
   double get correctRate =>
       validAnswers.isEmpty ? 0 : correctCount / validAnswers.length;
+
+  /// 経過時間ミリセカンド
+  int elapsedMilliSeconds(int index) {
+    final DateTime? start;
+    final DateTime? end;
+    if (index == 0) {
+      start = startedAt;
+      end = problems[index].answeredAt;
+    } else {
+      start = problems[index - 1].answeredAt;
+      end = problems[index].answeredAt;
+    }
+    if (start == null || end == null) {
+      return 0;
+    }
+    return end.difference(start).inMilliseconds;
+  }
 }

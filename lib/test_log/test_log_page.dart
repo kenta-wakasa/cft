@@ -233,6 +233,7 @@ class _PersistenceAttentionLogPageState
           '${log.incorrectCount},'
           '${log.correctRate},'
           '${problem.answeredAt!.toIso8601String()},'
+          '${log.elapsedMilliSeconds(log.validAnswers.indexOf(problem))},'
           '${problem.a},'
           '${problem.randomOperator.toSymbol},'
           '${problem.b},'
@@ -240,7 +241,8 @@ class _PersistenceAttentionLogPageState
           '${problem.userAnswer}';
     });
 
-    const header = 'ユーザーID,ログID,ゲーム開始時間,正解数,誤答数,正解率,回答時間,a,記号,b,解答,ユーザーの回答';
+    const header =
+        'ユーザーID,ログID,ゲーム開始時間,正解数,誤答数,正解率,回答時間,経過時間,a,記号,b,解答,ユーザーの回答';
     final csvString = [header, ...bodys].join('\n');
 
     /// 参考：https://qiita.com/ling350181/items/636e0d8d15559070ec05

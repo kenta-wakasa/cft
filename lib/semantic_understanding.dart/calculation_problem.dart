@@ -21,8 +21,8 @@ class CalculationProblem with _$CalculationProblem {
   /// 正解かどうか
   bool? get isCorrect => userAns == null ? null : userAns == answer;
 
-  /// 回答時間ミリセカンド
-  int? get answerTime => answeredAt == null || startedAt == null
-      ? null
+  /// 経過時間
+  int get answerTime => answeredAt == null || startedAt == null
+      ? 0
       : answeredAt!.difference(startedAt!).inMilliseconds;
 }

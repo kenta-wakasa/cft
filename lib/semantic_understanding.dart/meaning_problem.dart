@@ -20,6 +20,11 @@ class MeaningProblem with _$MeaningProblem {
 
   factory MeaningProblem.fromJson(Map<String, dynamic> json) =>
       _$MeaningProblemFromJson(json);
+
+  /// 経過時間
+  int get answerTime => answeredAt == null || startedAt == null
+      ? 0
+      : answeredAt!.difference(startedAt!).inMilliseconds;
 }
 
 /// 難易度

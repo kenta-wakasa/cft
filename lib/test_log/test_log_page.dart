@@ -242,7 +242,7 @@ class _PersistenceAttentionLogPageState
     });
 
     const header =
-        'ユーザーID,ログID,ゲーム開始時間,正解数,誤答数,正解率,回答時間,経過時間,a,記号,b,解答,ユーザーの回答';
+        'ユーザーID,ログID,ゲーム開始時間,正解数,誤答数,正解率,回答時間,経過時間ms,a,記号,b,解答,ユーザーの回答';
     final csvString = [header, ...bodys].join('\n');
 
     /// 参考：https://qiita.com/ling350181/items/636e0d8d15559070ec05
@@ -586,6 +586,7 @@ class _SemanticUnderstandingForMeaningLogPageState
           problem.startedAt?.toIso8601String(),
           problem.answeredAt?.toIso8601String(),
           problem.userAns,
+          problem.answerTime,
         ].join(',')
     ];
 
@@ -597,6 +598,7 @@ class _SemanticUnderstandingForMeaningLogPageState
       '開始時間',
       '回答時間',
       'ユーザーの回答',
+      '経過時間ms',
     ].join(',');
 
     final csvString = [header, ...bodys].join('\n');
@@ -712,6 +714,7 @@ class _SemanticUnderstandingForCalculationLogPageState
           problem.question,
           problem.answer,
           problem.userAns,
+          problem.answerTime,
         ].join(',')
     ];
 
@@ -726,6 +729,7 @@ class _SemanticUnderstandingForCalculationLogPageState
       '問題文',
       '正解',
       'ユーザーの回答',
+      '経過時間',
     ].join(',');
 
     final csvString = [header, ...bodys].join('\n');

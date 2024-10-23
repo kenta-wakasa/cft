@@ -1,3 +1,3 @@
 # cft
 
-flutter build web --web-renderer=html && firebase deploy --only hosting
+flutter build web && firebase deploy --only hosting

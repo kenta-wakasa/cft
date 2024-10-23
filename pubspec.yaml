@@ -39,5 +39,11 @@ dev_dependencies:
   custom_lint: ^0.6.4
   riverpod_lint: ^2.3.10
 
+# assets
+
+
+
 flutter:
   uses-material-design: true
+  assets:
+    - assets/

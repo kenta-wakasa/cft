@@ -167,6 +167,16 @@ class _SemanticUnderstandingPageState
                   const Gap(16),
                   const Text(
                       'これから日常の生活や社会的なルールについての質問をしますので、それに答えてください。※各問制限時間60秒'),
+                  const Gap(8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(child: Image.asset('assets/bug.jpg')),
+                      const Gap(8),
+                      Expanded(child: Image.asset('assets/input_voice.jpeg')),
+                    ],
+                  ),
                   const Gap(32),
                   ElevatedButton(
                     onPressed: () {

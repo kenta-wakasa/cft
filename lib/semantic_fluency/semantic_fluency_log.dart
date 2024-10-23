@@ -17,4 +17,18 @@ class SemanticFluencyLog with _$SemanticFluencyLog {
 
   factory SemanticFluencyLog.fromJson(Map<String, dynamic> json) =>
       _$SemanticFluencyLogFromJson(json);
+
+  /// 経過時間ms
+  int elapsedTime(int index) {
+    if (index == 0) {
+      return answerWordWithTimestampList[index]
+          .timestamp
+          .difference(startedAt)
+          .inMilliseconds;
+    }
+    return answerWordWithTimestampList[index]
+        .timestamp
+        .difference(answerWordWithTimestampList[index - 1].timestamp)
+        .inMilliseconds;
+  }
 }

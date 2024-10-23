@@ -15,4 +15,21 @@ class PerformanceProblemLog with _$PerformanceProblemLog {
 
   factory PerformanceProblemLog.fromJson(Map<String, dynamic> json) =>
       _$PerformanceProblemLogFromJson(json);
+
+  /// 正答数
+  int get correctCount {
+    return performanceProblems.fold<int>(
+        0, (previousValue, element) => previousValue + element.correctCount);
+  }
+
+  /// 誤答数
+  int get incorrectCount {
+    return performanceProblems.fold<int>(
+        0, (previousValue, element) => previousValue + element.incorrectCount);
+  }
+
+  /// 正解率
+  double get correctRate {
+    return correctCount / (correctCount + incorrectCount);
+  }
 }

@@ -17,4 +17,32 @@ class RecentMemoryLog with _$RecentMemoryLog {
 
   factory RecentMemoryLog.fromJson(Map<String, dynamic> json) =>
       _$RecentMemoryLogFromJson(json);
+
+  int get correctCount {
+    return memoryList.fold<int>(
+        0,
+        (previousValue, element) =>
+            previousValue + (answerList.contains(element) ? 1 : 0));
+  }
+
+  /// 誤答数
+  int get incorrectCount {
+    return memoryList.fold<int>(
+        0,
+        (previousValue, element) =>
+            previousValue + (answerList.contains(element) ? 0 : 1));
+  }
+
+  /// 正解率
+  double get correctRate {
+    return correctCount / memoryList.length;
+  }
+
+  /// 経過時間ms
+  int get elapsedTime {
+    if (finishedAt == null) {
+      return 0;
+    }
+    return finishedAt!.difference(createdAt).inMilliseconds;
+  }
 }

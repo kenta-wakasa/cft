@@ -839,6 +839,7 @@ class _SemanticFluencyLogPageState
           log.theme,
           answer.timestamp.toIso8601String(),
           answer.word,
+          log.elapsedTime(log.answerWordWithTimestampList.indexOf(answer)),
         ].join(',')
     ];
 
@@ -849,6 +850,7 @@ class _SemanticFluencyLogPageState
       'カテゴリー',
       '回答時間',
       '回答した単語',
+      '経過時間ms',
     ].join(',');
 
     final csvString = [header, ...bodys].join('\n');
@@ -952,22 +954,30 @@ class _PerformanceLogPageState extends ConsumerState<PerformanceLogPage> {
           [
             log.uid,
             log.id,
+            log.correctCount,
+            log.incorrectCount,
+            log.correctRate,
             problem.startedAt?.toIso8601String(),
             problem.questionTexts[index],
             value.toIso8601String(),
             problem.answerTexts[index],
             problem.userAnswers[index],
+            problem.elapsedTime(index),
           ].join(',')
     ];
 
     final header = [
       'ユーザーID',
       'ログID',
+      '正答数',
+      '誤答数',
+      '正解率',
       '開始時間',
       '問題文',
       '回答時間',
       '正解',
       'ユーザーの回答',
+      '経過時間ms',
     ].join(',');
 
     final csvString = [header, ...bodys].join('\n');
@@ -1073,6 +1083,10 @@ class _RecentMemoryLogPageState extends ConsumerState<RecentMemoryLogPage> {
         log.id,
         log.createdAt.toIso8601String(),
         log.finishedAt?.toIso8601String(),
+        log.elapsedTime,
+        log.correctCount,
+        log.incorrectCount,
+        log.correctRate,
         log.memoryList.join('/'),
         log.answerList.join('/'),
       ].join(',')
@@ -1082,8 +1096,11 @@ class _RecentMemoryLogPageState extends ConsumerState<RecentMemoryLogPage> {
       'ユーザーID',
       'ログID',
       '開始時間',
-      '終了時間'
-          'カテゴリー',
+      '終了時間',
+      '経過時間ms',
+      '正答数',
+      '誤答数',
+      '正解率',
       '最初に入力した3つ',
       '最後に入力した3つ',
     ].join(',');

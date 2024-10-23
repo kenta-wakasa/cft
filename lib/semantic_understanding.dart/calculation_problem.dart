@@ -17,4 +17,12 @@ class CalculationProblem with _$CalculationProblem {
 
   factory CalculationProblem.fromJson(Map<String, dynamic> json) =>
       _$CalculationProblemFromJson(json);
+
+  /// 正解かどうか
+  bool? get isCorrect => userAns == null ? null : userAns == answer;
+
+  /// 回答時間ミリセカンド
+  int? get answerTime => answeredAt == null || startedAt == null
+      ? null
+      : answeredAt!.difference(startedAt!).inMilliseconds;
 }

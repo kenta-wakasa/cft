@@ -15,4 +15,15 @@ class CalculationProblemLog with _$CalculationProblemLog {
 
   factory CalculationProblemLog.fromJson(Map<String, dynamic> json) =>
       _$CalculationProblemLogFromJson(json);
+
+  /// 正解数
+  int get correctCount =>
+      calculationProblems.where((problem) => problem.isCorrect == true).length;
+
+  /// 誤答数
+  int get incorrectCount =>
+      calculationProblems.where((problem) => problem.isCorrect != true).length;
+
+  /// 正解率
+  double get correctRate => correctCount / calculationProblems.length;
 }

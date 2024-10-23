@@ -702,6 +702,9 @@ class _SemanticUnderstandingForCalculationLogPageState
         [
           log.uid,
           log.id,
+          log.correctCount,
+          log.incorrectCount,
+          log.correctRate,
           problem.startedAt?.toIso8601String(),
           problem.answeredAt?.toIso8601String(),
           problem.question,
@@ -713,6 +716,9 @@ class _SemanticUnderstandingForCalculationLogPageState
     final header = [
       'ユーザーID',
       'ログID',
+      '正解数',
+      '誤答数',
+      '正解率',
       '開始時間',
       '回答時間',
       '問題文',

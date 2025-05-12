@@ -433,22 +433,42 @@ class _SelectAttentionLogPageState
             child: Column(
               children: [
                 for (final log in logs)
-                  CheckboxListTile(
-                    value: selectedLogs.contains(log),
-                    onChanged: (value) {
-                      if (value ?? false) {
-                        selectedLogs.add(log);
-                      } else {
-                        selectedLogs.remove(log);
-                      }
-                      setState(() {});
-                    },
-                    title: Text(DateFormat('yyyy年 MM月 dd日 HH時mm分')
-                        .format(log.selectAttentionProblems.first.startedAt!)),
-                    subtitle: Text(
-                      /// 正解数 誤答数 正解率 を表示
-                      'uid: ${log.userId}',
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CheckboxListTile(
+                          value: selectedLogs.contains(log),
+                          onChanged: (value) {
+                            if (value ?? false) {
+                              selectedLogs.add(log);
+                            } else {
+                              selectedLogs.remove(log);
+                            }
+                            setState(() {});
+                          },
+                          title: Text(DateFormat('yyyy年 MM月 dd日 HH時mm分').format(
+                              log.selectAttentionProblems.first.startedAt!)),
+                          subtitle: Text(
+                            /// 正解数 誤答数 正解率 を表示
+                            'uid: ${log.userId}',
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          final res = await DeleteAlertDialog.show(context);
+                          if (res != true) {
+                            return;
+                          }
+                          await ref
+                              .read(selectAttentionLogReferenceProvider)
+                              .doc(log.id)
+                              .delete();
+                        },
+                        icon: const Icon(Icons.delete),
+                      ),
+                      const Gap(16),
+                    ],
                   ),
               ],
             ),
@@ -581,6 +601,7 @@ class _ImmediateMemoryLogPageState
                         },
                         icon: const Icon(Icons.delete),
                       ),
+                      const Gap(16),
                     ],
                   ),
               ],
@@ -689,22 +710,42 @@ class _SemanticUnderstandingForMeaningLogPageState
             child: Column(
               children: [
                 for (final log in logs)
-                  CheckboxListTile(
-                    value: selectedLogs.contains(log),
-                    onChanged: (value) {
-                      if (value ?? false) {
-                        selectedLogs.add(log);
-                      } else {
-                        selectedLogs.remove(log);
-                      }
-                      setState(() {});
-                    },
-                    title: Text(DateFormat('yyyy年 MM月 dd日 HH時mm分')
-                        .format(log.meaningProblems.first.startedAt!)),
-                    subtitle: Text(
-                      /// 正解数 誤答数 正解率 を表示
-                      'uid: ${log.uid}',
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CheckboxListTile(
+                          value: selectedLogs.contains(log),
+                          onChanged: (value) {
+                            if (value ?? false) {
+                              selectedLogs.add(log);
+                            } else {
+                              selectedLogs.remove(log);
+                            }
+                            setState(() {});
+                          },
+                          title: Text(DateFormat('yyyy年 MM月 dd日 HH時mm分')
+                              .format(log.meaningProblems.first.startedAt!)),
+                          subtitle: Text(
+                            /// 正解数 誤答数 正解率 を表示
+                            'uid: ${log.uid}',
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          final res = await DeleteAlertDialog.show(context);
+                          if (res != true) {
+                            return;
+                          }
+                          await FirebaseFirestore.instance
+                              .collection('meaning_problem_log')
+                              .doc(log.id)
+                              .delete();
+                        },
+                        icon: const Icon(Icons.delete),
+                      ),
+                      const Gap(16),
+                    ],
                   ),
               ],
             ),
@@ -820,22 +861,42 @@ class _SemanticUnderstandingForCalculationLogPageState
             child: Column(
               children: [
                 for (final log in logs)
-                  CheckboxListTile(
-                    value: selectedLogs.contains(log),
-                    onChanged: (value) {
-                      if (value ?? false) {
-                        selectedLogs.add(log);
-                      } else {
-                        selectedLogs.remove(log);
-                      }
-                      setState(() {});
-                    },
-                    title: Text(DateFormat('yyyy年 MM月 dd日 HH時mm分')
-                        .format(log.calculationProblems.first.startedAt!)),
-                    subtitle: Text(
-                      /// 正解数 誤答数 正解率 を表示
-                      'uid: ${log.uid}',
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CheckboxListTile(
+                          value: selectedLogs.contains(log),
+                          onChanged: (value) {
+                            if (value ?? false) {
+                              selectedLogs.add(log);
+                            } else {
+                              selectedLogs.remove(log);
+                            }
+                            setState(() {});
+                          },
+                          title: Text(DateFormat('yyyy年 MM月 dd日 HH時mm分').format(
+                              log.calculationProblems.first.startedAt!)),
+                          subtitle: Text(
+                            /// 正解数 誤答数 正解率 を表示
+                            'uid: ${log.uid}',
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          final res = await DeleteAlertDialog.show(context);
+                          if (res != true) {
+                            return;
+                          }
+                          await FirebaseFirestore.instance
+                              .collection('calculation_problem_log')
+                              .doc(log.id)
+                              .delete();
+                        },
+                        icon: const Icon(Icons.delete),
+                      ),
+                      const Gap(16),
+                    ],
                   ),
               ],
             ),
@@ -939,22 +1000,42 @@ class _SemanticFluencyLogPageState
             child: Column(
               children: [
                 for (final log in logs)
-                  CheckboxListTile(
-                    value: selectedLogs.contains(log),
-                    onChanged: (value) {
-                      if (value ?? false) {
-                        selectedLogs.add(log);
-                      } else {
-                        selectedLogs.remove(log);
-                      }
-                      setState(() {});
-                    },
-                    title: Text(DateFormat('yyyy年 MM月 dd日 HH時mm分')
-                        .format(log.startedAt)),
-                    subtitle: Text(
-                      /// 正解数 誤答数 正解率 を表示
-                      'uid: ${log.userId}',
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CheckboxListTile(
+                          value: selectedLogs.contains(log),
+                          onChanged: (value) {
+                            if (value ?? false) {
+                              selectedLogs.add(log);
+                            } else {
+                              selectedLogs.remove(log);
+                            }
+                            setState(() {});
+                          },
+                          title: Text(DateFormat('yyyy年 MM月 dd日 HH時mm分')
+                              .format(log.startedAt)),
+                          subtitle: Text(
+                            /// 正解数 誤答数 正解率 を表示
+                            'uid: ${log.userId}',
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          final res = await DeleteAlertDialog.show(context);
+                          if (res != true) {
+                            return;
+                          }
+                          await FirebaseFirestore.instance
+                              .collection('semantic_fluency_log')
+                              .doc(log.id)
+                              .delete();
+                        },
+                        icon: const Icon(Icons.delete),
+                      ),
+                      const Gap(16),
+                    ],
                   ),
               ],
             ),
@@ -1068,22 +1149,42 @@ class _PerformanceLogPageState extends ConsumerState<PerformanceLogPage> {
             child: Column(
               children: [
                 for (final log in logs)
-                  CheckboxListTile(
-                    value: selectedLogs.contains(log),
-                    onChanged: (value) {
-                      if (value ?? false) {
-                        selectedLogs.add(log);
-                      } else {
-                        selectedLogs.remove(log);
-                      }
-                      setState(() {});
-                    },
-                    title: Text(DateFormat('yyyy年 MM月 dd日 HH時mm分')
-                        .format(log.performanceProblems.first.startedAt!)),
-                    subtitle: Text(
-                      /// 正解数 誤答数 正解率 を表示
-                      'uid: ${log.uid}',
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CheckboxListTile(
+                          value: selectedLogs.contains(log),
+                          onChanged: (value) {
+                            if (value ?? false) {
+                              selectedLogs.add(log);
+                            } else {
+                              selectedLogs.remove(log);
+                            }
+                            setState(() {});
+                          },
+                          title: Text(DateFormat('yyyy年 MM月 dd日 HH時mm分').format(
+                              log.performanceProblems.first.startedAt!)),
+                          subtitle: Text(
+                            /// 正解数 誤答数 正解率 を表示
+                            'uid: ${log.uid}',
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          final res = await DeleteAlertDialog.show(context);
+                          if (res != true) {
+                            return;
+                          }
+                          await FirebaseFirestore.instance
+                              .collection('performance_problem_log')
+                              .doc(log.id)
+                              .delete();
+                        },
+                        icon: const Icon(Icons.delete),
+                      ),
+                      const Gap(16),
+                    ],
                   ),
               ],
             ),
@@ -1191,22 +1292,42 @@ class _RecentMemoryLogPageState extends ConsumerState<RecentMemoryLogPage> {
             child: Column(
               children: [
                 for (final log in logs)
-                  CheckboxListTile(
-                    value: selectedLogs.contains(log),
-                    onChanged: (value) {
-                      if (value ?? false) {
-                        selectedLogs.add(log);
-                      } else {
-                        selectedLogs.remove(log);
-                      }
-                      setState(() {});
-                    },
-                    title: Text(DateFormat('yyyy年 MM月 dd日 HH時mm分')
-                        .format(log.createdAt)),
-                    subtitle: Text(
-                      /// 正解数 誤答数 正解率 を表示
-                      'uid: ${log.uid}',
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CheckboxListTile(
+                          value: selectedLogs.contains(log),
+                          onChanged: (value) {
+                            if (value ?? false) {
+                              selectedLogs.add(log);
+                            } else {
+                              selectedLogs.remove(log);
+                            }
+                            setState(() {});
+                          },
+                          title: Text(DateFormat('yyyy年 MM月 dd日 HH時mm分')
+                              .format(log.createdAt)),
+                          subtitle: Text(
+                            /// 正解数 誤答数 正解率 を表示
+                            'uid: ${log.uid}',
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          final res = await DeleteAlertDialog.show(context);
+                          if (res != true) {
+                            return;
+                          }
+                          await FirebaseFirestore.instance
+                              .collection('recent_memory_log')
+                              .doc(log.id)
+                              .delete();
+                        },
+                        icon: const Icon(Icons.delete),
+                      ),
+                      const Gap(16),
+                    ],
                   ),
               ],
             ),

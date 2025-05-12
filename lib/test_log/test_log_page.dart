@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'dart:html';
 
 import 'package:cft/common/common_app_bar.dart';
+import 'package:cft/common/delete_alert_dialog.dart';
 import 'package:cft/immediate_memory/immediate_memory_log.dart';
 import 'package:cft/immediate_memory/immediate_memory_log_provider.dart';
 import 'package:cft/performance/performance_problem_log.dart';
 import 'package:cft/persistence_attention/persistence_attention_log.dart';
+import 'package:cft/persistence_attention/persistence_attention_log_provider.dart';
 import 'package:cft/persistence_attention/persistence_attention_logs_stream.dart';
 import 'package:cft/recent_memory/recent_memory_log.dart';
 import 'package:cft/select_attention/select_attention_log.dart';
@@ -289,22 +291,42 @@ class _PersistenceAttentionLogPageState
             child: Column(
               children: [
                 for (final log in logs)
-                  CheckboxListTile(
-                    value: selectedLogs.contains(log),
-                    onChanged: (value) {
-                      if (value ?? false) {
-                        selectedLogs.add(log);
-                      } else {
-                        selectedLogs.remove(log);
-                      }
-                      setState(() {});
-                    },
-                    title: Text(DateFormat('yyyy年 MM月 dd日 HH時mm分')
-                        .format(log.startedAt)),
-                    subtitle: Text(
-                      /// 正解数 誤答数 正解率 を表示
-                      'uid: ${log.userId}:${log.correctCount}問正解 ${log.incorrectCount}問誤答 正解率${log.correctRate.toPercent()}',
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CheckboxListTile(
+                          value: selectedLogs.contains(log),
+                          onChanged: (value) {
+                            if (value ?? false) {
+                              selectedLogs.add(log);
+                            } else {
+                              selectedLogs.remove(log);
+                            }
+                            setState(() {});
+                          },
+                          title: Text(DateFormat('yyyy年 MM月 dd日 HH時mm分')
+                              .format(log.startedAt)),
+                          subtitle: Text(
+                            /// 正解数 誤答数 正解率 を表示
+                            'uid: ${log.userId}:${log.correctCount}問正解 ${log.incorrectCount}問誤答 正解率${log.correctRate.toPercent()}',
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          final res = await DeleteAlertDialog.show(context);
+                          if (res != true) {
+                            return;
+                          }
+                          await ref
+                              .read(persistenceAttentionLogReferenceProvider)
+                              .doc(log.id)
+                              .delete();
+                        },
+                        icon: const Icon(Icons.delete),
+                      ),
+                      const Gap(16),
+                    ],
                   ),
               ],
             ),

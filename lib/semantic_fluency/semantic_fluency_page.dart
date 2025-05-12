@@ -30,11 +30,14 @@ class SemanticFluencyPage extends ConsumerStatefulWidget {
 }
 
 class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
+  var isSpeechMode = false;
+
   var isReady = false;
 
   stt.SpeechToText? speechToText;
 
   final controller = TextEditingController();
+  final focusNode = FocusNode();
   final scrollController = ScrollController();
 
   final answerWordWithTimestampList = <AnswerWordWithTimestamp>[];
@@ -57,6 +60,7 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
 
   final themeList = [
     '動物',
+    '植物',
     'ポジティブな単語',
   ];
 
@@ -143,6 +147,7 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
     super.dispose();
     controller.dispose();
     scrollController.dispose();
+    focusNode.dispose();
     speechToText?.cancel();
   }
 
@@ -219,7 +224,39 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
                       '次のゲームでは、あるカテゴリーの中であなたが思いつく単語を１分間にできるだけたくさん言ってもらいます。スタートボタンを押すとカテゴリーが表示され１分間のタイマーが開始されます。'),
                   const Gap(32),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      final res = await showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('入力方法を選んでください'),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(false);
+                                  },
+                                  child: const Text('キーボード入力'),
+                                ),
+                                const Gap(32),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(true);
+                                  },
+                                  child: const Text('音声入力'),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+
+                      if (res == null) {
+                        return;
+                      }
+                      isSpeechMode = res;
+
                       setState(() {
                         isReady = true;
                       });
@@ -361,94 +398,127 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
               ),
             ),
             const Gap(32),
-            if (remainSec == 0)
-              SizedBox(
-                width: 320,
-                height: 64,
-                child: TextFormField(
-                  controller: controller,
-                  readOnly: true,
-                  decoration: const InputDecoration(
-                    labelText: '単語を認識中...',
-                    border: OutlineInputBorder(),
+            if (isSpeechMode) ...[
+              if (remainSec == 0)
+                SizedBox(
+                  width: 320,
+                  height: 64,
+                  child: TextFormField(
+                    controller: controller,
+                    readOnly: true,
+                    decoration: const InputDecoration(
+                      labelText: '単語を認識中...',
+                      border: OutlineInputBorder(),
+                    ),
                   ),
+                )
+              else
+                const SizedBox(
+                  height: 64,
                 ),
-              )
-            else
-              const SizedBox(
-                height: 64,
-              ),
-            if (remainSec == 0)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      stopListening(cancel: true);
-                    },
-                    child: Container(
-                      width: 156,
-                      height: 64,
-                      padding: const EdgeInsets.all(16),
-                      color: Colors.red,
-                      child: const Center(
-                        child: Text(
-                          'キャンセル',
-                          style: TextStyle(fontSize: 20, color: Colors.white),
+              if (remainSec == 0)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        stopListening(cancel: true);
+                      },
+                      child: Container(
+                        width: 156,
+                        height: 64,
+                        padding: const EdgeInsets.all(16),
+                        color: Colors.red,
+                        child: const Center(
+                          child: Text(
+                            'キャンセル',
+                            style: TextStyle(fontSize: 20, color: Colors.white),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const Gap(8),
-                  GestureDetector(
-                    onTap: () {
-                      stopListening();
-                    },
-                    child: Container(
-                      width: 156,
-                      height: 64,
-                      padding: const EdgeInsets.all(16),
-                      color: Colors.blue,
-                      child: const Center(
-                        child: Text(
-                          '確定',
-                          style: TextStyle(fontSize: 20, color: Colors.white),
+                    const Gap(8),
+                    GestureDetector(
+                      onTap: () {
+                        stopListening();
+                      },
+                      child: Container(
+                        width: 156,
+                        height: 64,
+                        padding: const EdgeInsets.all(16),
+                        color: Colors.blue,
+                        child: const Center(
+                          child: Text(
+                            '確定',
+                            style: TextStyle(fontSize: 20, color: Colors.white),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            if (remainSec > 0 && isStandby)
-              Container(
-                width: 240,
-                height: 64,
-                padding: const EdgeInsets.all(16),
-                color: Colors.green,
-                child: const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                  ),
+                  ],
                 ),
-              ),
-            if (remainSec > 0 && !isStandby)
-              GestureDetector(
-                onTap: () {
-                  startListening();
-                },
-                child: Container(
+              if (remainSec > 0 && isStandby)
+                Container(
                   width: 240,
                   height: 64,
                   padding: const EdgeInsets.all(16),
                   color: Colors.green,
                   child: const Center(
-                    child: Text(
-                      'タップで音声入力',
-                      style: TextStyle(fontSize: 24, color: Colors.white),
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
                     ),
                   ),
                 ),
+              if (remainSec > 0 && !isStandby)
+                GestureDetector(
+                  onTap: () {
+                    startListening();
+                  },
+                  child: Container(
+                    width: 240,
+                    height: 64,
+                    padding: const EdgeInsets.all(16),
+                    color: Colors.green,
+                    child: const Center(
+                      child: Text(
+                        'タップで音声入力',
+                        style: TextStyle(fontSize: 24, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+            ] else ...[
+              Padding(
+                padding: const EdgeInsets.all(32),
+                child: TextFormField(
+                  focusNode: focusNode,
+                  controller: controller,
+                  autofocus: true,
+                  onFieldSubmitted: (value) async {
+                    if (value.isEmpty) {
+                      return;
+                    }
+                    answerWordWithTimestampList.add(
+                      AnswerWordWithTimestamp(
+                        word: value,
+                        timestamp: DateTime.now(),
+                      ),
+                    );
+                    controller.clear();
+
+                    setState(() {});
+
+                    Future.delayed(const Duration(milliseconds: 100), () {
+                      focusNode.requestFocus();
+                    });
+                  },
+                  decoration: const InputDecoration(
+                    labelText: '単語を入力してください',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
               ),
+            ],
             const Gap(16),
           ],
         ),

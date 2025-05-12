@@ -31,6 +31,8 @@ class _RecentMemoryPageState extends ConsumerState<RecentMemoryPage> {
     TextEditingController(),
     TextEditingController(),
     TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
   ];
 
   @override
@@ -63,9 +65,9 @@ class _RecentMemoryPageState extends ConsumerState<RecentMemoryPage> {
             child: Column(
               children: [
                 const Text(
-                    '今買いたいと思っているものを3つ入力してください。実験の最後にもう一度聞きますので、入力した内容を覚えてください。'),
+                    '今ほしいものか、したいことを優先順位の高いものから順に5つ入力してください。実験の最後にもう一度聞きますので、入力した内容を覚えてください。'),
                 const Gap(16),
-                for (var i = 0; i < 3; i++)
+                for (var i = 0; i < 5; i++)
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(

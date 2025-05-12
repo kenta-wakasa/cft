@@ -244,7 +244,7 @@ class _SemanticUnderstandingPageState
 
 final meaningProblems = [
   MeaningProblem(
-    question: 'なぜ毎日歯を磨くことが重要ですか？ いくつかあげてください。',
+    question: 'なぜ毎日歯を磨くことが重要ですか？ 2つあげてください。（※1つの解答欄に改行して2つの回答を記入してください）',
     commonReasons: [
       '【歯の健康維持】虫歯予防／歯周病予防／歯を健康に保つため',
       '【口臭防止】口臭予防／他人に迷惑をかけないため',
@@ -255,7 +255,7 @@ final meaningProblems = [
     difficulty: Difficulty.easy,
   ),
   MeaningProblem(
-    question: 'なぜ学校に通うことが大切ですか？ いくつかあげてください。',
+    question: 'なぜ学校に通うことが大切ですか？ 2つあげてください。（※1つの解答欄に改行して2つの回答を記入してください）',
     commonReasons: [
       '【知識を得るため】学ぶため／教養を深めるため',
       '【社会性を身につけるため】友人を作る／協力を学ぶ',
@@ -266,7 +266,7 @@ final meaningProblems = [
     difficulty: Difficulty.easy,
   ),
   MeaningProblem(
-    question: 'なぜ手を洗うことが大事ですか？ いくつかあげてください。',
+    question: 'なぜ手を洗うことが大事ですか？ 2つあげてください。（※1つの解答欄に改行して2つの回答を記入してください）',
     commonReasons: [
       '【病気予防】感染症防止／ウイルスや細菌を除去するため',
       '【衛生を保つため】清潔にするため／手の汚れを取るため',
@@ -299,7 +299,7 @@ final meaningProblems = [
   //   difficulty: Difficulty.easy,
   // ),
   MeaningProblem(
-    question: 'なぜ地球温暖化に対して対策が必要ですか？ いくつかあげてください。',
+    question: 'なぜ地球温暖化に対して対策が必要ですか？ 2つあげてください。（※1つの解答欄に改行して2つの回答を記入してください）',
     commonReasons: [
       '【環境保全】自然環境を守るため／生態系を保護するため',
       '【人類の生活維持】異常気象や災害を防ぐため／生活環境の維持',
@@ -310,7 +310,7 @@ final meaningProblems = [
     difficulty: Difficulty.normal,
   ),
   MeaningProblem(
-    question: 'なぜ法律を守ることが大切ですか？ いくつかあげてください。',
+    question: 'なぜ法律を守ることが大切ですか？ 2つあげてください。（※1つの解答欄に改行して2つの回答を記入してください）',
     commonReasons: [
       '【社会の秩序を維持するため】混乱を防ぐため／平和を守るため',
       '【他者の権利を尊重するため】他人を傷つけないため／他人の権利を守るため',
@@ -321,7 +321,7 @@ final meaningProblems = [
     difficulty: Difficulty.normal,
   ),
   MeaningProblem(
-    question: 'なぜ他人を尊重することが重要ですか？ いくつかあげてください。',
+    question: 'なぜ他人を尊重することが重要ですか？ 2つあげてください。（※1つの解答欄に改行して2つの回答を記入してください）',
     commonReasons: [
       '【人間関係を良好に保つため】他者との信頼を築くため／良好なコミュニケーションを保つため',
       '【社会的調和を保つため】社会の一員として協調するため／争いを避けるため',
@@ -354,7 +354,7 @@ final meaningProblems = [
   //   difficulty: Difficulty.normal,
   // ),
   MeaningProblem(
-    question: 'なぜ国際協力が重要ですか？ いくつかあげてください。',
+    question: 'なぜ国際協力が重要ですか？ 2つあげてください。（※1つの解答欄に改行して2つの回答を記入してください）',
     commonReasons: [
       '【世界的な課題解決】地球規模の問題（気候変動、貧困）に対処するため',
       '【国際的な平和と安全保障】紛争の回避／安全保障の強化',
@@ -365,7 +365,7 @@ final meaningProblems = [
     difficulty: Difficulty.hard,
   ),
   MeaningProblem(
-    question: 'なぜ難民を受け入れることが重要ですか？ いくつかあげてください。',
+    question: 'なぜ難民を受け入れることが重要ですか？ 2つあげてください。（※1つの解答欄に改行して2つの回答を記入してください）',
     commonReasons: [
       '【人道的責任】基本的人権を守るため／人道的危機に対応するため',
       '【国際法的義務】難民条約に基づく義務を果たすため',
@@ -376,7 +376,7 @@ final meaningProblems = [
     difficulty: Difficulty.hard,
   ),
   MeaningProblem(
-    question: 'なぜ情報の機密性が重要ですか？ いくつかあげてください。',
+    question: 'なぜ情報の機密性が重要ですか？ 2つあげてください。（※1つの解答欄に改行して2つの回答を記入してください）',
     commonReasons: [
       '【個人情報の保護】不正利用を防ぐため／プライバシーを守るため',
       '【企業の競争力維持】企業秘密を守り、競争力を維持するため',

@@ -651,7 +651,9 @@ class _SemanticUnderstandingForMeaningLogPageState
           problem.difficulty.name,
           problem.startedAt?.toIso8601String(),
           problem.answeredAt?.toIso8601String(),
-          problem.userAns,
+
+          /// 改行と,をエスケープする
+          problem.userAns.replaceAll('\n', '\\n').replaceAll(',', '\\,'),
           problem.answerTime,
         ].join(',')
     ];

@@ -41,6 +41,75 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
 
   var isReady = false;
 
+  final sampleProblem = PerformanceProblem(
+    graph: Graph(
+      nodes: [
+        Node(
+          id: 'S',
+          dx: 160,
+          dy: 0,
+        ),
+        Node(
+          id: 'A',
+          dx: 0,
+          dy: 180,
+        ),
+        Node(
+          id: 'B',
+          dx: 320,
+          dy: 180,
+        ),
+        Node(
+          id: 'G',
+          dx: 160,
+          dy: 400,
+        ),
+      ],
+      edges: [
+        Edge(
+          sourceId: 'S',
+          destinationId: 'A',
+          fee: 0,
+          time: 0,
+        ),
+        Edge(
+          sourceId: 'S',
+          destinationId: 'B',
+          fee: 0,
+          time: 0,
+        ),
+        Edge(
+          sourceId: 'A',
+          destinationId: 'B',
+          fee: 0,
+          time: 0,
+        ),
+        Edge(
+          sourceId: 'A',
+          destinationId: 'G',
+          fee: 0,
+          time: 0,
+        ),
+        Edge(
+          sourceId: 'B',
+          destinationId: 'G',
+          fee: 0,
+          time: 0,
+        ),
+      ],
+    ),
+    questionTexts: [
+      'それぞれの経路に、かかる時間と料金を表示しています。Sを出発点として、30分以内にGに到着したいとき、もっとも料金が安くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。',
+      '次の問題です。経路はそのままですが、今度は必ずAを通り、Sを出発点として、30分以内にGに到着したいとき、もっとも料金が安くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。',
+      '次の問題です。経路はそのままですが、今度は時間はどれだけかかってもいいので、もっとも料金が安くなる経路を回答してください。次に進みたい場所をタップすることで選択できます。'
+    ],
+    answerTexts: [
+      'S→B→G',
+      'S→A→G',
+      'S→A→B→G',
+    ],
+  );
+
   /// 問題はここに追加していく
   var performanceProblems = [
     PerformanceProblem(
@@ -510,6 +579,8 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
   Future<void> start() async {
     setState(() {
       isReady = true;
+      selectedNodeIds.clear();
+      selectedNodeIds.add(performanceProblems.first.graph.nodes.first.id);
       performanceProblems = [
         for (var index = 0; index < performanceProblems.length; index++)
           if (index == currentGraphIndex)
@@ -662,6 +733,97 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
                       '次の画面では経路図が表示されます。指定された条件に従って、最適な経路を選択してください。※各問制限時間60秒',
                     ),
                     const Gap(32),
+                    Text('ルール', style: Theme.of(context).textTheme.titleLarge),
+                    const Gap(8),
+                    const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Sから出発し、Gに到着するまでの経路を選択してください。'),
+                        Text('矢印（->）の方向にしか進めません。'),
+                        Text('進みたいアルファベットの上をタップ（クリック）してください。'),
+                        Text('間違えた場合は、もう一度タップ（クリック）するとキャンセルできます。'),
+                      ],
+                    ),
+                    const Gap(32),
+                    Text(
+                      'サンプル問題',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const Gap(32),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: SingleChildScrollView(
+                        child: SizedBox(
+                          width: canvasSize.width,
+                          height: canvasSize.height,
+                          child: Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              CustomPaint(
+                                size: Size(canvasSize.width, canvasSize.height),
+                                painter: EdgeRender(
+                                  sampleProblem.graph,
+                                  selectedNodeIds,
+                                ),
+                              ),
+                              ...sampleProblem.graph.nodes.map((node) {
+                                return Positioned(
+                                  left: node.dx,
+                                  top: node.dy,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      /// 選択したNodeの最後が入ってくるものであれば追加する
+                                      if (sampleProblem.graph
+                                          .inNodes(node)
+                                          .map((e) => e.id)
+                                          .contains(selectedNodeIds.last)) {
+                                        setState(() {
+                                          selectedNodeIds.add(node.id);
+                                        });
+
+                                        return;
+                                      }
+
+                                      if (selectedNodeIds.length == 1) {
+                                        return;
+                                      }
+
+                                      if (selectedNodeIds.last == node.id) {
+                                        setState(() {
+                                          selectedNodeIds.removeLast();
+                                        });
+                                        return;
+                                      }
+                                    },
+                                    child: Container(
+                                      width: 40,
+                                      height: 40,
+                                      color: selectedNodeIds.last == node.id
+                                          ? Colors.red[400]
+                                          : selectedNodeIds.contains(node.id)
+                                              ? Colors.red[200]
+                                              : Colors.grey[200],
+                                      child: Center(
+                                        child: Text(
+                                          node.id,
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: selectedNodeIds.last ==
+                                                      node.id
+                                                  ? Colors.white
+                                                  : null),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                     ElevatedButton(
                       onPressed: start,
                       child: const Text('スタート'),
@@ -748,7 +910,7 @@ class EdgeRender extends CustomPainter {
         getRightPoint(Offset(source.dx, source.dy), const Size(40, 40)),
         getLeftPoint(
             Offset(destination.dx, destination.dy), const Size(40, 40)),
-        '${edge.time}分 ${edge.fee}円',
+        '${edge.time == 0 ? '○' : edge.time}分 ${edge.fee == 0 ? '○' : edge.fee}円',
         isPassed(edge) ? Colors.red : Colors.grey,
       );
     }

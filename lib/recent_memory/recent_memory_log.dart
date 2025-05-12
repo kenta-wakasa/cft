@@ -10,6 +10,7 @@ class RecentMemoryLog with _$RecentMemoryLog {
     @Default('') String id,
     required String? documentId,
     required DateTime createdAt,
+    required DateTime? ansStartedAt,
     DateTime? finishedAt,
     @Default([]) List<String> memoryList,
     @Default([]) List<String> answerList,
@@ -45,5 +46,13 @@ class RecentMemoryLog with _$RecentMemoryLog {
       return 0;
     }
     return finishedAt!.difference(createdAt).inMilliseconds;
+  }
+
+  /// 回答時間ms
+  int get answerTime {
+    if (ansStartedAt == null) {
+      return 0;
+    }
+    return finishedAt!.difference(ansStartedAt!).inMilliseconds;
   }
 }

@@ -1242,6 +1242,7 @@ class _RecentMemoryLogPageState extends ConsumerState<RecentMemoryLogPage> {
         log.createdAt.toIso8601String(),
         log.finishedAt?.toIso8601String(),
         log.elapsedTime,
+        log.answerTime,
         log.correctCount,
         log.incorrectCount,
         log.correctRate,
@@ -1255,12 +1256,13 @@ class _RecentMemoryLogPageState extends ConsumerState<RecentMemoryLogPage> {
       'ログID',
       '開始時間',
       '終了時間',
-      '経過時間ms',
+      'テスト全体での経過時間ms',
+      '最後の回答時間ms',
       '正答数',
       '誤答数',
       '正解率',
-      '最初に入力した3つ',
-      '最後に入力した3つ',
+      '最初に入力した5つ',
+      '最後に入力した5つ',
     ].join(',');
 
     final csvString = [header, ...bodys].join('\n');

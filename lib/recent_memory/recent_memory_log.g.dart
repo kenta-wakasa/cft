@@ -13,6 +13,9 @@ _$RecentMemoryLogImpl _$$RecentMemoryLogImplFromJson(
       id: json['id'] as String? ?? '',
       documentId: json['documentId'] as String?,
       createdAt: DateTime.parse(json['createdAt'] as String),
+      ansStartedAt: json['ansStartedAt'] == null
+          ? null
+          : DateTime.parse(json['ansStartedAt'] as String),
       finishedAt: json['finishedAt'] == null
           ? null
           : DateTime.parse(json['finishedAt'] as String),
@@ -33,6 +36,7 @@ Map<String, dynamic> _$$RecentMemoryLogImplToJson(
       'id': instance.id,
       'documentId': instance.documentId,
       'createdAt': instance.createdAt.toIso8601String(),
+      'ansStartedAt': instance.ansStartedAt?.toIso8601String(),
       'finishedAt': instance.finishedAt?.toIso8601String(),
       'memoryList': instance.memoryList,
       'answerList': instance.answerList,

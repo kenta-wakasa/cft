@@ -32,6 +32,15 @@ class _RecentMemoryPageState extends ConsumerState<RecentMemoryAnsPage> {
   @override
   void initState() {
     super.initState();
+    FirebaseFirestore.instance
+        .collection('recent_memory_log')
+        .doc(widget.id)
+        .set(
+      {
+        'ansStartedAt': DateTime.now().toIso8601String(),
+      },
+      SetOptions(merge: true),
+    );
     for (final controller in controllers) {
       controller.addListener(() {
         setState(() {});

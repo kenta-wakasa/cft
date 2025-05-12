@@ -13,7 +13,9 @@ final immediateMemoryLogReference = Provider.autoDispose((ref) {
 
 final immediateMemoryLogsProvider =
     StreamProvider.autoDispose<List<ImmediateMemoryLog>>((ref) {
-  final reference = ref.watch(immediateMemoryLogReference);
+  final reference = ref
+      .watch(immediateMemoryLogReference)
+      .orderBy('immediateMemoryProblem.startedAt', descending: true);
 
   return reference.snapshots().map((snapshot) {
     return snapshot.docs.map((doc) => doc.data()).toList();

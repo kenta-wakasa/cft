@@ -8,6 +8,7 @@ part 'calculation_problem_log.g.dart';
 class CalculationProblemLog with _$CalculationProblemLog {
   factory CalculationProblemLog({
     required String uid,
+    required String? documentId,
     @Default('') String id,
     required List<CalculationProblem> calculationProblems,
   }) = _CalculationProblemLog;

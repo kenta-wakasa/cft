@@ -9,6 +9,7 @@ class ImmediateMemoryLog with _$ImmediateMemoryLog {
   factory ImmediateMemoryLog({
     required String id,
     required String userId,
+    required String? documentId,
     required ImmediateMemoryProblem immediateMemoryProblem,
   }) = _ImmediateMemoryLog;
   const ImmediateMemoryLog._();

@@ -10,8 +10,11 @@ CollectionReference<PersistenceAttentionLog> persistenceAttentionLogReference(
     PersistenceAttentionLogReferenceRef ref) {
   final firestore = ref.watch(firestoreProvider);
   return firestore.collection('persistence_attention_log').withConverter(
-        fromFirestore: (doc, _) =>
-            PersistenceAttentionLog.fromJson(doc.data()!),
+        fromFirestore: (doc, _) {
+          final data = doc.data()!;
+          data['documentId'] = doc.id;
+          return PersistenceAttentionLog.fromJson(data);
+        },
         toFirestore: (obj, _) => obj.toJson(),
       );
 }

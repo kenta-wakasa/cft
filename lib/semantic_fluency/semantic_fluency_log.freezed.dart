@@ -21,6 +21,7 @@ SemanticFluencyLog _$SemanticFluencyLogFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$SemanticFluencyLog {
   String get id => throw _privateConstructorUsedError;
+  String? get documentId => throw _privateConstructorUsedError;
   DateTime get startedAt => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   List<AnswerWordWithTimestamp> get answerWordWithTimestampList =>
@@ -41,6 +42,7 @@ abstract class $SemanticFluencyLogCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
+      String? documentId,
       DateTime startedAt,
       String userId,
       List<AnswerWordWithTimestamp> answerWordWithTimestampList,
@@ -61,6 +63,7 @@ class _$SemanticFluencyLogCopyWithImpl<$Res, $Val extends SemanticFluencyLog>
   @override
   $Res call({
     Object? id = null,
+    Object? documentId = freezed,
     Object? startedAt = null,
     Object? userId = null,
     Object? answerWordWithTimestampList = null,
@@ -71,6 +74,10 @@ class _$SemanticFluencyLogCopyWithImpl<$Res, $Val extends SemanticFluencyLog>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      documentId: freezed == documentId
+          ? _value.documentId
+          : documentId // ignore: cast_nullable_to_non_nullable
+              as String?,
       startedAt: null == startedAt
           ? _value.startedAt
           : startedAt // ignore: cast_nullable_to_non_nullable
@@ -101,6 +108,7 @@ abstract class _$$SemanticFluencyLogImplCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
+      String? documentId,
       DateTime startedAt,
       String userId,
       List<AnswerWordWithTimestamp> answerWordWithTimestampList,
@@ -119,6 +127,7 @@ class __$$SemanticFluencyLogImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? documentId = freezed,
     Object? startedAt = null,
     Object? userId = null,
     Object? answerWordWithTimestampList = null,
@@ -129,6 +138,10 @@ class __$$SemanticFluencyLogImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      documentId: freezed == documentId
+          ? _value.documentId
+          : documentId // ignore: cast_nullable_to_non_nullable
+              as String?,
       startedAt: null == startedAt
           ? _value.startedAt
           : startedAt // ignore: cast_nullable_to_non_nullable
@@ -154,6 +167,7 @@ class __$$SemanticFluencyLogImplCopyWithImpl<$Res>
 class _$SemanticFluencyLogImpl extends _SemanticFluencyLog {
   _$SemanticFluencyLogImpl(
       {required this.id,
+      required this.documentId,
       required this.startedAt,
       required this.userId,
       final List<AnswerWordWithTimestamp> answerWordWithTimestampList =
@@ -167,6 +181,8 @@ class _$SemanticFluencyLogImpl extends _SemanticFluencyLog {
 
   @override
   final String id;
+  @override
+  final String? documentId;
   @override
   final DateTime startedAt;
   @override
@@ -187,7 +203,7 @@ class _$SemanticFluencyLogImpl extends _SemanticFluencyLog {
 
   @override
   String toString() {
-    return 'SemanticFluencyLog(id: $id, startedAt: $startedAt, userId: $userId, answerWordWithTimestampList: $answerWordWithTimestampList, theme: $theme)';
+    return 'SemanticFluencyLog(id: $id, documentId: $documentId, startedAt: $startedAt, userId: $userId, answerWordWithTimestampList: $answerWordWithTimestampList, theme: $theme)';
   }
 
   @override
@@ -196,6 +212,8 @@ class _$SemanticFluencyLogImpl extends _SemanticFluencyLog {
         (other.runtimeType == runtimeType &&
             other is _$SemanticFluencyLogImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.documentId, documentId) ||
+                other.documentId == documentId) &&
             (identical(other.startedAt, startedAt) ||
                 other.startedAt == startedAt) &&
             (identical(other.userId, userId) || other.userId == userId) &&
@@ -207,8 +225,14 @@ class _$SemanticFluencyLogImpl extends _SemanticFluencyLog {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, startedAt, userId,
-      const DeepCollectionEquality().hash(_answerWordWithTimestampList), theme);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      documentId,
+      startedAt,
+      userId,
+      const DeepCollectionEquality().hash(_answerWordWithTimestampList),
+      theme);
 
   @JsonKey(ignore: true)
   @override
@@ -228,6 +252,7 @@ class _$SemanticFluencyLogImpl extends _SemanticFluencyLog {
 abstract class _SemanticFluencyLog extends SemanticFluencyLog {
   factory _SemanticFluencyLog(
       {required final String id,
+      required final String? documentId,
       required final DateTime startedAt,
       required final String userId,
       final List<AnswerWordWithTimestamp> answerWordWithTimestampList,
@@ -239,6 +264,8 @@ abstract class _SemanticFluencyLog extends SemanticFluencyLog {
 
   @override
   String get id;
+  @override
+  String? get documentId;
   @override
   DateTime get startedAt;
   @override

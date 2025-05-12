@@ -8,6 +8,7 @@ part 'persistence_attention_log.g.dart';
 class PersistenceAttentionLog with _$PersistenceAttentionLog {
   factory PersistenceAttentionLog({
     required String id,
+    required String? documentId,
     required DateTime startedAt,
     required String userId,
     required List<SimpleArithmeticProblem> problems,

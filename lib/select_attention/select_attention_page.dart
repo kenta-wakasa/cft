@@ -94,6 +94,7 @@ class _SelectAttentionPageState extends ConsumerState<SelectAttentionPage> {
     ref.read(selectAttentionLogReferenceProvider).add(
           SelectAttentionLog(
             id: const UuidV6().generate(),
+            documentId: null,
             userId: uid,
             selectAttentionProblems: [selectAttentionProblem],
           ),

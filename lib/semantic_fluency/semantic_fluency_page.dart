@@ -186,6 +186,7 @@ class _SemanticFluencyPageState extends ConsumerState<SemanticFluencyPage> {
     await FirebaseFirestore.instance.collection('semantic_fluency_log').add(
           SemanticFluencyLog(
             id: const UuidV6().generate(),
+            documentId: null,
             startedAt: startedAt,
             userId: uid,
             theme: themeList[currentIndex],

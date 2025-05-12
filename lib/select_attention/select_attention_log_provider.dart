@@ -6,7 +6,11 @@ final selectAttentionLogReferenceProvider = Provider.autoDispose((ref) {
   final firestore = ref.watch(firestoreProvider);
 
   return firestore.collection('select_attention_log').withConverter(
-        fromFirestore: (doc, _) => SelectAttentionLog.fromJson(doc.data()!),
+        fromFirestore: (doc, _) {
+          final data = doc.data()!;
+          data['documentId'] = doc.id;
+          return SelectAttentionLog.fromJson(data);
+        },
         toFirestore: (obj, _) => obj.toJson(),
       );
 });

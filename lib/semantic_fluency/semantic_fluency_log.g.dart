@@ -10,6 +10,7 @@ _$SemanticFluencyLogImpl _$$SemanticFluencyLogImplFromJson(
         Map<String, dynamic> json) =>
     _$SemanticFluencyLogImpl(
       id: json['id'] as String,
+      documentId: json['documentId'] as String?,
       startedAt: DateTime.parse(json['startedAt'] as String),
       userId: json['userId'] as String,
       answerWordWithTimestampList: (json['answerWordWithTimestampList']
@@ -25,6 +26,7 @@ Map<String, dynamic> _$$SemanticFluencyLogImplToJson(
         _$SemanticFluencyLogImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'documentId': instance.documentId,
       'startedAt': instance.startedAt.toIso8601String(),
       'userId': instance.userId,
       'answerWordWithTimestampList':

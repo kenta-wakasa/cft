@@ -381,8 +381,10 @@ class _PerformancePageState extends ConsumerState<PerformancePage> {
             .collection('performance_problem_log')
             .add(
               PerformanceProblemLog(
-                      uid: uid, performanceProblems: performanceProblems)
-                  .toJson(),
+                uid: uid,
+                documentId: null,
+                performanceProblems: performanceProblems,
+              ).toJson(),
             );
 
         await showDialog<void>(

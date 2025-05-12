@@ -10,6 +10,7 @@ _$PersistenceAttentionLogImpl _$$PersistenceAttentionLogImplFromJson(
         Map<String, dynamic> json) =>
     _$PersistenceAttentionLogImpl(
       id: json['id'] as String,
+      documentId: json['documentId'] as String?,
       startedAt: DateTime.parse(json['startedAt'] as String),
       userId: json['userId'] as String,
       problems: (json['problems'] as List<dynamic>)
@@ -22,6 +23,7 @@ Map<String, dynamic> _$$PersistenceAttentionLogImplToJson(
         _$PersistenceAttentionLogImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'documentId': instance.documentId,
       'startedAt': instance.startedAt.toIso8601String(),
       'userId': instance.userId,
       'problems': instance.problems.map((e) => e.toJson()).toList(),

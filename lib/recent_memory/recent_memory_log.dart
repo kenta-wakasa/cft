@@ -8,6 +8,7 @@ class RecentMemoryLog with _$RecentMemoryLog {
   factory RecentMemoryLog({
     required String uid,
     @Default('') String id,
+    required String? documentId,
     required DateTime createdAt,
     DateTime? finishedAt,
     @Default([]) List<String> memoryList,

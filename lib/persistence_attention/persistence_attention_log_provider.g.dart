@@ -7,7 +7,7 @@ part of 'persistence_attention_log_provider.dart';
 // **************************************************************************
 
 String _$persistenceAttentionLogReferenceHash() =>
-    r'4319f2b3da742cb8b110c2f0dd4df628c1ca0fae';
+    r'60b36452c6ec0daeb6fd229dfa16d704d0825469';
 
 /// See also [persistenceAttentionLogReference].
 @ProviderFor(persistenceAttentionLogReference)

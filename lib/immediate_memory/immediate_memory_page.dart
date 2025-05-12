@@ -104,7 +104,7 @@ class _ImmediateMemoryPageState extends ConsumerState<ImmediateMemoryPage> {
                               isDisplayMode = false;
                             });
                           },
-                          duration: const Duration(seconds: 5),
+                          duration: const Duration(seconds: 3),
                         ),
                       ],
                     )
@@ -158,6 +158,7 @@ class _ImmediateMemoryPageState extends ConsumerState<ImmediateMemoryPage> {
                                     ImmediateMemoryLog(
                                       id: const UuidV6().generate(),
                                       userId: uid,
+                                      documentId: null,
                                       immediateMemoryProblem:
                                           immediateMemoryProblem,
                                     ),

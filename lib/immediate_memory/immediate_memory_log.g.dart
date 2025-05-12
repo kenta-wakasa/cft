@@ -11,6 +11,7 @@ _$ImmediateMemoryLogImpl _$$ImmediateMemoryLogImplFromJson(
     _$ImmediateMemoryLogImpl(
       id: json['id'] as String,
       userId: json['userId'] as String,
+      documentId: json['documentId'] as String?,
       immediateMemoryProblem: ImmediateMemoryProblem.fromJson(
           json['immediateMemoryProblem'] as Map<String, dynamic>),
     );
@@ -20,5 +21,6 @@ Map<String, dynamic> _$$ImmediateMemoryLogImplToJson(
     <String, dynamic>{
       'id': instance.id,
       'userId': instance.userId,
+      'documentId': instance.documentId,
       'immediateMemoryProblem': instance.immediateMemoryProblem.toJson(),
     };

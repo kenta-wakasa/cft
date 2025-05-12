@@ -22,6 +22,7 @@ CalculationProblemLog _$CalculationProblemLogFromJson(
 /// @nodoc
 mixin _$CalculationProblemLog {
   String get uid => throw _privateConstructorUsedError;
+  String? get documentId => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   List<CalculationProblem> get calculationProblems =>
       throw _privateConstructorUsedError;
@@ -39,7 +40,10 @@ abstract class $CalculationProblemLogCopyWith<$Res> {
       _$CalculationProblemLogCopyWithImpl<$Res, CalculationProblemLog>;
   @useResult
   $Res call(
-      {String uid, String id, List<CalculationProblem> calculationProblems});
+      {String uid,
+      String? documentId,
+      String id,
+      List<CalculationProblem> calculationProblems});
 }
 
 /// @nodoc
@@ -57,6 +61,7 @@ class _$CalculationProblemLogCopyWithImpl<$Res,
   @override
   $Res call({
     Object? uid = null,
+    Object? documentId = freezed,
     Object? id = null,
     Object? calculationProblems = null,
   }) {
@@ -65,6 +70,10 @@ class _$CalculationProblemLogCopyWithImpl<$Res,
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
+      documentId: freezed == documentId
+          ? _value.documentId
+          : documentId // ignore: cast_nullable_to_non_nullable
+              as String?,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -87,7 +96,10 @@ abstract class _$$CalculationProblemLogImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String uid, String id, List<CalculationProblem> calculationProblems});
+      {String uid,
+      String? documentId,
+      String id,
+      List<CalculationProblem> calculationProblems});
 }
 
 /// @nodoc
@@ -103,6 +115,7 @@ class __$$CalculationProblemLogImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? uid = null,
+    Object? documentId = freezed,
     Object? id = null,
     Object? calculationProblems = null,
   }) {
@@ -111,6 +124,10 @@ class __$$CalculationProblemLogImplCopyWithImpl<$Res>
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
+      documentId: freezed == documentId
+          ? _value.documentId
+          : documentId // ignore: cast_nullable_to_non_nullable
+              as String?,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -128,6 +145,7 @@ class __$$CalculationProblemLogImplCopyWithImpl<$Res>
 class _$CalculationProblemLogImpl extends _CalculationProblemLog {
   _$CalculationProblemLogImpl(
       {required this.uid,
+      required this.documentId,
       this.id = '',
       required final List<CalculationProblem> calculationProblems})
       : _calculationProblems = calculationProblems,
@@ -138,6 +156,8 @@ class _$CalculationProblemLogImpl extends _CalculationProblemLog {
 
   @override
   final String uid;
+  @override
+  final String? documentId;
   @override
   @JsonKey()
   final String id;
@@ -152,7 +172,7 @@ class _$CalculationProblemLogImpl extends _CalculationProblemLog {
 
   @override
   String toString() {
-    return 'CalculationProblemLog(uid: $uid, id: $id, calculationProblems: $calculationProblems)';
+    return 'CalculationProblemLog(uid: $uid, documentId: $documentId, id: $id, calculationProblems: $calculationProblems)';
   }
 
   @override
@@ -161,6 +181,8 @@ class _$CalculationProblemLogImpl extends _CalculationProblemLog {
         (other.runtimeType == runtimeType &&
             other is _$CalculationProblemLogImpl &&
             (identical(other.uid, uid) || other.uid == uid) &&
+            (identical(other.documentId, documentId) ||
+                other.documentId == documentId) &&
             (identical(other.id, id) || other.id == id) &&
             const DeepCollectionEquality()
                 .equals(other._calculationProblems, _calculationProblems));
@@ -168,7 +190,7 @@ class _$CalculationProblemLogImpl extends _CalculationProblemLog {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, uid, id,
+  int get hashCode => Object.hash(runtimeType, uid, documentId, id,
       const DeepCollectionEquality().hash(_calculationProblems));
 
   @JsonKey(ignore: true)
@@ -189,6 +211,7 @@ class _$CalculationProblemLogImpl extends _CalculationProblemLog {
 abstract class _CalculationProblemLog extends CalculationProblemLog {
   factory _CalculationProblemLog(
           {required final String uid,
+          required final String? documentId,
           final String id,
           required final List<CalculationProblem> calculationProblems}) =
       _$CalculationProblemLogImpl;
@@ -199,6 +222,8 @@ abstract class _CalculationProblemLog extends CalculationProblemLog {
 
   @override
   String get uid;
+  @override
+  String? get documentId;
   @override
   String get id;
   @override

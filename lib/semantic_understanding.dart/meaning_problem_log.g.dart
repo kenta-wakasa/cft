@@ -11,6 +11,7 @@ _$MeaningProblemLogImpl _$$MeaningProblemLogImplFromJson(
     _$MeaningProblemLogImpl(
       uid: json['uid'] as String,
       id: json['id'] as String? ?? '',
+      documentId: json['documentId'] as String?,
       meaningProblems: (json['meaningProblems'] as List<dynamic>)
           .map((e) => MeaningProblem.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -21,6 +22,7 @@ Map<String, dynamic> _$$MeaningProblemLogImplToJson(
     <String, dynamic>{
       'uid': instance.uid,
       'id': instance.id,
+      'documentId': instance.documentId,
       'meaningProblems':
           instance.meaningProblems.map((e) => e.toJson()).toList(),
     };

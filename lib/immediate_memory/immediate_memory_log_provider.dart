@@ -6,7 +6,11 @@ final immediateMemoryLogReference = Provider.autoDispose((ref) {
   final firestore = ref.watch(firestoreProvider);
 
   return firestore.collection('immediate_memory_log').withConverter(
-        fromFirestore: (doc, _) => ImmediateMemoryLog.fromJson(doc.data()!),
+        fromFirestore: (doc, _) {
+          final data = doc.data()!;
+          data['documentId'] = doc.id;
+          return ImmediateMemoryLog.fromJson(data);
+        },
         toFirestore: (obj, _) => obj.toJson(),
       );
 });

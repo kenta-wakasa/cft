@@ -95,6 +95,7 @@ class _SemanticUnderstandingPageState
           .add(
             CalculationProblemLog(
               uid: uid!,
+              documentId: null,
               calculationProblems: problems,
             ).toJson(),
           );

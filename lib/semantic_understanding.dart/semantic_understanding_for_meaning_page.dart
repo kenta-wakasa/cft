@@ -91,6 +91,7 @@ class _SemanticUnderstandingPageState
       await FirebaseFirestore.instance.collection('meaning_problem_log').add(
             MeaningProblemLog(
               uid: uid!,
+              documentId: null,
               meaningProblems: problems,
             ).toJson(),
           );

@@ -9,6 +9,7 @@ class MeaningProblemLog with _$MeaningProblemLog {
   factory MeaningProblemLog({
     required String uid,
     @Default('') String id,
+    required String? documentId,
     required List<MeaningProblem> meaningProblems,
   }) = _MeaningProblemLog;
   const MeaningProblemLog._();

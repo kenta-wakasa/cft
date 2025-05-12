@@ -1,5 +1,6 @@
 import 'package:cft/select_attention/select_attention_problem.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
 part 'select_attention_log.freezed.dart';
 part 'select_attention_log.g.dart';
 
@@ -7,6 +8,7 @@ part 'select_attention_log.g.dart';
 class SelectAttentionLog with _$SelectAttentionLog {
   factory SelectAttentionLog({
     required String id,
+    required String? documentId,
     required String userId,
     required List<SelectAttentionProblem> selectAttentionProblems,
   }) = _SelectAttentionLog;

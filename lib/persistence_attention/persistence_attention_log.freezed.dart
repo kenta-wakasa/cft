@@ -22,6 +22,7 @@ PersistenceAttentionLog _$PersistenceAttentionLogFromJson(
 /// @nodoc
 mixin _$PersistenceAttentionLog {
   String get id => throw _privateConstructorUsedError;
+  String? get documentId => throw _privateConstructorUsedError;
   DateTime get startedAt => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   List<SimpleArithmeticProblem> get problems =>
@@ -41,6 +42,7 @@ abstract class $PersistenceAttentionLogCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
+      String? documentId,
       DateTime startedAt,
       String userId,
       List<SimpleArithmeticProblem> problems});
@@ -61,6 +63,7 @@ class _$PersistenceAttentionLogCopyWithImpl<$Res,
   @override
   $Res call({
     Object? id = null,
+    Object? documentId = freezed,
     Object? startedAt = null,
     Object? userId = null,
     Object? problems = null,
@@ -70,6 +73,10 @@ class _$PersistenceAttentionLogCopyWithImpl<$Res,
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      documentId: freezed == documentId
+          ? _value.documentId
+          : documentId // ignore: cast_nullable_to_non_nullable
+              as String?,
       startedAt: null == startedAt
           ? _value.startedAt
           : startedAt // ignore: cast_nullable_to_non_nullable
@@ -97,6 +104,7 @@ abstract class _$$PersistenceAttentionLogImplCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
+      String? documentId,
       DateTime startedAt,
       String userId,
       List<SimpleArithmeticProblem> problems});
@@ -116,6 +124,7 @@ class __$$PersistenceAttentionLogImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? documentId = freezed,
     Object? startedAt = null,
     Object? userId = null,
     Object? problems = null,
@@ -125,6 +134,10 @@ class __$$PersistenceAttentionLogImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      documentId: freezed == documentId
+          ? _value.documentId
+          : documentId // ignore: cast_nullable_to_non_nullable
+              as String?,
       startedAt: null == startedAt
           ? _value.startedAt
           : startedAt // ignore: cast_nullable_to_non_nullable
@@ -146,6 +159,7 @@ class __$$PersistenceAttentionLogImplCopyWithImpl<$Res>
 class _$PersistenceAttentionLogImpl extends _PersistenceAttentionLog {
   _$PersistenceAttentionLogImpl(
       {required this.id,
+      required this.documentId,
       required this.startedAt,
       required this.userId,
       required final List<SimpleArithmeticProblem> problems})
@@ -157,6 +171,8 @@ class _$PersistenceAttentionLogImpl extends _PersistenceAttentionLog {
 
   @override
   final String id;
+  @override
+  final String? documentId;
   @override
   final DateTime startedAt;
   @override
@@ -171,7 +187,7 @@ class _$PersistenceAttentionLogImpl extends _PersistenceAttentionLog {
 
   @override
   String toString() {
-    return 'PersistenceAttentionLog(id: $id, startedAt: $startedAt, userId: $userId, problems: $problems)';
+    return 'PersistenceAttentionLog(id: $id, documentId: $documentId, startedAt: $startedAt, userId: $userId, problems: $problems)';
   }
 
   @override
@@ -180,6 +196,8 @@ class _$PersistenceAttentionLogImpl extends _PersistenceAttentionLog {
         (other.runtimeType == runtimeType &&
             other is _$PersistenceAttentionLogImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.documentId, documentId) ||
+                other.documentId == documentId) &&
             (identical(other.startedAt, startedAt) ||
                 other.startedAt == startedAt) &&
             (identical(other.userId, userId) || other.userId == userId) &&
@@ -188,8 +206,8 @@ class _$PersistenceAttentionLogImpl extends _PersistenceAttentionLog {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, startedAt, userId,
-      const DeepCollectionEquality().hash(_problems));
+  int get hashCode => Object.hash(runtimeType, id, documentId, startedAt,
+      userId, const DeepCollectionEquality().hash(_problems));
 
   @JsonKey(ignore: true)
   @override
@@ -209,6 +227,7 @@ class _$PersistenceAttentionLogImpl extends _PersistenceAttentionLog {
 abstract class _PersistenceAttentionLog extends PersistenceAttentionLog {
   factory _PersistenceAttentionLog(
           {required final String id,
+          required final String? documentId,
           required final DateTime startedAt,
           required final String userId,
           required final List<SimpleArithmeticProblem> problems}) =
@@ -220,6 +239,8 @@ abstract class _PersistenceAttentionLog extends PersistenceAttentionLog {
 
   @override
   String get id;
+  @override
+  String? get documentId;
   @override
   DateTime get startedAt;
   @override

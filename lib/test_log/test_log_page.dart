@@ -320,7 +320,7 @@ class _PersistenceAttentionLogPageState
                           }
                           await ref
                               .read(persistenceAttentionLogReferenceProvider)
-                              .doc(log.id)
+                              .doc(log.documentId)
                               .delete();
                         },
                         icon: const Icon(Icons.delete),
@@ -358,6 +358,7 @@ class _SelectAttentionLogPageState
         problem.id,
         problem.startedAt!.toIso8601String(),
         problem.endAt!.toIso8601String(),
+        problem.endAt!.difference(problem.startedAt!).inMilliseconds,
         problem.correctCount,
         problem.correctAnswerCount,
         problem.incorrectAnswerCount,
@@ -376,6 +377,7 @@ class _SelectAttentionLogPageState
       '問題ID',
       '問題開始時間',
       '問題終了時間',
+      '経過時間ms',
       'ターゲット数',
       '正解数',
       '誤答数',
@@ -462,7 +464,7 @@ class _SelectAttentionLogPageState
                           }
                           await ref
                               .read(selectAttentionLogReferenceProvider)
-                              .doc(log.id)
+                              .doc(log.documentId)
                               .delete();
                         },
                         icon: const Icon(Icons.delete),
@@ -594,9 +596,10 @@ class _ImmediateMemoryLogPageState
                           if (res != true) {
                             return;
                           }
+
                           await ref
                               .read(immediateMemoryLogReference)
-                              .doc(log.id)
+                              .doc(log.documentId)
                               .delete();
                         },
                         icon: const Icon(Icons.delete),
@@ -621,6 +624,7 @@ final meaningProblemLogProvider =
       .map((snapshot) => snapshot.docs.map((doc) {
             final data = doc.data();
             data['id'] = doc.id;
+            data['documentId'] = doc.id;
             return MeaningProblemLog.fromJson(data);
           }).toList());
 });
@@ -734,12 +738,14 @@ class _SemanticUnderstandingForMeaningLogPageState
                       IconButton(
                         onPressed: () async {
                           final res = await DeleteAlertDialog.show(context);
+                          print(log.documentId);
                           if (res != true) {
                             return;
                           }
+
                           await FirebaseFirestore.instance
                               .collection('meaning_problem_log')
-                              .doc(log.id)
+                              .doc(log.documentId)
                               .delete();
                         },
                         icon: const Icon(Icons.delete),
@@ -765,6 +771,7 @@ final calculationProblemLogProvider =
       .map((snapshot) => snapshot.docs.map((doc) {
             final data = doc.data();
             data['id'] = doc.id;
+            data['documentId'] = doc.id;
             return CalculationProblemLog.fromJson(data);
           }).toList());
 });
@@ -885,12 +892,13 @@ class _SemanticUnderstandingForCalculationLogPageState
                       IconButton(
                         onPressed: () async {
                           final res = await DeleteAlertDialog.show(context);
+                          print(log.documentId);
                           if (res != true) {
                             return;
                           }
                           await FirebaseFirestore.instance
                               .collection('calculation_problem_log')
-                              .doc(log.id)
+                              .doc(log.documentId)
                               .delete();
                         },
                         icon: const Icon(Icons.delete),
@@ -915,6 +923,7 @@ final sematicFluencyLogProvider =
       .snapshots()
       .map((snapshot) => snapshot.docs.map((doc) {
             final data = doc.data();
+            data['documentId'] = doc.id;
             return SemanticFluencyLog.fromJson(data);
           }).toList());
 });
@@ -1024,12 +1033,14 @@ class _SemanticFluencyLogPageState
                       IconButton(
                         onPressed: () async {
                           final res = await DeleteAlertDialog.show(context);
+                          print(log.documentId);
+
                           if (res != true) {
                             return;
                           }
                           await FirebaseFirestore.instance
                               .collection('semantic_fluency_log')
-                              .doc(log.id)
+                              .doc(log.documentId)
                               .delete();
                         },
                         icon: const Icon(Icons.delete),
@@ -1054,6 +1065,7 @@ final performanceProblemLogProvider =
       .map((snapshot) => snapshot.docs.map((doc) {
             final data = doc.data();
             data['id'] = doc.id;
+            data['documentId'] = doc.id;
             return PerformanceProblemLog.fromJson(data);
           }).toList());
 });
@@ -1173,12 +1185,13 @@ class _PerformanceLogPageState extends ConsumerState<PerformanceLogPage> {
                       IconButton(
                         onPressed: () async {
                           final res = await DeleteAlertDialog.show(context);
+                          print(log.documentId);
                           if (res != true) {
                             return;
                           }
                           await FirebaseFirestore.instance
                               .collection('performance_problem_log')
-                              .doc(log.id)
+                              .doc(log.documentId)
                               .delete();
                         },
                         icon: const Icon(Icons.delete),
@@ -1203,6 +1216,7 @@ final recentMemoryLogProvider =
       .snapshots()
       .map((snapshot) => snapshot.docs.map((doc) {
             final data = doc.data();
+            data['documentId'] = doc.id;
             return RecentMemoryLog.fromJson(data);
           }).toList());
 });
@@ -1316,12 +1330,13 @@ class _RecentMemoryLogPageState extends ConsumerState<RecentMemoryLogPage> {
                       IconButton(
                         onPressed: () async {
                           final res = await DeleteAlertDialog.show(context);
+                          print(log.documentId);
                           if (res != true) {
                             return;
                           }
                           await FirebaseFirestore.instance
                               .collection('recent_memory_log')
-                              .doc(log.id)
+                              .doc(log.documentId)
                               .delete();
                         },
                         icon: const Icon(Icons.delete),

@@ -22,6 +22,7 @@ ImmediateMemoryLog _$ImmediateMemoryLogFromJson(Map<String, dynamic> json) {
 mixin _$ImmediateMemoryLog {
   String get id => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
+  String? get documentId => throw _privateConstructorUsedError;
   ImmediateMemoryProblem get immediateMemoryProblem =>
       throw _privateConstructorUsedError;
 
@@ -40,6 +41,7 @@ abstract class $ImmediateMemoryLogCopyWith<$Res> {
   $Res call(
       {String id,
       String userId,
+      String? documentId,
       ImmediateMemoryProblem immediateMemoryProblem});
 
   $ImmediateMemoryProblemCopyWith<$Res> get immediateMemoryProblem;
@@ -60,6 +62,7 @@ class _$ImmediateMemoryLogCopyWithImpl<$Res, $Val extends ImmediateMemoryLog>
   $Res call({
     Object? id = null,
     Object? userId = null,
+    Object? documentId = freezed,
     Object? immediateMemoryProblem = null,
   }) {
     return _then(_value.copyWith(
@@ -71,6 +74,10 @@ class _$ImmediateMemoryLogCopyWithImpl<$Res, $Val extends ImmediateMemoryLog>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
+      documentId: freezed == documentId
+          ? _value.documentId
+          : documentId // ignore: cast_nullable_to_non_nullable
+              as String?,
       immediateMemoryProblem: null == immediateMemoryProblem
           ? _value.immediateMemoryProblem
           : immediateMemoryProblem // ignore: cast_nullable_to_non_nullable
@@ -99,6 +106,7 @@ abstract class _$$ImmediateMemoryLogImplCopyWith<$Res>
   $Res call(
       {String id,
       String userId,
+      String? documentId,
       ImmediateMemoryProblem immediateMemoryProblem});
 
   @override
@@ -118,6 +126,7 @@ class __$$ImmediateMemoryLogImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? userId = null,
+    Object? documentId = freezed,
     Object? immediateMemoryProblem = null,
   }) {
     return _then(_$ImmediateMemoryLogImpl(
@@ -129,6 +138,10 @@ class __$$ImmediateMemoryLogImplCopyWithImpl<$Res>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
+      documentId: freezed == documentId
+          ? _value.documentId
+          : documentId // ignore: cast_nullable_to_non_nullable
+              as String?,
       immediateMemoryProblem: null == immediateMemoryProblem
           ? _value.immediateMemoryProblem
           : immediateMemoryProblem // ignore: cast_nullable_to_non_nullable
@@ -143,6 +156,7 @@ class _$ImmediateMemoryLogImpl extends _ImmediateMemoryLog {
   _$ImmediateMemoryLogImpl(
       {required this.id,
       required this.userId,
+      required this.documentId,
       required this.immediateMemoryProblem})
       : super._();
 
@@ -154,11 +168,13 @@ class _$ImmediateMemoryLogImpl extends _ImmediateMemoryLog {
   @override
   final String userId;
   @override
+  final String? documentId;
+  @override
   final ImmediateMemoryProblem immediateMemoryProblem;
 
   @override
   String toString() {
-    return 'ImmediateMemoryLog(id: $id, userId: $userId, immediateMemoryProblem: $immediateMemoryProblem)';
+    return 'ImmediateMemoryLog(id: $id, userId: $userId, documentId: $documentId, immediateMemoryProblem: $immediateMemoryProblem)';
   }
 
   @override
@@ -168,6 +184,8 @@ class _$ImmediateMemoryLogImpl extends _ImmediateMemoryLog {
             other is _$ImmediateMemoryLogImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.documentId, documentId) ||
+                other.documentId == documentId) &&
             (identical(other.immediateMemoryProblem, immediateMemoryProblem) ||
                 other.immediateMemoryProblem == immediateMemoryProblem));
   }
@@ -175,7 +193,7 @@ class _$ImmediateMemoryLogImpl extends _ImmediateMemoryLog {
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, userId, immediateMemoryProblem);
+      Object.hash(runtimeType, id, userId, documentId, immediateMemoryProblem);
 
   @JsonKey(ignore: true)
   @override
@@ -196,6 +214,7 @@ abstract class _ImmediateMemoryLog extends ImmediateMemoryLog {
   factory _ImmediateMemoryLog(
           {required final String id,
           required final String userId,
+          required final String? documentId,
           required final ImmediateMemoryProblem immediateMemoryProblem}) =
       _$ImmediateMemoryLogImpl;
   _ImmediateMemoryLog._() : super._();
@@ -207,6 +226,8 @@ abstract class _ImmediateMemoryLog extends ImmediateMemoryLog {
   String get id;
   @override
   String get userId;
+  @override
+  String? get documentId;
   @override
   ImmediateMemoryProblem get immediateMemoryProblem;
   @override

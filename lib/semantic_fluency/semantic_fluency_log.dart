@@ -8,6 +8,7 @@ part 'semantic_fluency_log.g.dart';
 class SemanticFluencyLog with _$SemanticFluencyLog {
   factory SemanticFluencyLog({
     required String id,
+    required String? documentId,
     required DateTime startedAt,
     required String userId,
     @Default([]) List<AnswerWordWithTimestamp> answerWordWithTimestampList,

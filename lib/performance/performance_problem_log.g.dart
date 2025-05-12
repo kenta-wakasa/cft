@@ -11,6 +11,7 @@ _$PerformanceProblemLogImpl _$$PerformanceProblemLogImplFromJson(
     _$PerformanceProblemLogImpl(
       uid: json['uid'] as String,
       id: json['id'] as String? ?? '',
+      documentId: json['documentId'] as String?,
       performanceProblems: (json['performanceProblems'] as List<dynamic>)
           .map((e) => PerformanceProblem.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -21,6 +22,7 @@ Map<String, dynamic> _$$PerformanceProblemLogImplToJson(
     <String, dynamic>{
       'uid': instance.uid,
       'id': instance.id,
+      'documentId': instance.documentId,
       'performanceProblems':
           instance.performanceProblems.map((e) => e.toJson()).toList(),
     };

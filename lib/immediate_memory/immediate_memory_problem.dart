@@ -22,7 +22,7 @@ class ImmediateMemoryProblem with _$ImmediateMemoryProblem {
 
   factory ImmediateMemoryProblem.generate() {
     final randomNumbers = <String>[];
-    for (var length = 4; length <= 7; length++) {
+    for (var length = 4; length <= 9; length++) {
       randomNumbers.addAll([
         List.generate(length, (index) {
           return random.nextInt(10).toString();

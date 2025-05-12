@@ -21,6 +21,7 @@ SelectAttentionLog _$SelectAttentionLogFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$SelectAttentionLog {
   String get id => throw _privateConstructorUsedError;
+  String? get documentId => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   List<SelectAttentionProblem> get selectAttentionProblems =>
       throw _privateConstructorUsedError;
@@ -39,6 +40,7 @@ abstract class $SelectAttentionLogCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
+      String? documentId,
       String userId,
       List<SelectAttentionProblem> selectAttentionProblems});
 }
@@ -57,6 +59,7 @@ class _$SelectAttentionLogCopyWithImpl<$Res, $Val extends SelectAttentionLog>
   @override
   $Res call({
     Object? id = null,
+    Object? documentId = freezed,
     Object? userId = null,
     Object? selectAttentionProblems = null,
   }) {
@@ -65,6 +68,10 @@ class _$SelectAttentionLogCopyWithImpl<$Res, $Val extends SelectAttentionLog>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      documentId: freezed == documentId
+          ? _value.documentId
+          : documentId // ignore: cast_nullable_to_non_nullable
+              as String?,
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -87,6 +94,7 @@ abstract class _$$SelectAttentionLogImplCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
+      String? documentId,
       String userId,
       List<SelectAttentionProblem> selectAttentionProblems});
 }
@@ -103,6 +111,7 @@ class __$$SelectAttentionLogImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? documentId = freezed,
     Object? userId = null,
     Object? selectAttentionProblems = null,
   }) {
@@ -111,6 +120,10 @@ class __$$SelectAttentionLogImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      documentId: freezed == documentId
+          ? _value.documentId
+          : documentId // ignore: cast_nullable_to_non_nullable
+              as String?,
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -128,6 +141,7 @@ class __$$SelectAttentionLogImplCopyWithImpl<$Res>
 class _$SelectAttentionLogImpl extends _SelectAttentionLog {
   _$SelectAttentionLogImpl(
       {required this.id,
+      required this.documentId,
       required this.userId,
       required final List<SelectAttentionProblem> selectAttentionProblems})
       : _selectAttentionProblems = selectAttentionProblems,
@@ -138,6 +152,8 @@ class _$SelectAttentionLogImpl extends _SelectAttentionLog {
 
   @override
   final String id;
+  @override
+  final String? documentId;
   @override
   final String userId;
   final List<SelectAttentionProblem> _selectAttentionProblems;
@@ -151,7 +167,7 @@ class _$SelectAttentionLogImpl extends _SelectAttentionLog {
 
   @override
   String toString() {
-    return 'SelectAttentionLog(id: $id, userId: $userId, selectAttentionProblems: $selectAttentionProblems)';
+    return 'SelectAttentionLog(id: $id, documentId: $documentId, userId: $userId, selectAttentionProblems: $selectAttentionProblems)';
   }
 
   @override
@@ -160,6 +176,8 @@ class _$SelectAttentionLogImpl extends _SelectAttentionLog {
         (other.runtimeType == runtimeType &&
             other is _$SelectAttentionLogImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.documentId, documentId) ||
+                other.documentId == documentId) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             const DeepCollectionEquality().equals(
                 other._selectAttentionProblems, _selectAttentionProblems));
@@ -167,7 +185,7 @@ class _$SelectAttentionLogImpl extends _SelectAttentionLog {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, userId,
+  int get hashCode => Object.hash(runtimeType, id, documentId, userId,
       const DeepCollectionEquality().hash(_selectAttentionProblems));
 
   @JsonKey(ignore: true)
@@ -188,6 +206,7 @@ class _$SelectAttentionLogImpl extends _SelectAttentionLog {
 abstract class _SelectAttentionLog extends SelectAttentionLog {
   factory _SelectAttentionLog(
       {required final String id,
+      required final String? documentId,
       required final String userId,
       required final List<SelectAttentionProblem>
           selectAttentionProblems}) = _$SelectAttentionLogImpl;
@@ -198,6 +217,8 @@ abstract class _SelectAttentionLog extends SelectAttentionLog {
 
   @override
   String get id;
+  @override
+  String? get documentId;
   @override
   String get userId;
   @override

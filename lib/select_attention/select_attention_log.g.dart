@@ -10,6 +10,7 @@ _$SelectAttentionLogImpl _$$SelectAttentionLogImplFromJson(
         Map<String, dynamic> json) =>
     _$SelectAttentionLogImpl(
       id: json['id'] as String,
+      documentId: json['documentId'] as String?,
       userId: json['userId'] as String,
       selectAttentionProblems: (json['selectAttentionProblems']
               as List<dynamic>)
@@ -22,6 +23,7 @@ Map<String, dynamic> _$$SelectAttentionLogImplToJson(
         _$SelectAttentionLogImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'documentId': instance.documentId,
       'userId': instance.userId,
       'selectAttentionProblems':
           instance.selectAttentionProblems.map((e) => e.toJson()).toList(),

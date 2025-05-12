@@ -263,7 +263,7 @@ final calculationProblems = [
     answer: 36,
   ),
   CalculationProblem(
-    question: '中古車の値段は新品の5分の4でした。その中古車を80万円で買ったとすれば、新品の値段は何円ですか。',
+    question: '中古車の値段は新品の5分の4でした。その中古車を80万円で買ったとすれば、新品の値段は何万円ですか。',
     unit: '円',
     answer: 100,
   ),

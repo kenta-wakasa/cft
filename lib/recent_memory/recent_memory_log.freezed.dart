@@ -25,6 +25,7 @@ mixin _$RecentMemoryLog {
   String? get documentId => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime? get ansStartedAt => throw _privateConstructorUsedError;
+  DateTime? get ansFinishedAt => throw _privateConstructorUsedError;
   DateTime? get finishedAt => throw _privateConstructorUsedError;
   List<String> get memoryList => throw _privateConstructorUsedError;
   List<String> get answerList => throw _privateConstructorUsedError;
@@ -47,6 +48,7 @@ abstract class $RecentMemoryLogCopyWith<$Res> {
       String? documentId,
       DateTime createdAt,
       DateTime? ansStartedAt,
+      DateTime? ansFinishedAt,
       DateTime? finishedAt,
       List<String> memoryList,
       List<String> answerList});
@@ -70,6 +72,7 @@ class _$RecentMemoryLogCopyWithImpl<$Res, $Val extends RecentMemoryLog>
     Object? documentId = freezed,
     Object? createdAt = null,
     Object? ansStartedAt = freezed,
+    Object? ansFinishedAt = freezed,
     Object? finishedAt = freezed,
     Object? memoryList = null,
     Object? answerList = null,
@@ -94,6 +97,10 @@ class _$RecentMemoryLogCopyWithImpl<$Res, $Val extends RecentMemoryLog>
       ansStartedAt: freezed == ansStartedAt
           ? _value.ansStartedAt
           : ansStartedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      ansFinishedAt: freezed == ansFinishedAt
+          ? _value.ansFinishedAt
+          : ansFinishedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       finishedAt: freezed == finishedAt
           ? _value.finishedAt
@@ -125,6 +132,7 @@ abstract class _$$RecentMemoryLogImplCopyWith<$Res>
       String? documentId,
       DateTime createdAt,
       DateTime? ansStartedAt,
+      DateTime? ansFinishedAt,
       DateTime? finishedAt,
       List<String> memoryList,
       List<String> answerList});
@@ -146,6 +154,7 @@ class __$$RecentMemoryLogImplCopyWithImpl<$Res>
     Object? documentId = freezed,
     Object? createdAt = null,
     Object? ansStartedAt = freezed,
+    Object? ansFinishedAt = freezed,
     Object? finishedAt = freezed,
     Object? memoryList = null,
     Object? answerList = null,
@@ -170,6 +179,10 @@ class __$$RecentMemoryLogImplCopyWithImpl<$Res>
       ansStartedAt: freezed == ansStartedAt
           ? _value.ansStartedAt
           : ansStartedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      ansFinishedAt: freezed == ansFinishedAt
+          ? _value.ansFinishedAt
+          : ansFinishedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       finishedAt: freezed == finishedAt
           ? _value.finishedAt
@@ -196,6 +209,7 @@ class _$RecentMemoryLogImpl extends _RecentMemoryLog {
       required this.documentId,
       required this.createdAt,
       required this.ansStartedAt,
+      required this.ansFinishedAt,
       this.finishedAt,
       final List<String> memoryList = const [],
       final List<String> answerList = const []})
@@ -218,6 +232,8 @@ class _$RecentMemoryLogImpl extends _RecentMemoryLog {
   @override
   final DateTime? ansStartedAt;
   @override
+  final DateTime? ansFinishedAt;
+  @override
   final DateTime? finishedAt;
   final List<String> _memoryList;
   @override
@@ -239,7 +255,7 @@ class _$RecentMemoryLogImpl extends _RecentMemoryLog {
 
   @override
   String toString() {
-    return 'RecentMemoryLog(uid: $uid, id: $id, documentId: $documentId, createdAt: $createdAt, ansStartedAt: $ansStartedAt, finishedAt: $finishedAt, memoryList: $memoryList, answerList: $answerList)';
+    return 'RecentMemoryLog(uid: $uid, id: $id, documentId: $documentId, createdAt: $createdAt, ansStartedAt: $ansStartedAt, ansFinishedAt: $ansFinishedAt, finishedAt: $finishedAt, memoryList: $memoryList, answerList: $answerList)';
   }
 
   @override
@@ -255,6 +271,8 @@ class _$RecentMemoryLogImpl extends _RecentMemoryLog {
                 other.createdAt == createdAt) &&
             (identical(other.ansStartedAt, ansStartedAt) ||
                 other.ansStartedAt == ansStartedAt) &&
+            (identical(other.ansFinishedAt, ansFinishedAt) ||
+                other.ansFinishedAt == ansFinishedAt) &&
             (identical(other.finishedAt, finishedAt) ||
                 other.finishedAt == finishedAt) &&
             const DeepCollectionEquality()
@@ -272,6 +290,7 @@ class _$RecentMemoryLogImpl extends _RecentMemoryLog {
       documentId,
       createdAt,
       ansStartedAt,
+      ansFinishedAt,
       finishedAt,
       const DeepCollectionEquality().hash(_memoryList),
       const DeepCollectionEquality().hash(_answerList));
@@ -298,6 +317,7 @@ abstract class _RecentMemoryLog extends RecentMemoryLog {
       required final String? documentId,
       required final DateTime createdAt,
       required final DateTime? ansStartedAt,
+      required final DateTime? ansFinishedAt,
       final DateTime? finishedAt,
       final List<String> memoryList,
       final List<String> answerList}) = _$RecentMemoryLogImpl;
@@ -316,6 +336,8 @@ abstract class _RecentMemoryLog extends RecentMemoryLog {
   DateTime get createdAt;
   @override
   DateTime? get ansStartedAt;
+  @override
+  DateTime? get ansFinishedAt;
   @override
   DateTime? get finishedAt;
   @override

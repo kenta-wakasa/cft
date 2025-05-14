@@ -39,6 +39,7 @@ class _RecentMemoryPageState extends ConsumerState<RecentMemoryPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    init();
     for (final controller in controllers) {
       controller.addListener(() {
         setState(() {});
@@ -52,6 +53,17 @@ class _RecentMemoryPageState extends ConsumerState<RecentMemoryPage> {
     for (final controller in controllers) {
       controller.dispose();
     }
+  }
+
+  Future<void> init() async {
+    await FirebaseFirestore.instance
+        .collection('recent_memory_log')
+        .doc(widget.id)
+        .set({
+      'uid': FirebaseAuth.instance.currentUser!.uid,
+      'id': widget.id,
+      'createdAt': DateTime.now().toIso8601String(),
+    });
   }
 
   @override
@@ -79,30 +91,31 @@ class _RecentMemoryPageState extends ConsumerState<RecentMemoryPage> {
                   ),
                 const Gap(16),
                 ElevatedButton(
-                  onPressed:
-                      controllers.any((controller) => controller.text.isEmpty)
-                          ? null
-                          : () async {
-                              await FirebaseFirestore.instance
-                                  .collection('recent_memory_log')
-                                  .doc(widget.id)
-                                  .set({
-                                'uid': FirebaseAuth.instance.currentUser!.uid,
-                                'id': widget.id,
-                                'createdAt': DateTime.now().toIso8601String(),
-                                'memoryList': controllers
-                                    .map((controller) => controller.text)
-                                    .toList(),
-                              });
-
-                              if (widget.nextPath == null) {
-                                context.go(HomePage.path);
-                              } else {
-                                context.go(
-                                  '${widget.nextPath!}?nextPath=${ImmediateMemoryPage.path}&id=${widget.id}',
-                                );
-                              }
+                  onPressed: controllers
+                          .any((controller) => controller.text.isEmpty)
+                      ? null
+                      : () async {
+                          await FirebaseFirestore.instance
+                              .collection('recent_memory_log')
+                              .doc(widget.id)
+                              .set(
+                            {
+                              'memoryList': controllers
+                                  .map((controller) => controller.text)
+                                  .toList(),
+                              'ansFinishedAt': DateTime.now().toIso8601String(),
                             },
+                            SetOptions(merge: true),
+                          );
+
+                          if (widget.nextPath == null) {
+                            context.go(HomePage.path);
+                          } else {
+                            context.go(
+                              '${widget.nextPath!}?nextPath=${ImmediateMemoryPage.path}&id=${widget.id}',
+                            );
+                          }
+                        },
                   child: const Text('決定'),
                 ),
               ],
